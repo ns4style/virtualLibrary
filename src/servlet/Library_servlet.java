@@ -14,6 +14,7 @@ public class Library_servlet extends HttpServlet {
 		super();
 	}
 
+	//my commment
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		super.service(request, response);
@@ -32,11 +33,12 @@ public class Library_servlet extends HttpServlet {
 		try {
 			RoutingMap.routeToReqPage(request.getServletPath(), request, response);
 		} catch (NullPointerException ex) {
-			MapHandlers.books(request, response);
+			MapHandlers.index(request, response);
 		}
 		
 	}
 
+	
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 	}
