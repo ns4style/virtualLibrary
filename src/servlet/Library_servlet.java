@@ -30,7 +30,7 @@ public class Library_servlet extends HttpServlet {
 		try {
 			RoutingMap.routeToReqPage(request.getServletPath(), request, response);
 		} catch (NullPointerException ex) {
-			MapHandlers.books(request, response);
+			MapHandlers.index(request, response);
 		}
 		
 	}
