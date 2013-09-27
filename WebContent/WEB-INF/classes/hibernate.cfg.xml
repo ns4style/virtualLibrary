@@ -10,5 +10,8 @@
         <property name="hibernate.connection.url">jdbc:mysql://10.24.1.172:3306/test</property>
         <property name="hibernate.connection.username">user1</property>
         <property name="hibernate.connection.password">c$awth3b33st</property>
+        
+        <mapping class="hibernateMappingClass.Author" />
+        <mapping class="hibernateMappingClass.Book" />
     </session-factory>
 </hibernate-configuration>
