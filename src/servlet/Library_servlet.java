@@ -27,6 +27,7 @@ public class Library_servlet extends HttpServlet {
 		 * routeToReqPage вызывает обработчик для запрашиваемой страницы, если таковой
 		 * существует (все определения обработчиков находятся в MapHandlers)
 		 */
+		
 		try {
 			RoutingMap.routeToReqPage(request.getServletPath(), request, response);
 		} catch (NullPointerException ex) {
