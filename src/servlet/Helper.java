@@ -1,13 +1,61 @@
 package servlet;
 
+import java.io.IOException;
 import java.util.Map;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+/*
+ * Данный класс создан для формирования Map'ы вызовов функции в зависимости от запрашиваемой страницы
+ * для каждой определенной страницы создается анонимный класс, реализующий интерфейс UrlHandler
+ * в нем определяется функция get_handler, работа этой функции заключается в вызове правильного 
+ * обработчика для указанной страницы
+ */
 
 public class Helper{
 	public static void mapFill(Map routing){
-		routing.put("admin", "/WEB-INF/templates/admin.jsp");
-		routing.put("index", "/WEB-INF/templates/index.jsp");
-		routing.put("books", "/WEB-INF/templates/books.jsp");
-		routing.put("register", "/WEB-INF/templates/register.jsp");
-		routing.put("cabinet", "/WEB-INF/templates/cabinet.jsp");
+		
+		routing.put("/admin", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.admin(request, response);
+								}
+							}
+					);
+		
+		routing.put("/index", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.index(request, response);
+								}
+							}
+					);
+		
+		routing.put("/books", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.books(request, response);
+								}
+							}
+					);
+		
+		routing.put("/register", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.register(request, response);
+								}
+							}
+					);
+		
+		routing.put("/cabinet", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.cabinet(request, response);
+								}
+							}
+					);
+		
 	}
 }

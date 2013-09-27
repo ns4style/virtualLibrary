@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-<p>Index</p>
+<p>Cabinet</p>
 </body>
 </html>

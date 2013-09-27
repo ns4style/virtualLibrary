@@ -1,9 +1,6 @@
 package servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
-import java.util.logging.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -12,11 +9,12 @@ import javax.servlet.http.HttpServletResponse;
 
 
 /*
- * Реализация обработчиков запросов, имена методов соответствуют
- * запрашиваемой странице
+ * Реализация обработчиков запросов, имена методов соответствуют запрашиваемой странице.
+ * вызов метода происходит из класса RountingMap при обращении к объекту типа Map
+ * из Map выбирается нужный обработчик в зависимости от параметра request.getServletPath()
  */
 
-public class map_handlers {
+public class MapHandlers {
 	
 	public static void admin(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
