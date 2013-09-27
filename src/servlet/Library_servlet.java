@@ -27,12 +27,9 @@ public class Library_servlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
 		Map routing=new HashMap <String,String>();
 		Helper.mapFill(routing);
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/index.jsp");
-		rd.forward(request, response);
-
 	}
 
 	protected void doPost(HttpServletRequest request,
