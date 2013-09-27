@@ -15,11 +15,6 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
  
   <servlet-mapping>
    <servlet-name>Library</servlet-name>
-   <url-pattern>/login</url-pattern>
- </servlet-mapping>
- 
-  <servlet-mapping>
-   <servlet-name>Library</servlet-name>
    <url-pattern>/index</url-pattern>
  </servlet-mapping>
  
