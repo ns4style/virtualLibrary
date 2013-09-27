@@ -21,7 +21,6 @@ public class Library_servlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		// ХУЙ НА
 		
 		/*
 		 * RoutingMap по умолчанию инициализируется при помощи метода Helper.mapFill
