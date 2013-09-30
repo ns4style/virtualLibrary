@@ -34,8 +34,6 @@ public class GenreBooks {
 	}
 	
 	@Column(name = "id_book")	
-	@ManyToOne
-	@JoinTable(name = "books", joinColumns = @JoinColumn(name = "id"))
 	public int getId_book() {
 		return id_book;
 	}
@@ -45,8 +43,6 @@ public class GenreBooks {
 	}
 
 	@Column(name = "id_genre")	
-	@ManyToOne
-	@JoinTable(name = "genre", joinColumns = @JoinColumn(name = "id"))
 	public int getId_genre() {
 		return id_genre;
 	}

@@ -1,6 +1,7 @@
 package hibernateAccesObject;
 
-import hibernateMappingClass.Author;
+import hibernateMappingClass.Image;
+import hibernateMappingClass.Library;
 import hibernateUtil.HibernateUtil;
 
 import java.sql.SQLException;
@@ -11,13 +12,13 @@ import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 
-public class AuthorHAO {
-	public void addAuthors(Author author) {
+public class LibraryHAO {
+	public void addLibrary(Library library) {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-			session.save(author);
+			session.save(library);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
@@ -29,12 +30,12 @@ public class AuthorHAO {
 		}
 	}
 
-	public void updateAuthor(Author author) throws SQLException {
+	public void updateLibrary(Library library) throws SQLException {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-			session.update(author);
+			session.update(library);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
@@ -46,12 +47,12 @@ public class AuthorHAO {
 		}
 	}
 
-	public Author getAuthorById(int id) throws SQLException {
+	public Library getLibraryById(int id) throws SQLException {
 		Session session = null;
-		Author author = null;
+		Library library = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			author = (Author) session.load(Author.class, id);
+			library = (Library) session.load(Library.class, id);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -60,15 +61,15 @@ public class AuthorHAO {
 				session.close();
 			}
 		}
-		return author;
+		return library;
 	}
 
-	public List<Author> getAllAuthors() throws SQLException {
+	public List<Library> getAllLibraries() throws SQLException {
 		Session session = null;
-		List<Author> authors = new ArrayList<Author>();
+		List<Library> libraries = new ArrayList<Library>();
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			authors = session.createCriteria(Author.class).list();
+			libraries = session.createCriteria(Library.class).list();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -77,15 +78,15 @@ public class AuthorHAO {
 				session.close();
 			}
 		}
-		return authors;
+		return libraries;
 	}
 
-	public void deleteAuthor(Author author) throws SQLException {
+	public void deleteLibrary(Library library) throws SQLException {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-			session.delete(author);
+			session.delete(library);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",

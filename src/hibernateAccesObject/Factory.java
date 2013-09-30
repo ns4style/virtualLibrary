@@ -5,6 +5,9 @@ public class Factory {
 	private static AuthorHAO authorHAO = null;
 	private static BookHAO bookHAO = null;
 	private static CommentHAO commentHAO = null;
+	private static ImageHAO imageHAO = null;
+	private static LibraryHAO libraryHAO = null;
+	private static UserHAO userHAO = null;
 	
 	private static Factory instance = null;
 
@@ -34,5 +37,26 @@ public class Factory {
 			commentHAO = new CommentHAO();
 		}
 		return commentHAO;
+	}
+	
+	public ImageHAO getImageHAO() {
+		if (imageHAO == null) {
+			imageHAO = new ImageHAO();
+		}
+		return imageHAO;
+	}
+	
+	public LibraryHAO getLibraryHAO() {
+		if (libraryHAO == null) {
+			libraryHAO = new LibraryHAO();
+		}
+		return libraryHAO;
+	}
+	
+	public UserHAO getUserHAO() {
+		if (userHAO == null) {
+			userHAO = new UserHAO();
+		}
+		return userHAO;
 	}
 }

@@ -37,8 +37,6 @@ public class Comment {
 	}
 	
 	@Column(name = "id_book")
-	@OneToOne
-	@JoinTable(name = "genre", joinColumns = @JoinColumn(name = "id"))
 	public int getIdBook() {
 		return idBook;
 	}
@@ -54,8 +52,6 @@ public class Comment {
 	}
 	
 	@Column(name = "id_user")	
-	@ManyToOne
-	@JoinTable(name = "genre", joinColumns = @JoinColumn(name = "id"))
 	public int getIdUser() {
 		return idUser;
 	}
