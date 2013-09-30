@@ -1,6 +1,6 @@
 package hibernateAccesObject;
 
-import hibernateMappingClass.Author;
+import hibernateMappingClass.Comment;
 import hibernateUtil.HibernateUtil;
 
 import java.sql.SQLException;
@@ -11,13 +11,13 @@ import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 
-public class AuthorHAO {
-	public void addAuthors(Author author) {
+public class CommentHAO {
+	public void addComment(Comment comment) {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-			session.save(author);
+			session.save(comment);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
@@ -29,12 +29,12 @@ public class AuthorHAO {
 		}
 	}
 
-	public void updateAuthor(Author author) throws SQLException {
+	public void updateComment(Comment comment) throws SQLException {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-			session.update(author);
+			session.update(comment);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
@@ -46,12 +46,12 @@ public class AuthorHAO {
 		}
 	}
 
-	public Author getAuthortById(int id) throws SQLException {
+	public Comment getCommentById(int id) throws SQLException {
 		Session session = null;
-		Author author = null;
+		Comment comment = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			author = (Author) session.load(Author.class, id);
+			comment = (Comment) session.load(Comment.class, id);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -60,15 +60,15 @@ public class AuthorHAO {
 				session.close();
 			}
 		}
-		return author;
+		return comment;
 	}
 
-	public List<Author> getAllAuthors() throws SQLException {
+	public List<Comment> getAllComments() throws SQLException {
 		Session session = null;
-		List<Author> authors = new ArrayList<Author>();
+		List<Comment> books = new ArrayList<Comment>();
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			authors = session.createCriteria(Author.class).list();
+			books = session.createCriteria(Comment.class).list();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -77,15 +77,15 @@ public class AuthorHAO {
 				session.close();
 			}
 		}
-		return authors;
+		return books;
 	}
 
-	public void deleteAuthor(Author author) throws SQLException {
+	public void deleteComment(Comment comment) throws SQLException {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-			session.delete(author);
+			session.delete(comment);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",

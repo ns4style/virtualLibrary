@@ -29,7 +29,7 @@ public class BookHAO {
 		}
 	}
 
-	public void updateBooks(Book book) throws SQLException {
+	public void updateBook(Book book) throws SQLException {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
