@@ -44,10 +44,23 @@ public class MapHandlers {
 		rd.forward(request, response);
 	}
 	
+	public static void login(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/login.jsp");
+		rd.forward(request, response);	
+	}
+	
 	public static void cabinet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/cabinet.jsp");
 		rd.forward(request, response);
+	}
+	
+	public static void signin(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		
+		response.getWriter().println("User name : " + request.getParameter("usr_name") + " with password " + request.getParameter("usr_pass"));
 	}
 }

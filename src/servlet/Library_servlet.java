@@ -16,11 +16,6 @@ public class Library_servlet extends HttpServlet {
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		super.service(request, response);
-	}
-
-	protected void doGet(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
 		
 		/*
 		 * RoutingMap по умолчанию инициализируется при помощи метода Helper.mapFill
@@ -32,12 +27,5 @@ public class Library_servlet extends HttpServlet {
 		} catch (NullPointerException ex) {
 			MapHandlers.index(request, response);
 		}
-		
 	}
-
-	
-	protected void doPost(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-	}
-
 }

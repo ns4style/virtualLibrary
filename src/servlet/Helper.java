@@ -25,6 +25,14 @@ public class Helper{
 							}
 					);
 		
+		routing.put("/", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.index(request, response);
+								}
+							} 
+					);
+		
 		routing.put("/index", new UrlHandler() {
 								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
 										throws IOException, ServletException, NullPointerException {
@@ -53,6 +61,21 @@ public class Helper{
 								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
 										throws IOException, ServletException, NullPointerException {
 									MapHandlers.cabinet(request, response);
+								}
+							}
+					);
+		
+		routing.put("/login", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.login(request, response);
+								}
+							}
+					);
+		routing.put("/signin", new UrlHandler() {
+								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+										throws IOException, ServletException, NullPointerException {
+									MapHandlers.signin(request, response);
 								}
 							}
 					);
