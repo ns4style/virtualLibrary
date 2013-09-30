@@ -12,9 +12,6 @@ public class LibraryServlet extends HttpServlet {
 
 	public LibraryServlet() {
 		super();
-		
-		
-		
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)

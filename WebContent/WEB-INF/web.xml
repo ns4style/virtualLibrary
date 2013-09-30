@@ -5,7 +5,7 @@
 
 	<servlet>
 		<servlet-name>Library</servlet-name>
-		<servlet-class>servlet.Library_servlet</servlet-class>
+		<servlet-class>servlet.LibraryServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
