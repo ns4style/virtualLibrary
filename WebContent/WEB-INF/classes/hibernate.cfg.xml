@@ -13,5 +13,6 @@
         
         <mapping class="hibernateMappingClass.Author" />
         <mapping class="hibernateMappingClass.Book" />
+        <mapping class="hibernateMappingClass.Comment" />
     </session-factory>
 </hibernate-configuration>
