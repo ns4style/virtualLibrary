@@ -7,11 +7,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class Library_servlet extends HttpServlet {
+public class LibraryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-	public Library_servlet() {
+	public LibraryServlet() {
 		super();
+		
+		
+		
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)

@@ -6,6 +6,10 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -33,6 +37,8 @@ public class Comment {
 	}
 	
 	@Column(name = "id_book")
+	@OneToOne
+	@JoinTable(name = "genre", joinColumns = @JoinColumn(name = "id"))
 	public int getIdBook() {
 		return idBook;
 	}
@@ -47,7 +53,9 @@ public class Comment {
 		return timeStamp;
 	}
 	
-	@Column(name = "id_user")
+	@Column(name = "id_user")	
+	@ManyToOne
+	@JoinTable(name = "genre", joinColumns = @JoinColumn(name = "id"))
 	public int getIdUser() {
 		return idUser;
 	}
