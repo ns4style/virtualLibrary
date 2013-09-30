@@ -19,5 +19,8 @@
         <mapping class="hibernateMappingClass.GenreBooks" />
         <mapping class="hibernateMappingClass.Library" />
         <mapping class="hibernateMappingClass.User" />
+        <mapping class="hibernateMappingClass.Mark" />
+        <mapping class="hibernateMappingClass.Tag" />
+        <mapping class="hibernateMappingClass.TakedBook" />
     </session-factory>
 </hibernate-configuration>

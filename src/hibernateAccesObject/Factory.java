@@ -8,6 +8,11 @@ public class Factory {
 	private static ImageHAO imageHAO = null;
 	private static LibraryHAO libraryHAO = null;
 	private static UserHAO userHAO = null;
+	private static GenreHAO genreHAO = null;
+	private static GenreBookHAO genreBookHAO = null;
+	private static MarkHAO markHAO = null;
+	private static TagHAO tagHAO = null;
+	private static TakedBookHAO takedBookHAO = null;
 	
 	private static Factory instance = null;
 
@@ -38,7 +43,6 @@ public class Factory {
 		}
 		return commentHAO;
 	}
-	
 	public ImageHAO getImageHAO() {
 		if (imageHAO == null) {
 			imageHAO = new ImageHAO();
@@ -58,5 +62,39 @@ public class Factory {
 			userHAO = new UserHAO();
 		}
 		return userHAO;
+	}
+	
+	public TagHAO getTagHAO() {
+		if (tagHAO == null) {
+			tagHAO = new TagHAO();
+		}
+		return tagHAO;
+	}
+	
+	public TakedBookHAO getTakedBookHAO() {
+		if (takedBookHAO == null) {
+			takedBookHAO = new TakedBookHAO();
+		}
+		return takedBookHAO;
+	}
+		public GenreHAO getGenreHAO() {
+		if (genreHAO == null) {
+			genreHAO = new GenreHAO();
+		}
+		return genreHAO;
+	}
+	
+	public GenreBookHAO getGenreBookHAO() {
+		if (genreBookHAO == null) {
+			genreBookHAO = new GenreBookHAO();
+		}
+		return genreBookHAO;
+	}
+	
+	public MarkHAO getMarkHAO() {
+		if (markHAO == null) {
+			markHAO = new MarkHAO();
+		}
+		return markHAO;
 	}
 }
