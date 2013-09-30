@@ -5,6 +5,11 @@ public class Factory {
 	private static AuthorHAO authorHAO = null;
 	private static BookHAO bookHAO = null;
 	private static CommentHAO commentHAO = null;
+	private static GenreHAO genreHAO = null;
+	private static GenreBookHAO genreBookHAO = null;
+	private static MarkHAO markHAO = null;
+	private static TagHAO tagHAO = null;
+	private static TakedBookHAO takedBookHAO = null;
 	
 	private static Factory instance = null;
 
@@ -34,5 +39,40 @@ public class Factory {
 			commentHAO = new CommentHAO();
 		}
 		return commentHAO;
+	}
+	
+	public GenreHAO getGenreHAO() {
+		if (genreHAO == null) {
+			genreHAO = new GenreHAO();
+		}
+		return genreHAO;
+	}
+	
+	public GenreBookHAO getGenreBookHAO() {
+		if (genreBookHAO == null) {
+			genreBookHAO = new GenreBookHAO();
+		}
+		return genreBookHAO;
+	}
+	
+	public MarkHAO getMarkHAO() {
+		if (markHAO == null) {
+			markHAO = new MarkHAO();
+		}
+		return markHAO;
+	}
+	
+	public TagHAO getTagHAO() {
+		if (tagHAO == null) {
+			tagHAO = new TagHAO();
+		}
+		return tagHAO;
+	}
+	
+	public TakedBookHAO getTakedBookHAO() {
+		if (takedBookHAO == null) {
+			takedBookHAO = new TakedBookHAO();
+		}
+		return takedBookHAO;
 	}
 }

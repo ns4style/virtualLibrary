@@ -11,28 +11,30 @@ import org.hibernate.annotations.GenericGenerator;
 @Entity
 @Table(name = "authors")
 public class Author {
+	@Id
+	@GeneratedValue(generator = "increment")
+	@GenericGenerator(name = "increment", strategy = "increment")
+	@Column(name = "id")
 	private int id;
+
+	@Column(name = "fname")
 	private String firstName;
+
+	@Column(name = "lname")
 	private String lastName;
 
 	public Author() {
 		firstName = lastName = null;
 	}
 
-	@Id
-	@GeneratedValue(generator = "increment")
-	@GenericGenerator(name = "increment", strategy = "increment")
-	@Column(name = "id")
 	public int getId() {
 		return id;
 	}
 
-	@Column(name = "fname")
 	public String getFirstName() {
 		return firstName;
 	}
 
-	@Column(name = "lname")
 	public String getLastName() {
 		return lastName;
 	}

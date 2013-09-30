@@ -9,45 +9,43 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "books")
-public class Book {
+@Table(name = "genre_books")
+public class GenreBook {	
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
 	@Column(name = "id")
-	private int id;
-
-	@Column(name = "name")
-	private String name;
-
-	@Column(name = "count")
-	private int count;
-
-	public Book() {
-		name = null;
-	}
+	int id;	
+	
+	@Column(name = "id_book")
+	int idBook;
+	
+	@Column(name = "id_genre")
+	int idGenre;
+	
+	public GenreBook() { }
 
 	public int getId() {
 		return id;
 	}
-
-	public String getName() {
-		return name;
-	}
-
-	public int getCount() {
-		return count;
-	}
-
+	
 	public void setId(int id) {
 		this.id = id;
 	}
-
-	public void setName(String name) {
-		this.name = name;
+	
+	public int getIdBook() {
+		return idBook;
+	}
+	
+	public void setIdBook(int idBook) {
+		this.idBook = idBook;
 	}
 
-	public void setCount(int count) {
-		this.count = count;
+	public int getIdGenre() {
+		return idGenre;
+	}
+	
+	public void setIdGenre(int idGenre) {
+		this.idGenre = idGenre;
 	}
 }
