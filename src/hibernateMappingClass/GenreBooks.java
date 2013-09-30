@@ -18,8 +18,7 @@ public class GenreBooks {
 	int id_book;
 	int id_genre;
 	
-	//@ManyToOne
-	//@JoinTable(name = "genre", joinColumns = @JoinColumn(name = "id"))
+
 	public GenreBooks() { }
 	
 	@Id
@@ -34,7 +33,9 @@ public class GenreBooks {
 		this.id = id;
 	}
 	
-	@Column(name = "id_book")
+	@Column(name = "id_book")	
+	@ManyToOne
+	@JoinTable(name = "books", joinColumns = @JoinColumn(name = "id"))
 	public int getId_book() {
 		return id_book;
 	}
@@ -43,7 +44,9 @@ public class GenreBooks {
 		this.id_book = id_book;
 	}
 
-	@Column(name = "id_genre")
+	@Column(name = "id_genre")	
+	@ManyToOne
+	@JoinTable(name = "genre", joinColumns = @JoinColumn(name = "id"))
 	public int getId_genre() {
 		return id_genre;
 	}
