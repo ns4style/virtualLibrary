@@ -19,42 +19,36 @@ public class MapHandlers {
 	public static void admin(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/admin.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/admin.jsp");
 		rd.forward(request, response);
 	}
 	
 	public static void index(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/index.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/index.jsp");
 		rd.forward(request, response);	
 	}
 	
 	public static void books(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/books.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/books.jsp");
 		rd.forward(request, response);
 	}
 	
 	public static void register(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/register.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/register.jsp");
 		rd.forward(request, response);
 	}
 	
-	public static void login(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/login.jsp");
-		rd.forward(request, response);	
-	}
 	
 	public static void cabinet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/templates/cabinet.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/cabinet.jsp");
 		rd.forward(request, response);
 	}
 	

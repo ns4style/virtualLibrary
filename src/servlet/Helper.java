@@ -65,13 +65,7 @@ public class Helper{
 							}
 					);
 		
-		routing.put("/login", new UrlHandler() {
-								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
-										throws IOException, ServletException, NullPointerException {
-									MapHandlers.login(request, response);
-								}
-							}
-					);
+
 		routing.put("/signin", new UrlHandler() {
 								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
 										throws IOException, ServletException, NullPointerException {
