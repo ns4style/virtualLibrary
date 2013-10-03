@@ -1,6 +1,13 @@
 package servlet;
 
+import hibernateAccesObject.Factory;
+import hibernateMappingClass.Book;
+import hibernateMappingClass.Image;
+
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -32,6 +39,16 @@ public class MapHandlers {
 	
 	public static void books(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
+		//request.setAttribute(arg0, arg1);
+		List<Book> bookList = null;
+		try {
+			bookList = Factory.getInstance().getBookHAO().getAllBooks();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		request.setAttribute(arg0, arg1);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/books.jsp");
 		rd.forward(request, response);

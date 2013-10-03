@@ -7,20 +7,20 @@
 		<servlet-name>Library</servlet-name>
 		<servlet-class>servlet.LibraryServlet</servlet-class>
 	</servlet>
-
+	
 	<servlet-mapping>
-		<servlet-name>Library</servlet-name>
-		<url-pattern>/admin</url-pattern>
+   	<servlet-name>Library</servlet-name>
+		<url-pattern>/books/*</url-pattern>
 	</servlet-mapping>
-
+	
 	<servlet-mapping>
 		<servlet-name>Library</servlet-name>
 		<url-pattern>/index</url-pattern>
 	</servlet-mapping>
-
-  	<servlet-mapping>
-   	<servlet-name>Library</servlet-name>
-		<url-pattern>/books/*</url-pattern>
+	
+	<servlet-mapping>
+		<servlet-name>Library</servlet-name>
+		<url-pattern>/admin</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

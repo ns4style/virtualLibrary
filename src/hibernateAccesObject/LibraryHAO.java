@@ -1,6 +1,5 @@
 package hibernateAccesObject;
 
-import hibernateMappingClass.Image;
 import hibernateMappingClass.Library;
 import hibernateUtil.HibernateUtil;
 

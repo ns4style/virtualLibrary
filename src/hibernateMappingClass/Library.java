@@ -1,10 +1,15 @@
 package hibernateMappingClass;
 
+import java.util.Set;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 
 
@@ -21,7 +26,9 @@ public class Library {
 	private int idBook;
 	
 	@Column(name = "id_author")
-	private String idAuthor;
+	private int idAuthor;
+	
+	Library() {}
 
 	public int getId() {
 		return id;
@@ -39,11 +46,11 @@ public class Library {
 		this.idBook = idBook;
 	}
 
-	public String getIdAuthor() {
+	public int getIdAuthor() {
 		return idAuthor;
 	}
 
-	public void setIdAuthor(String idAuthor) {
+	public void setIdAuthor(int idAuthor) {
 		this.idAuthor = idAuthor;
 	}
 

@@ -11,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
 
 public class UserHAO {
 	
@@ -29,6 +30,26 @@ public class UserHAO {
 				session.close();
 			}
 		}
+	}
+	
+	public User getUserByMail(String mail) {
+		Session session = null;
+		List<User> users = new ArrayList<User>();
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			users = session.createCriteria(User.class).add(Expression.like("mail", mail)).list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		if (!users.isEmpty())
+			return users.get(0);
+		else
+			return null;
 	}
 
 	public void updateUser(User user) throws SQLException {

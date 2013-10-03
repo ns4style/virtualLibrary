@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 public class BookHAO {
@@ -68,7 +69,7 @@ public class BookHAO {
 		List<Book> books = new ArrayList<Book>();
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			books = session.createCriteria(Book.class).list();
+			books = session.createCriteria(Book.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

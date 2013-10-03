@@ -23,6 +23,7 @@ public class LibraryServlet extends HttpServlet {
 		 * страницы, если таковой существует (все определения обработчиков
 		 * находятся в MapHandlers)
 		 */
+		
 		try {
 			RoutingMap.routeToReqPage(request.getServletPath(), request,
 					response);
