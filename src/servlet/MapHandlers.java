@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,7 +26,11 @@ public class MapHandlers {
 	
 	public static void index(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
-		
+		IndexClass.init(request, response);
+		Map parameters=request.getParameterMap();
+		if (parameters.containsKey("action"))
+			if (request.getParameter("action").equals("reg"))
+				IndexClass.Registration(request, response);
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/index.jsp");
 		rd.forward(request, response);	
 	}
@@ -36,15 +41,7 @@ public class MapHandlers {
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/books.jsp");
 		rd.forward(request, response);
 	}
-	
-	public static void register(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/templates/register.jsp");
-		rd.forward(request, response);
-	}
-	
-	
 	public static void cabinet(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		

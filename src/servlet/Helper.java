@@ -49,14 +49,6 @@ public class Helper{
 							}
 					);
 		
-		routing.put("/register", new UrlHandler() {
-								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
-										throws IOException, ServletException, NullPointerException {
-									MapHandlers.register(request, response);
-								}
-							}
-					);
-		
 		routing.put("/cabinet", new UrlHandler() {
 								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
 										throws IOException, ServletException, NullPointerException {
@@ -75,4 +67,5 @@ public class Helper{
 					);
 		
 	}
+	
 }
