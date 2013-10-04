@@ -1,6 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="jstl"%>
+<%@ page import="hibernateMappingClass.Book"%>
+<%@ page import="hibernateMappingClass.Image"%>
+<%@ page import="java.util.*"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -16,54 +20,37 @@
 <body>
 
 
-	<div id="myCarousel1" class="carousel slide"
-		style="width: 400px; margin: 0 auto">
-		<div class="carousel-inner">
-			<div class="item active">
-				<img src="../images/games_1.jpg" alt="">
-				<div class="carousel-caption">
-					<h4>Голодные Игры</h4>
-					<p>Текст или описание слайда</p>
-				</div>
-			</div>
-			<div class="item">
-				<img src="../images/games_2.jpg" alt="">
-				<div class="carousel-caption">
-					<h4>Голодные Игры</h4>
-					<p>Текст или описание слайда 2</p>
-				</div>
-			</div>
-		</div>
-		<a class="left carousel-control" href="#myCarousel1" data-slide="prev">&lsaquo;</a>
-		<a class="right carousel-control" href="#myCarousel1"
-			data-slide="next">&rsaquo;</a>
-	</div>
-
-	<div id="myCarousel2" class="carousel slide"
-		style="width: 400px; margin: 0 auto">
-		<div class="carousel-inner">
-			<div class="item active">
-				<img src="../images/games_1.jpg" alt="">
-				<div class="carousel-caption">
-					<h4>Голодные Игры</h4>
-					<p>Текст или описание слайда</p>
-				</div>
-			</div>
-			<div class="item">
-				<img src="../images/games_2.jpg" alt="">
-				<div class="carousel-caption">
-					<h4>Голодные Игры</h4>
-					<p>Текст или описание слайда 2</p>
-				</div>
-			</div>
-		</div>
-		<a class="left carousel-control" href="#myCarousel2" data-slide="prev">&lsaquo;</a>
-		<a class="right carousel-control" href="#myCarousel2"
-			data-slide="next">&rsaquo;</a>
-	</div>
+	<%
+		List<Book> books = null;
+		books = (List)request.getAttribute("books");
+		int i = 1;
+		Iterator it = books.iterator();
+		while(it.hasNext()) {
+			
+			Book book = (Book)it.next();
+			System.out.println(book.getName() + " ");
+			
+			int j = 0;
+			Iterator it_inner = book.getImages().iterator();
+			
+			while(it_inner.hasNext()) {
+				
+				String item = "item";
+				if (j == 0) item = "active_item";
+				System.out.print(" " + item + " ");
+				
+				Image image = (Image)it_inner.next();
+				System.out.print(image.getPath() + " ");
+				
+				j++;
+			}
+			System.out.println("");
+			i++;
+		}
+	%>
 
 	<script type="text/javascript">
-		$('.carousel').carousel()
+		$('div[class^=carousel]').carousel()
 	</script>
 </body>
 </html>

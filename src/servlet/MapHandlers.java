@@ -40,15 +40,14 @@ public class MapHandlers {
 	public static void books(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
-		//request.setAttribute(arg0, arg1);
-		List<Book> bookList = null;
+		List<Book> books = null;
 		try {
-			bookList = Factory.getInstance().getBookHAO().getAllBooks();
+			books = Factory.getInstance().getBookHAO().getAllBooks();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		request.setAttribute(arg0, arg1);
+		request.setAttribute("books", books);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/books.jsp");
 		rd.forward(request, response);
