@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+<<<<<<< HEAD
+encoding//WebContent/templates/books.jsp=UTF-8
+=======
+encoding//WebContent/templates/index.jsp=UTF-8
+>>>>>>> art

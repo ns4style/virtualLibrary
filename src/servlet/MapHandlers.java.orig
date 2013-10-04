@@ -5,9 +5,13 @@ import hibernateMappingClass.Book;
 import hibernateMappingClass.Image;
 
 import java.io.IOException;
-import java.util.Map;
+<<<<<<< HEAD
+import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
+=======
+import java.util.Map;
+>>>>>>> art
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
