@@ -2,11 +2,9 @@ package servlet;
 
 import hibernateAccesObject.Factory;
 import hibernateMappingClass.Book;
-import hibernateMappingClass.Image;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,10 +31,21 @@ public class MapHandlers {
 
 	public static void index(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		RequestDispatcher rd = request
-				.getRequestDispatcher("/templates/index.jsp");
+		IndexClass.init(request, response);
+		Map parameters=request.getParameterMap();
+		if (parameters.containsKey("action"))
+			if (request.getParameter("action").equals("reg")){
+				IndexClass.Registration(request, response);
+				return;
+			}
+		if (parameters.containsKey("action"))
+			if (request.getParameter("action").equals("prereg")){
+				IndexClass.preRegistration(request, response);
+				return;
+				}
 		rd.forward(request, response);
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/index.jsp");
+		rd.forward(request, response);	
 	}
 
 	public static void books(HttpServletRequest request,
@@ -47,7 +56,7 @@ public class MapHandlers {
 		try {
 			books = Factory.getInstance().getBookHAO().getAllBooks();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch blockS
 			e.printStackTrace();
 		}
 
@@ -76,7 +85,7 @@ public class MapHandlers {
 				.getRequestDispatcher("/templates/books.jsp");
 		rd.forward(request, response);
 	}
-
+		
 	public static void register(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 
