@@ -63,7 +63,6 @@ public class MapHandlers {
 		}
 
 		request.setAttribute("books", books);
-
 		RequestDispatcher rd = request
 				.getRequestDispatcher("/templates/books.jsp");
 		rd.forward(request, response);
@@ -79,7 +78,6 @@ public class MapHandlers {
 
 	public static void cabinet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
 		RequestDispatcher rd = request
 				.getRequestDispatcher("/templates/cabinet.jsp");
 		rd.forward(request, response);
