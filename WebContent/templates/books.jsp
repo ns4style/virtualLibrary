@@ -39,6 +39,7 @@
 				array.push("${image.getPath()}");
 			</script>
 		</c:forEach>
+		
 
 		<script type="text/javascript">
 			var li = document.createElement('li');
