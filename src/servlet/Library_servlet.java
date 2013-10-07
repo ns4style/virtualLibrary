@@ -2,6 +2,7 @@ package servlet;
 
 import java.io.IOException;
 
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +13,14 @@ public class Library_servlet extends HttpServlet {
 
 	public Library_servlet() {
 		super();
+	}
+	
+	/*
+	 * Устанавливаем путь до файла конфигурации JAAS, к сожалению путь придется устанавливать абсолютным
+	 */
+	public void init(ServletConfig config) throws ServletException {
+		System.setProperty("java.security.auth.login.config", 
+							"/home/g33k/c0d3/Java/GIT/number2/mumber2/jaas.config");
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
