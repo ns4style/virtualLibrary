@@ -33,13 +33,13 @@
 		<realm-name>Own Realm</realm-name>
 		<form-login-config>
 			<form-login-page>/login.jsp</form-login-page>
-			<form-error-page>/login_error.jsp</form-error-page>
+			<form-error-page>/templates/login_error.jsp</form-error-page>
 		</form-login-config>
 	</login-config>
 	
 	<error-page>
 		<error-code>403</error-code>
-		<location>/access_denied.jsp</location>
+		<location>/templates/access_denied.jsp</location>
 	</error-page>
  
 	<servlet-mapping>
