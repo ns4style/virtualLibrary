@@ -2,12 +2,11 @@ package servlet;
 
 import hibernateAccesObject.Factory;
 import hibernateMappingClass.Book;
-import hibernateMappingClass.Image;
 
 import java.io.IOException;
-import java.util.Map;
-import java.util.Iterator;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -35,8 +34,15 @@ public class MapHandlers {
 		IndexClass.init(request, response);
 		Map parameters=request.getParameterMap();
 		if (parameters.containsKey("action"))
-			if (request.getParameter("action").equals("reg"))
+			if (request.getParameter("action").equals("reg")){
 				IndexClass.Registration(request, response);
+				return;
+			}
+		if (parameters.containsKey("action"))
+			if (request.getParameter("action").equals("prereg")){
+				IndexClass.preRegistration(request, response);
+				return;
+				}
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/index.jsp");
 		rd.forward(request, response);	
 	}
@@ -48,7 +54,7 @@ public class MapHandlers {
 		try {
 			books = Factory.getInstance().getBookHAO().getAllBooks();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+			// TODO Auto-generated catch blockS
 			e.printStackTrace();
 		}
 		request.setAttribute("books", books);

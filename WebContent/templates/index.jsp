@@ -5,6 +5,8 @@
 <head>
 <script src="bootstrap/js/jquery.js"></script>
 <script src="bootstrap/js/bootstrap.js"></script>
+<script src="bootstrap/js/jquery-reg.js"></script>
+<script src="bootstrap/js/md5.js"></script>
 <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Insert title here</title>
@@ -17,13 +19,12 @@ html, body {
     width: 100%;
     margin: 0px;
     padding: 0px;
-    text-align: center;
   }
   .page {
     min-height: 100%;
     height: auto !important;
     height: 100%;
-     background-color: #9d261d
+    background-color: #9d261d;
   }
   .wrap {
     padding-top :120px;
@@ -34,7 +35,6 @@ html, body {
     margin-top: -100px;
     background-color: #c8c8c8;
   };
-  
 </style>
 <div class="page">
   <div class="wrap">
@@ -75,37 +75,55 @@ html, body {
 		<h2>Registration</h2>
 	</div>
 	<div class="modal-body">
-		<form action=index method=post>
 		<div>
 			<input name="action" class="span2 hide" type="text" value="reg">
 		</div>
-		<div>
-			<div><p> Enter your Email:</p></div>
+		<div id="email">
+			<div><p>Enter your Email:</p></div>
 			<input name="email" class="span2" type="text" placeholder="Email">
 		</div>
-		<div>
+		<div id="fname">
 			<div><p> Enter your first name:</p></div>
 			<input name="fname" class="span2" type="text" placeholder="">
 		</div>
-		<div>
+		<div id="lname">
 			<div><p> Enter your second name:</p></div>
 			<input name="lname" class="span2" type="text" placeholder="">
 		</div>
-		<div>
+		<div id="pass">
 			<div><p> Enter your password:</p></div>
 			<input name="pass" class="span2" type="password" placeholder="Password">
 		</div>
-		<div>
+		<div id="descr">
 			<div><p> Enter something about yourself:</p></div>
-			<input name="description" class="span2" type="text" placeholder="">
+			<input name="descr" class="span2" type="text" placeholder="">
 		</div>
 		<button data-dismiss="modal" aria-hidden="true" class="btn btn-warning">Back</button>
-		<button type="submit" class="btn btn-success">Register</button>
-		</form>
+		<button name="reg" class="btn btn-success">Register</button>
 	</div>
 </div>
 
+<div id="regComplete" class="modal hide fade">
+	<div class="modal-header">
+		<h2>Status</h2>
+	</div>
+	<div class="modal-body">
+		Registration Complete.
+	</div>
+</div>
+
+<div id="regFailed" class="modal hide fade">
+	<div class="modal-header">
+		<h2>Status</h2>
+	</div>
+	<div class="modal-body">
+		Registration Failed.
+	</div>
+</div>
+
+<div class="text-center">
 <h1>News:</h1>
+</div>
 </div>
 
 </div>
