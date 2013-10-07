@@ -8,11 +8,7 @@
 </head>
 <body>
 
-<form method="POST" action="j_security_check">
-<p>User name : <input type="text" name="j_username" /></p>
-<p>User pass : <input type="password" name="j_password" /></p>
-<input type="submit" value="Login">
-</form>
+Error in LOGIN PROCESS!
 
 </body>
 </html>
