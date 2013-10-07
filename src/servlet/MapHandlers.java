@@ -50,28 +50,8 @@ public class MapHandlers {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		// получение двумерного массива, где
-		// [i][0] - имя книги
-		// [i][j] - пути картинок для книг
-		String books_pathArray[][] = new String[books.size()][];
-
-		for (int i = 0; i < books.size(); i++) {
-			books_pathArray[i] = new String[books.get(i).getImages().size() + 1];
-			books_pathArray[i][0] = books.get(i).getName();
-
-			Iterator it = books.get(i).getImages().iterator();
-			int j = 1;
-			while (it.hasNext()) {
-				Image image = (Image) it.next();
-				books_pathArray[i][j] = image.getPath();
-				j++;
-			}
-		}
 		
-		//request.setAttribute("books_pathArray", books_pathArray);
 		request.setAttribute("books", books);
-
 		RequestDispatcher rd = request
 				.getRequestDispatcher("/templates/books.jsp");
 		rd.forward(request, response);
