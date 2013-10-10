@@ -48,7 +48,7 @@
 	</div>
 
 	<!-- Button -->
-	<div class="control-group" style="margin-left: 8%; background-color: #9d261d">
+	<div class="control-group" style="margin-left: 8%;">
   		<label class="control-label" for="singlebutton"></label>
   			<div class="controls">
     			<button id="singlebutton" name="singlebutton" class="btn btn-primary">Sign in</button>
