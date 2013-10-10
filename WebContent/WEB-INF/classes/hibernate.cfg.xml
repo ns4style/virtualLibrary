@@ -22,5 +22,6 @@
         <mapping class="hibernateMappingClass.Mark" />
         <mapping class="hibernateMappingClass.Tag" />
         <mapping class="hibernateMappingClass.TakedBook" />
+        <mapping class="hibernateMappingClass.News" />
     </session-factory>
 </hibernate-configuration>

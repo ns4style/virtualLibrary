@@ -1,10 +1,14 @@
 package servlet;
 
 import hibernateAccesObject.Factory;
+import hibernateMappingClass.News;
 import hibernateMappingClass.User;
 
 import java.io.IOException;
 import java.io.Writer;
+import java.sql.SQLException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -14,8 +18,10 @@ import javax.servlet.http.HttpServletResponse;
 
 public class IndexClass {
 	
-	public static void init(HttpServletRequest request, HttpServletResponse response){
-		request.setAttribute("regSuccesfull", "no");
+	public static void init(HttpServletRequest request, HttpServletResponse response) throws SQLException{
+		List<News> newsList = Factory.getInstance().getNewsHAO().getAllNews();
+		Collections.reverse(newsList);
+		request.setAttribute("news", newsList);
 	}
 	
 	public static void Registration(HttpServletRequest request, HttpServletResponse response) throws IOException{
@@ -61,6 +67,7 @@ public class IndexClass {
 		
 		Writer wr=response.getWriter();
 		wr.write("true");
+		wr.close();
 		return;
 	}
 	
@@ -74,7 +81,22 @@ public class IndexClass {
 		Writer wr=response.getWriter();
 		if (newUser != null) {
 			wr.write("true");
+			wr.close();
 		}
 		
+	}
+	
+	public static void aboutUsers(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		Writer wr = response.getWriter();
+		wr.write(Factory.getInstance().getUserHAO().countUsers().toString());
+		wr.close();
+		return;
+	}
+	
+	public static void aboutBooks(HttpServletRequest request, HttpServletResponse response) throws IOException{
+		Writer wr = response.getWriter();
+		wr.write(Factory.getInstance().getBookHAO().countBooks().toString());
+		wr.close();
+		return;
 	}
 }

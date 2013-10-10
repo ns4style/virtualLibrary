@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public class RoutingMap {
 		}
 		
 		public static void routeToReqPage(String reqPage, HttpServletRequest request, HttpServletResponse response)
-				throws NullPointerException, IOException, ServletException {
+				throws NullPointerException, IOException, ServletException, SQLException {
 			
 			routing.get(reqPage).get_handler(request, response);
 		}

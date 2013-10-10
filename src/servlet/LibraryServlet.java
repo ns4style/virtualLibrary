@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -24,10 +26,24 @@ public class LibraryServlet extends HttpServlet {
 		 */
 		
 		try {
-			RoutingMap.routeToReqPage(request.getServletPath(), request,
-					response);
+			try {
+				RoutingMap.routeToReqPage(request.getServletPath(), request,
+						response);
+			} catch (SQLException e) {
+				Writer wr=response.getWriter();
+				wr.write("Error");
+				wr.close();
+				System.out.println(e.getStackTrace());
+			}
 		} catch (NullPointerException ex) {
-			MapHandlers.index(request, response);
+			try {
+				MapHandlers.index(request, response);
+			} catch (SQLException e) {
+				Writer wr=response.getWriter();
+				wr.write("Error");
+				wr.close();
+				System.out.println(e.getStackTrace());
+			}
 		}
 	}
 }

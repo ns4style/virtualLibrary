@@ -47,10 +47,10 @@
 			carousel.setAttribute('class', 'carousel slide');
 			carousel.setAttribute('id', 'myCarousel${i_book.index}');
 
-			carousel.innerHTML = '\
+			carousel.innerHTML = ' \
 			<div class="carousel-inner"> \
 				<div class="active item"> \
-					<img src="' + array[0] +'"> \
+					<img src="' + array[0] + '"> \
 					\
 					<div class="carousel-caption"> \
 						<h4>${book.getName()}</h4> \

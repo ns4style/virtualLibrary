@@ -1,6 +1,6 @@
 package hibernateAccesObject;
 
-import hibernateMappingClass.Book;
+import hibernateMappingClass.News;
 import hibernateMappingClass.User;
 import hibernateUtil.HibernateUtil;
 
@@ -10,85 +10,16 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
-import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Expression;
 
-public class BookHAO {
-	public void addBook(Book book) {
+public class NewsHAO {
+	public void addNews(News news) {
 		Session session = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			session.beginTransaction();
-			session.save(book);
-			session.getTransaction().commit();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
-					JOptionPane.OK_OPTION);
-		} finally {
-			if (session != null && session.isOpen()) {
-				session.close();
-			}
-		}
-	}
-
-	public void updateBook(Book book) throws SQLException {
-		Session session = null;
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-			session.update(book);
-			session.getTransaction().commit();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
-					JOptionPane.OK_OPTION);
-		} finally {
-			if (session != null && session.isOpen()) {
-				session.close();
-			}
-		}
-	}
-
-	public Book getBooktById(int id) throws SQLException {
-		Session session = null;
-		Book book = null;
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			book = (Book) session.load(Book.class, id);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
-					JOptionPane.OK_OPTION);
-		} finally {
-			if (session != null && session.isOpen()) {
-				session.close();
-			}
-		}
-		return book;
-	}
-
-	public List<Book> getAllBooks() throws SQLException {
-		Session session = null;
-		List<Book> books = new ArrayList<Book>();
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			books = session.createCriteria(Book.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
-					JOptionPane.OK_OPTION);
-		} finally {
-			if (session != null && session.isOpen()) {
-				session.close();
-			}
-		}
-		return books;
-	}
-
-	public void deleteBook(Book book) throws SQLException {
-		Session session = null;
-		try {
-			session = HibernateUtil.getSessionFactory().openSession();
-			session.beginTransaction();
-			session.delete(book);
+			session.save(news);
 			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
@@ -100,12 +31,14 @@ public class BookHAO {
 		}
 	}
 	
-	public Long countBooks(){
+
+	public void updateNews(News news) throws SQLException {
 		Session session = null;
-		Long count = new Long(-1);
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			count = (Long) session.createCriteria(Book.class).setProjection(Projections.rowCount()).uniqueResult();
+			session.beginTransaction();
+			session.update(news);
+			session.getTransaction().commit();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -114,6 +47,40 @@ public class BookHAO {
 				session.close();
 			}
 		}
-		return count;
+	}
+
+
+	public List<News> getAllNews() throws SQLException {
+		Session session = null;
+		List<News> news = new ArrayList<News>();
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			news = session.createCriteria(News.class).list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return news;
+	}
+
+	public void deleteNews(News news) throws SQLException {
+		Session session = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			session.beginTransaction();
+			session.delete(news);
+			session.getTransaction().commit();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
 	}
 }
