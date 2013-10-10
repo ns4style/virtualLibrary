@@ -7,6 +7,8 @@ $(document).ready(function () {
 	$("input[name*='descr']").bind("change",descrCheck);
 	$("button[name*='reg']").bind("click",register);
 	$('#register').on('hidden',hideModal);
+	$('#about').on('show',showAbout);
+	$('#about').on('hidden',hideAbout);
 	var flag1=false;
 	var flag2=false;
 	var flag3=false;
@@ -143,5 +145,28 @@ $(document).ready(function () {
 		var e;
 		flagReg=true;
 		emailCheck(e);
+	};
+	
+	function showAbout(e){
+		$.post("index?action=aboutUsers",ajaxAboutUsers);
+	};
+	
+	function ajaxAboutUsers(data){
+		var newElem = "<div><h4>Total users: "+data+"</h4></div>";
+		$('#about-body').append(newElem);
+		$.post("index?action=aboutBooks",ajaxAboutBooks);
+	};
+	
+	function ajaxAboutBooks (data){
+		var newElem = "<div><h4>Total books: "+data+"</h4></div>";
+		$('#about-body').append(newElem);
+		newElem = "<div><h4>Thx for viziting our site</h4></div>";
+		$('#about-body').append(newElem)
+		newElem='<div><button data-dismiss="modal" aria-hidden="true" class="btn btn-success">Back</button></div>';
+		$('#about-body').append(newElem)
+	};
+
+	function hideAbout(e){
+		$('#about-body').empty();
 	};
 });

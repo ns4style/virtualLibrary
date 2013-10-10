@@ -1,6 +1,8 @@
 package servlet;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.sql.SQLException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -17,11 +19,12 @@ public class LibraryServlet extends HttpServlet {
 	
 	public void init(ServletConfig config) throws ServletException {
 		System.setProperty("java.security.auth.login.config", 
-							"/home/g33k/c0d3/Java/GIT/number2/mumber2/jaas.config");
+							"C:/Users/Artem/workspace/Library/jaas.config");
 	}	
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		
 		/*
 		 * RoutingMap по умолчанию инициализируется при помощи метода
 		 * Helper.mapFill routeToReqPage вызывает обработчик для запрашиваемой
@@ -30,10 +33,17 @@ public class LibraryServlet extends HttpServlet {
 		 */
 		
 		try {
-			RoutingMap.routeToReqPage(request.getServletPath(), request,
-					response);
+			try {
+				RoutingMap.routeToReqPage(request.getServletPath(), request,
+						response);
+			} catch (SQLException e) {
+				Writer wr=response.getWriter();
+				wr.write("Error");
+				wr.close();
+				System.out.println(e.getStackTrace());
+			}
 		} catch (NullPointerException ex) {
-			MapHandlers.index(request, response);
+				//MapHandlers.index(request, response);
 		}
 	}
 }

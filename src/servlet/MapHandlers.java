@@ -22,15 +22,20 @@ import javax.servlet.http.HttpServletResponse;
 public class MapHandlers {
 
 	public static void admin(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
-
-		RequestDispatcher rd = request
-				.getRequestDispatcher("/templates/admin.jsp");
+			HttpServletResponse response) throws ServletException, IOException, SQLException {
+		Map parameters = request.getParameterMap();
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showListGenres")) {
+				AdminClass.showListGenres(request, response);
+				return;
+			}
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/admin.jsp");
 		rd.forward(request, response);
 	}
 
 	public static void index(HttpServletRequest request,
-			HttpServletResponse response) throws ServletException, IOException {
+			HttpServletResponse response) throws ServletException, IOException, SQLException {
 		IndexClass.init(request, response);
 		Map parameters = request.getParameterMap();
 		if (parameters.containsKey("action")) {
@@ -45,18 +50,30 @@ public class MapHandlers {
 				return;
 			}
 		}
-		RequestDispatcher rd = request
-				.getRequestDispatcher("/templates/index.jsp");
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("aboutUsers")) {
+				IndexClass.aboutUsers(request, response);
+				return;
+			}
+		}
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("aboutBooks")) {
+				IndexClass.aboutBooks(request, response);
+				return;
+			}
+		}
+		RequestDispatcher rd = request.getRequestDispatcher("/templates/index.jsp");
 		rd.forward(request, response);
 	}
 
 	public static void books(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		// Получение списка книг из базы
+		
+		// Получение рандомных книг для слайдера
 		List<Book> books = null;
 		try {
-			books = Factory.getInstance().getBookHAO().getAllBooks();
+			books = Factory.getInstance().getBookHAO().getRandomBooks(11);
+			System.out.print(Factory.getInstance().getBookHAO().getBooksCount());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch blockS
 			e.printStackTrace();
