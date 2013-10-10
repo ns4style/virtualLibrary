@@ -13,6 +13,7 @@ public class Factory {
 	private static MarkHAO markHAO = null;
 	private static TagHAO tagHAO = null;
 	private static TakedBookHAO takedBookHAO = null;
+	private static NewsHAO newsHAO = null;
 	
 	private static Factory instance = null;
 
@@ -96,5 +97,12 @@ public class Factory {
 			markHAO = new MarkHAO();
 		}
 		return markHAO;
+	}
+	
+	public NewsHAO getNewsHAO() {
+		if (newsHAO == null) {
+			newsHAO = new NewsHAO();
+		}
+		return newsHAO;
 	}
 }
