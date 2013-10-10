@@ -1,6 +1,11 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.security.auth.Subject;
@@ -14,10 +19,20 @@ import javax.security.auth.spi.LoginModule;
 
 public class JaasLoginModule implements LoginModule {
 
-	private String name = null;
+	private String mail = null;
 	private String pass = null;
+	private int    priv = 0;
+	
 	private Subject subject = null;
 	private CallbackHandler callbackHandler = null;
+	
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	static final String DB_URL = "jdbc:mysql://10.24.1.172:3306/test";
+	
+	static final String USER = "user1";
+	static final String PASS = "c$awth3b33st";
+	
+	static final String SQL = "select privileged, hash_pass from users where mail=? limit 1";
 	
 	@Override
 	public boolean abort() throws LoginException {
@@ -27,9 +42,11 @@ public class JaasLoginModule implements LoginModule {
 	@Override
 	public boolean commit() throws LoginException {
 		
-		UserNamePrincipal usrPr	= new UserNamePrincipal(this.name);
+		String group = this.priv == 1 ? "admin" : "user";
+		
+		UserNamePrincipal usrPr	= new UserNamePrincipal(this.mail);
 		subject.getPrincipals().add(usrPr);
-		UserGroupPrincipal usrGr = new UserGroupPrincipal(this.pass);
+		UserGroupPrincipal usrGr = new UserGroupPrincipal(group);
 		subject.getPrincipals().add(usrGr);
 		
 		return true;
@@ -57,10 +74,32 @@ public class JaasLoginModule implements LoginModule {
 			e.printStackTrace();
 		}
 				
-		this.name = nameCallback.getName();
+		this.mail = nameCallback.getName();
 		this.pass = String.valueOf(passwordCallback.getPassword());
 		
-		return true;
+		try {
+			Class.forName(JDBC_DRIVER);
+			Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setString(1, this.mail);
+			ResultSet rs = pstmt.executeQuery();
+			
+			if ( !rs.next() ) {
+				throw new LoginException();
+			}
+			
+			if ( this.pass.equals(rs.getString("hash_pass")) ) {
+				this.priv = rs.getInt("privileged");
+				return true;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		throw new LoginException();
 	}
 
 	@Override
