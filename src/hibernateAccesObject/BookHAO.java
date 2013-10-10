@@ -9,7 +9,6 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 
 public class BookHAO {
@@ -64,12 +63,14 @@ public class BookHAO {
 		return book;
 	}
 
-	public List<Book> getAllBooks() throws SQLException {
+	public List<Book> getBooksSelection(int first, int count)
+			throws SQLException {
 		Session session = null;
-		List<Book> books = new ArrayList<Book>();
+		List<Book> books = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			books = session.createCriteria(Book.class).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
+			books = session.createQuery("from Book").setFirstResult(first)
+					.setMaxResults(count).list();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -79,6 +80,58 @@ public class BookHAO {
 			}
 		}
 		return books;
+	}
+
+	public List<Book> getRandomBooks(int count) throws SQLException {
+		Session session = null;
+		List<Book> books = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			books = session.createQuery("from Book order by rand()")
+					.setMaxResults(count).list(); // hql сам делает join
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return books;
+	}
+
+	public List<Book> getAllBooks() throws SQLException {
+		Session session = null;
+		List<Book> books = new ArrayList<Book>();
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			books = session.createQuery("from Book").list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return books;
+	}
+
+	public Long getBooksCount() throws SQLException {
+		Session session = null;
+		Long val = (long) 0;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			val = (Long)(session.createQuery("select count(*) from Book").iterate().next());
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return val;
 	}
 
 	public void deleteBook(Book book) throws SQLException {

@@ -35,6 +35,7 @@ html,body {
 	height: auto !important;
 	height: 100%;
 	background-color: #9d261d;
+	background-image: url("../images/background3.jpg");
 }
 
 .wrap {
@@ -49,18 +50,36 @@ html,body {
 }
 
 .carousel-caption {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 0px;
-  background: #333333;
-  background: rgba(0, 0, 0, 0.75);
+	position: absolute;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	padding: 0px;
+	background: #333333;
+	background: rgba(0, 0, 0, 0.75);
 }
+
 .carousel-caption h4 {
-	font-family: Helvetica, sans-serif; 
-	font-size: 12px;
+	font-family: Helvetica, sans-serif;
+	font-size: 11px;
 	text-align: center;
+}
+
+.mycarousel {
+	margin-top: 20px;
+	margin-bottom: 20px; margin-left : auto;
+	margin-right: auto;
+	margin-left: auto;
+}
+
+.img-polaroid {
+	padding: 4px;
+	background-color: #000;
+	border: 1px solid #000;
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 ;
 </style>
@@ -94,9 +113,9 @@ html,body {
 
 		var ul = document.createElement('ul');
 		div.appendChild(ul);
-		
+
 		$("#wrap").append(div);
-		
+
 		var test = document.getElementById('test');
 		test.insertAdjacentElement("afterEnd", div);
 
@@ -126,7 +145,7 @@ html,body {
 			carousel.innerHTML = ' \
                             <div class="carousel-inner"> \
                                     <div class="active item"> \
-                                            <img src="' + array[0] + '" width="157" height="100"> \
+                                            <img src="' + array[0] + '" width="110" height="70" class="img-polaroid"> \
                                             \
                                             <div class="carousel-caption"> \
                                                     <h4>${book.getName()}</h4> \
@@ -134,7 +153,7 @@ html,body {
                                     </div> \
                                     \
                                     <div class="item"> \
-                                            <img src="' + array[1] +'" width="157" height="100"> \
+                                            <img src="' + array[1] +'" width="110" height="70" class="img-polaroid"> \
                                             \
                                             <div class="carousel-caption"> \
                                                     <h4>${book.getName()}</h4> \
@@ -142,7 +161,7 @@ html,body {
                                     </div> \
                                     \
                                     <div class="item"> \
-                                            <img src="' + array[2] +'" width="157" height="100"> \
+                                            <img src="' + array[2] +'" width="110" height="70" class="img-polaroid"> \
                                             \
                                             <div class="carousel-caption"> \
                                                     <h4>${book.getName()}</h4> \
@@ -167,10 +186,15 @@ html,body {
 				auto : 3000,
 				speed : 1000,
 				circular : true,
-				visible : 4
+				visible : 7
 			});
 		});
+		
+		
 	</script>
+	
+	
+	
 </body>
 </html>
 

@@ -52,11 +52,12 @@ public class MapHandlers {
 
 	public static void books(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-
-		// Получение списка книг из базы
+		
+		// Получение рандомных книг для слайдера
 		List<Book> books = null;
 		try {
-			books = Factory.getInstance().getBookHAO().getAllBooks();
+			books = Factory.getInstance().getBookHAO().getRandomBooks(11);
+			System.out.print(Factory.getInstance().getBookHAO().getBooksCount());
 		} catch (SQLException e) {
 			// TODO Auto-generated catch blockS
 			e.printStackTrace();
