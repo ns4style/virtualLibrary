@@ -10,20 +10,20 @@
 	href="bootstrap/css/bootstrap.css" />
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<title>Sign in</title>
+<title>Access Denied!</title>
 
 <style>
 .page {
 	background-image: url("images/background3.jpg");
 }
-
-.header {
-	
-}
 </style>
 
 </head>
 <body class=page>
-
+<% if (request.getUserPrincipal() != null) { %>
+		<%= request.getUserPrincipal().getName() %>
+<%	} else { %>
+	unknown
+<% } %>
 </body>
 </html>
