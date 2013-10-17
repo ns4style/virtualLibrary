@@ -15,9 +15,11 @@
 	src="../bootstrap/js/jcarousellite_1.0.1.js"></script>
 <script type="text/javascript"
 	src="../bootstrap/js/jcarousellite_1.0.1.min.js"></script>
+<script type="text/javascript" src="../bootstrap/js/bookshelper.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	href="../bootstrap/css/bootstrap.css" />
+
 </head>
 
 <body>
@@ -43,12 +45,6 @@ html,body {
 	padding-bottom: 120px;
 }
 
-.footer {
-	height: 100px;
-	margin-top: -100px;
-	background-color: #c8c8c8;
-}
-
 .carousel-caption {
 	position: absolute;
 	left: 0;
@@ -65,11 +61,11 @@ html,body {
 	text-align: center;
 }
 
-.mycarousel {
+.randomBooksJCarouselLite {
 	margin-top: 20px;
-	margin-bottom: 20px; margin-left : auto;
-	margin-right: auto;
+	margin-bottom: 20px;
 	margin-left: auto;
+	margin-right: auto;
 }
 
 .img-polaroid {
@@ -80,6 +76,11 @@ html,body {
 	-webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	-moz-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.jcarousel_img {
+	margin-left: 10px;
+	margin-right: 10px;
 }
 ;
 </style>
@@ -103,98 +104,135 @@ html,body {
 					</div>
 				</div>
 			</div>
-			<!-- carousel -->
+
+			<!-- random carousel -->
+			<div class="randomBooksJCarouselLite">
+				<ul id="ul_randomBooksJCarouselLite">
+					<c:forEach var="book" items="${books}" varStatus="i_book">
+
+						<script type="text/javascript">
+							var book_array = new Array();
+							book_array.push("${book.getId()}");
+							book_array.push("${i_book.index}");
+							book_array.push("${book.getName()}");
+						</script>
+
+						<c:forEach var="image" items="${book.getImages()}">
+
+							<script type="text/javascript">
+								book_array.push("${image.getPath()}");
+							</script>
+
+						</c:forEach>
+
+						<script type="text/javascript">
+							$("#ul_randomBooksJCarouselLite").append(
+									createBootstrapCarousel(book_array));
+						</script>
+
+					</c:forEach>
+				</ul>
+			</div>
+
+			<div class="scrollMore" id="scrollMore">
+				<script type="text/javascript">
+					addPageButtonCollection("#scrollMore", ${pageCount});
+				</script>
+
+				<img src="../images/table.png" width="1000"></img>
+
+				<div class="jCarouselLite" id="jCarouselLite">
+					<ul id="scrollMoreUl">
+					</ul>
+				</div>
+			</div>
 		</div>
-	</div>
 
-	<script type="text/javascript">
-		var div = document.createElement('div');
-		div.setAttribute('class', 'mycarousel');
-
-		var ul = document.createElement('ul');
-		div.appendChild(ul);
-
-		$("#wrap").append(div);
-
-		var test = document.getElementById('test');
-		test.insertAdjacentElement("afterEnd", div);
-
-		var test1 = document.getElementById('test1');
-		alert(test1.innerHTML);
-	</script>
-
-	<c:forEach var="book" items="${books}" varStatus="i_book">
+		<div id="book_modal" class="modal hide fade">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">&times;</button>
+				<h3>Modal header</h3>
+			</div>
+			<div class="modal-body">
+				<p>some content</p>
+				<input type="text" name="bookId" id="bookId" value="" />
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn">Close</a> <a href="#"
+					class="btn btn-primary">Save changes</a>
+			</div>
+		</div>
 
 		<script type="text/javascript">
-			var array = new Array();
-		</script>
+		
+		var alreadyDownloadPages = new Array();
+		$.post(window.location + "?page=0" + "&adp=" + alreadyDownloadPages, ajaxCheck);
+		
 
-		<c:forEach var="image" items="${book.getImages()}">
-			<script type="text/javascript">
-				array.push("${image.getPath()}");
-			</script>
-		</c:forEach>
-
-		<script type="text/javascript">
-			var li = document.createElement('li');
-
-			var carousel = document.createElement('div');
-			carousel.setAttribute('class', 'carousel slide');
-			carousel.setAttribute('id', 'myCarousel${i_book.index}');
-
-			carousel.innerHTML = ' \
-                            <div class="carousel-inner"> \
-                                    <div class="active item"> \
-                                            <img src="' + array[0] + '" width="110" height="70" class="img-polaroid"> \
-                                            \
-                                            <div class="carousel-caption"> \
-                                                    <h4>${book.getName()}</h4> \
-                                            </div> \
-                                    </div> \
-                                    \
-                                    <div class="item"> \
-                                            <img src="' + array[1] +'" width="110" height="70" class="img-polaroid"> \
-                                            \
-                                            <div class="carousel-caption"> \
-                                                    <h4>${book.getName()}</h4> \
-                                            </div> \
-                                    </div> \
-                                    \
-                                    <div class="item"> \
-                                            <img src="' + array[2] +'" width="110" height="70" class="img-polaroid"> \
-                                            \
-                                            <div class="carousel-caption"> \
-                                                    <h4>${book.getName()}</h4> \
-                                            </div> \
-                                    </div> \
-                            </div>';
-
-			li.appendChild(carousel);
-			ul.appendChild(li);
-		</script>
-
-	</c:forEach>
-
-	<script type="text/javascript">
 		$('.carousel').each(function() {
 			$(this).carousel({
 				interval : Math.random() * 8000 + 4000
 			});
 		});
+
 		$(function() {
-			$(".mycarousel").jCarouselLite({
+			$(".randomBooksJCarouselLite").jCarouselLite({
 				auto : 3000,
 				speed : 1000,
 				circular : true,
-				visible : 7
+				visible : 7,
+				hoverPause : true
 			});
+		});
+
+		var button = new Array();
+		for (var i=1; i<=${pageCount}; i++) {
+			button.push(".scrollMore ." + i);
+		}
+
+		addPageLiCollection("#scrollMoreUl", ${pageCount});
+		$(".scrollMore .jCarouselLite").jCarouselLite(
+				{
+					btnNext : ".scrollMore .next",
+					btnPrev : ".scrollMore .prev",
+					btnGo : button,
+					circular : false,
+					scroll : 1,
+					visible : 1,
+					afterEnd : function(a, to, btnGo) {
+						$.post(window.location + "?page=" + $(a[0]).index() + "&adp=" + alreadyDownloadPages,
+								ajaxCheck);
+					}
+				});
+		
+		function ajaxCheck(data) {
+			if (data == "") {
+				return;
+			}
+			var a = data.split(';');
+			
+			for (var i = 1; i < a.length-1; i++) {
+				var temp = a[i].split(':');
+				document.getElementById('li'+ a[0]).innerHTML += '<a data-target="#book_modal" data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';				
+			}
+			
+			alreadyDownloadPages.push(a[0]);
+		}
+		
+		$(document).on("click", ".jcarousel_img", function () {
+		     var myBookId = $(this).data('id');
+		     $(".modal-body #bookId").val(myBookId);
+		});
+		
+		$(document).on("click", ".img-polaroid", function () {
+		     var id_book = $(this).data('id');
+		     $.post(window.location + "?id_book=" + id_book);
+		     $(".modal-body #bookId").val(bookId);
 		});
 		
 		
-	</script>
-	
-	
-	
+		</script>
 </body>
 </html>
 

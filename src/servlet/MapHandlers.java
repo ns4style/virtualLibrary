@@ -1,12 +1,17 @@
 package servlet;
 
+import hibernateAccesObject.BookHAO;
 import hibernateAccesObject.Factory;
 import hibernateMappingClass.Book;
+import hibernateMappingClass.Image;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -53,20 +58,82 @@ public class MapHandlers {
 	public static void books(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		// Получение рандомных книг для слайдера
-		List<Book> books = null;
-		try {
-			books = Factory.getInstance().getBookHAO().getRandomBooks(11);
-			System.out.print(Factory.getInstance().getBookHAO().getBooksCount());
-		} catch (SQLException e) {
-			// TODO Auto-generated catch blockS
-			e.printStackTrace();
-		}
+		int booksOnPage = 5;
+		
+		List<Book> pageBooks = null;
+		
+		//  ---------------------------------------------- Определение страницы -------------------------------------------------------------- //
+		
+		if (request.getParameter("page") != null) { // -- Выбрана какая-то страница ----------------------------------------------------------//
+			if (request.getParameter("adp").contains(request.getParameter("page")))
+				return; // если такая страница уже запрашивалась
 
-		request.setAttribute("books", books);
-		RequestDispatcher rd = request
-				.getRequestDispatcher("/templates/books.jsp");
-		rd.forward(request, response);
+			try {
+				pageBooks = Factory.getInstance().getBookHAO().getBooksSelection(Integer.parseInt(request.getParameter("page"))*booksOnPage , booksOnPage );
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			StringBuffer stringBuffer = new StringBuffer("");
+			stringBuffer.append(request.getParameter("page") + ";");
+			
+			for (int i=0; i<pageBooks.size(); i++) {
+				stringBuffer.append(pageBooks.get(i).getName() + ":" + pageBooks.get(i).getId() + ":");
+				
+				Iterator iterator = pageBooks.get(i).getImages().iterator();
+				if (iterator.hasNext()) {
+					Image image = (Image) iterator.next();
+					stringBuffer.append(image.getPath());
+				}
+				stringBuffer.append(";");
+			}
+			
+			response.getWriter().write(stringBuffer.toString());
+			return;
+		}
+		else if (request.getParameter("book") != null) { // ------------------- получение данных о конкретной книге ---------------- //
+			int id = Integer.parseInt(request.getParameter("id_book"));
+			Book book = null;
+			
+			try {
+				book = Factory.getInstance().getBookHAO().getBooktById(id);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if (book == null)
+				return;
+			
+			StringBuffer stringBuffer = new StringBuffer(""); // name ; img_1 : ..... ; 
+			stringBuffer.append(book.getName() + ";");
+			
+			Iterator iterator = book.getImages().iterator();
+			if (iterator.hasNext()) {
+				Image image = (Image) iterator.next();
+				stringBuffer.append(image.getPath() + ":");
+			}
+			
+			
+			
+		}
+		else { // ---------------------------------------------- Первая загрузка ------------------------------- //
+			List<Book> books = null;
+			Double pageCount = 0.0;
+			try {
+				books = Factory.getInstance().getBookHAO().getRandomBooks(11);
+				pageCount = Math.ceil((double) Factory.getInstance().getBookHAO().getBooksCount() / booksOnPage);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			request.setAttribute("books", books);
+			request.setAttribute("pageCount", pageCount.intValue());
+
+			RequestDispatcher rd = request
+					.getRequestDispatcher("/templates/books.jsp");
+			rd.forward(request, response);
+		}
 	}
 
 	public static void register(HttpServletRequest request,

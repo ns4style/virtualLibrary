@@ -6,12 +6,14 @@ import hibernateUtil.HibernateUtil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 
 public class BookHAO {
+	
 	public void addBook(Book book) {
 		Session session = null;
 		try {
