@@ -24,12 +24,89 @@ public class MapHandlers {
 	public static void admin(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException, SQLException {
 		Map parameters = request.getParameterMap();
+		//GENRES
+		
 		if (parameters.containsKey("action")) {
 			if (request.getParameter("action").equals("showListGenres")) {
 				AdminClass.showListGenres(request, response);
 				return;
 			}
 		}
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("editGenre")) {
+				AdminClass.editListGenre(request, response);
+				return;
+			}
+		}
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("deleteGenre")) {
+				AdminClass.deleteGenre(request, response);
+				return;
+			}
+		}
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("addGenre")) {
+				AdminClass.addGenre(request, response);
+				return;
+			}
+		}
+		//TAGS
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showListTags")) {
+				AdminClass.showListTags(request, response);
+				return;
+			}
+		}
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("addTag")) {
+				AdminClass.addTag(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("deleteTag")) {
+				AdminClass.deleteTag(request, response);
+				return;
+			}
+		}
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("editTag")) {
+				AdminClass.editListTags(request, response);
+				return;
+			}
+		}
+		
+		//AUTHORS
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showListAuthorsModal")) {
+				AdminClass.showListAuthors(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("addAuthorsModal")) {
+				AdminClass.addAuthor(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("deleteAuthorsModal")) {
+				AdminClass.deleteAuthor(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("editAuthorsModal")) {
+				AdminClass.editListAuthors(request, response);
+				return;
+			}
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/admin.jsp");
 		rd.forward(request, response);
 	}

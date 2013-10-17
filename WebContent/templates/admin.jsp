@@ -25,7 +25,6 @@ html,body {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	background-color: #9d261d;
 	background-image: url("images/background3.jpg");
 }
 
@@ -42,8 +41,7 @@ html,body {
 	height: 100px;
 	margin-top: -100px;
 	background-color: #c8c8c8;
-}
-;
+};
 </style>
 	<div class="page">
 		<div class="wrap">
@@ -53,7 +51,7 @@ html,body {
 						<a class="btn btn-navbar" data-toggle="collapse"
 							data-target=".nav-collapse"> <span class="icon-bar"></span> <span
 							class="icon-bar"></span> <span class="icon-bar"></span>
-						</a> <a class="brand">Home</a>
+						</a> <a class="brand" href="index">Home</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								<li><a href="/Library/books/">Books</a></li>
@@ -103,6 +101,26 @@ html,body {
 					<h2>List of Genres:</h2>
 				</div>
 				<div id="genres-body" class="modal-body"></div>
+			</div>
+			</div>
+			<div>
+			<h3>Edit list of tags</h3>
+			<a data-target="#tags" data-toggle="modal" href="" class="btn">Edit tags</a>
+			<div id="tags" class="modal hide fade text-center">
+				<div class="modal-header">
+					<h2>List of Tags:</h2>
+				</div>
+				<div id="tags-body" class="modal-body"></div>
+			</div>
+			</div>
+			<div>
+			<h3>Edit list of Authors</h3>
+			<a data-target="#authorsModal" data-toggle="modal" href="" class="btn">Edit Authors</a>
+			<div id="authorsModal" class="modal hide fade text-center">
+				<div class="modal-header">
+					<h2>List of Authors:</h2>
+				</div>
+				<div id="authorsModal-body" class="modal-body"></div>
 			</div>
 			</div>
 			</div>

@@ -1,26 +1,370 @@
-$(document).ready(function () {
-	$('#genres').on('show',showListGenres);
-	$('#genres').on('hidden',hideListGenres);
-	
-	function showListGenres(e){
-		$.post("admin?action=showListGenres",ajaxShowGenres);
-	};
-	
-	function hideListGenres(e){
-		$('#genres-body').empty();
-	};
-	
-	function ajaxShowGenres(data){
-		var arrayOfGenres=data.split(' ');
-		var i;
-		var newElem = '<table id="headTableGenre" class="table table-bordered"><thead><tr><th>Id</th><th>Genre</th><th>Edit</th></tr></thead></table>';
-		$('#genres-body').append(newElem);
-		newElem='<tbody id="tableGenre"></tbody>';
-		$('#headTableGenre').append(newElem);
-		for (i=0;i<arrayOfGenres.length;i++){
-			newElem='<tr><td>'+(i+1)+'</td><td>'+arrayOfGenres[i]+'</td><td></td></tr>';
-			$('#tableGenre').append(newElem);
-		}
-	};
-	
+$(document)
+		.ready(
+				function() {
+					$('#genres').on('show', showListGenres);
+					$('#genres').on('hidden', hideListGenres);
+					$('#tags').on('show', showListTags);
+					$('#tags').on('hidden', hideListTags);
+					$('#authorsModal').on('show', showListAuthorsModal);
+					$('#authorsModal').on('hidden', hideListAuthorsModal);
+					
+//Functions of Genres
+					function showListGenres(e) {
+						$.post("admin?action=showListGenres", ajaxShowGenres);
+					}
+					;
+
+					function hideListGenres(e) {
+						$('#genres-body').empty();
+					}
+					;
+
+					function ajaxShowGenres(data) {
+						var arrayOfGenres = data.split(' ');
+						var i;
+						var newElem = '<table id="headTableGenre" class="table table-bordered"><thead><tr><th>Id</th><th>Genre</th><th>Edit</th><th>Delete</th></tr></thead></table>';
+						$('#genres-body').append(newElem);
+						newElem = '<tbody id="tableGenre"></tbody>';
+						$('#headTableGenre').append(newElem);
+						for (i = 0; i < arrayOfGenres.length; i++) {
+							newElem = '<tr><td>'
+									+ (i + 1)
+									+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="'
+									+ arrayOfGenres[i]
+									+ '">'
+									+ arrayOfGenres[i]
+									+ '</td><td><button id="'
+									+ arrayOfGenres[i]
+									+ '"name="editButton" class="btn btn-info">Edit</button></td><td><button id="'
+									+ arrayOfGenres[i]
+									+ '" name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
+							$('#tableGenre').append(newElem);
+						}
+						$("button[name*='editButton']")
+								.bind("click", editGenre);
+						$("button[name*='deleteButton']").bind("click",
+								deleteGenre);
+						newElem = '<tr><td>'
+								+ (i + 1)
+								+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newGenre"><input id="newGenre" type="text" placeholder="New Genre"><button id="newGenre" name="newGenre" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
+						$('#tableGenre').append(newElem);
+						$("button[name*='newGenre']").bind("click",
+								addGenre);
+					}
+					;
+					
+					function addGenre(e){
+						var val = $('input#newGenre').val();
+						if (val == "") {
+							alert("Error of input");
+							return;
+						}
+						$.post("admin?action=addGenre&name="+val,ajaxAddGenre);
+					};
+					
+					function ajaxAddGenre(data){
+						var e;
+						hideListGenres(e);
+						showListGenres(e);
+					};
+
+					function deleteGenre(e) {
+						$.post("admin?action=deleteGenre&name="
+								+ e.currentTarget.id, ajaxDeleteGenre);
+					}
+
+					function ajaxDeleteGenre(data) {
+						var e;
+						hideListGenres(e);
+						showListGenres(e);
+					}
+					;
+
+					function editGenre(e) {
+						$("button[name*='editButton']").attr('disabled', true);
+						$("button[name*='deleteButton']")
+								.attr('disabled', true);
+						var data = $('td#' + e.currentTarget.id).html();
+						$('td#' + e.currentTarget.id).empty();
+						var newElem = '<input id="'
+								+ e.currentTarget.id
+								+ '" type="text" placeholder="'
+								+ e.currentTarget.id
+								+ '"><button id="'
+								+ e.currentTarget.id
+								+ '" name="cancelChangeGenreButton" class="btn btn-danger pull-right">Back</button><button id="'
+								+ e.currentTarget.id
+								+ '" name="changeGenreButton" class="btn btn-success pull-right" style="margin-right:2px">OK</button>';
+						$('td#' + e.currentTarget.id).append(newElem);
+						$("button[name*='cancelChangeGenreButton']").bind(
+								"click", data, cancelEditGenre);
+						$("button[name*='changeGenreButton']").bind("click",
+								editGenreEvent);
+					}
+					;
+
+					function cancelEditGenre(e) {
+						$('td#' + e.currentTarget.id).empty();
+						$('td#' + e.currentTarget.id).append(e.data);
+						$("button[name*='editButton']").removeAttr('disabled');
+						$("button[name*='deleteButton']")
+								.removeAttr('disabled');
+					}
+					;
+
+					function editGenreEvent(e) {
+						var val = $('input#' + e.currentTarget.id).val();
+						if (val == "") {
+							alert("Error of input");
+							return;
+						}
+						$.post("admin?action=editGenre&oldname="
+								+ e.currentTarget.id + "&newname=" + val,
+								ajaxEditGenre);
+					}
+					;
+
+					function ajaxEditGenre(data) {
+						var e;
+						hideListGenres(e);
+						showListGenres(e);
+					};
+//Functions of Tags
+					function showListTags(e) {
+						$.post("admin?action=showListTags", ajaxShowTags);
+					}
+					;
+
+					function hideListTags(e) {
+						$('#tags-body').empty();
+					}
+					;
+					function ajaxShowTags(data){
+						var arrayOfTags = data.split(' ');
+						var i;
+						var newElem = '<table id="headTableTags" class="table table-bordered"><thead><tr><th>Id</th><th>Tag</th><th>Edit</th><th>Delete</th></tr></thead></table>';
+						$('#tags-body').append(newElem);
+						newElem = '<tbody id="tableTag"></tbody>';
+						$('#headTableTags').append(newElem);
+						for (i = 0; i < arrayOfTags.length; i++) {
+							newElem = '<tr><td>'
+									+ (i + 1)
+									+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="'
+									+ arrayOfTags[i]
+									+ '">'
+									+ arrayOfTags[i]
+									+ '</td><td><button id="'
+									+ arrayOfTags[i]
+									+ '"name="editButton" class="btn btn-info">Edit</button></td><td><button id="'
+									+ arrayOfTags[i]
+									+ '" name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
+							$('#tableTag').append(newElem);
+						}
+						$("button[name*='editButton']")
+								.bind("click", editTag);
+						$("button[name*='deleteButton']").bind("click",
+								deleteTag);
+						newElem = '<tr><td>'
+								+ (i + 1)
+								+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newTag"><input id="newTag" type="text" placeholder="New Tag"><button id="newTag" name="newTag" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
+						$('#tableTag').append(newElem);
+						$("button[name*='newTag']").bind("click",
+								addTag);
+					};
+					
+					function editTag(e){
+						$("button[name*='editButton']").attr('disabled', true);
+						$("button[name*='deleteButton']")
+								.attr('disabled', true);
+						var data = $('td#' + e.currentTarget.id).html();
+						$('td#' + e.currentTarget.id).empty();
+						var newElem = '<input id="'
+								+ e.currentTarget.id
+								+ '" type="text" placeholder="'
+								+ e.currentTarget.id
+								+ '"><button id="'
+								+ e.currentTarget.id
+								+ '" name="cancelChangeTagButton" class="btn btn-danger pull-right">Back</button><button id="'
+								+ e.currentTarget.id
+								+ '" name="changeTagButton" class="btn btn-success pull-right" style="margin-right:2px">OK</button>';
+						$('td#' + e.currentTarget.id).append(newElem);
+						$("button[name*='cancelChangeTagButton']").bind(
+								"click", data, cancelEditTag);
+						$("button[name*='changeTagButton']").bind("click",
+								editTagEvent);
+					};
+					
+					function cancelEditTag(e) {
+						$('td#' + e.currentTarget.id).empty();
+						$('td#' + e.currentTarget.id).append(e.data);
+						$("button[name*='editButton']").removeAttr('disabled');
+						$("button[name*='deleteButton']")
+								.removeAttr('disabled');
+					}
+					;
+
+					function editTagEvent(e) {
+						var val = $('input#' + e.currentTarget.id).val();
+						if (val == "") {
+							alert("Error of input");
+							return;
+						}
+						$.post("admin?action=editTag&oldname="
+								+ e.currentTarget.id + "&newname=" + val,
+								ajaxEditTag);
+					}
+					;
+
+					function ajaxEditTag(data) {
+						var e;
+						hideListTags(e);
+						showListTags(e);
+					};
+					
+					function deleteTag(e){
+						$.post("admin?action=deleteTag&name="
+								+ e.currentTarget.id, ajaxDeleteTag);
+					};
+					
+					function ajaxDeleteTag(data){
+						var e;
+						hideListTags(e);
+						showListTags(e);
+					};
+					
+					function addTag(e){
+						var val = $('input#newTag').val();
+						if (val == "") {
+							alert("Error of input");
+							return;
+						}
+						$.post("admin?action=addTag&name="+val,ajaxAddTag);
+					}
+					
+					function ajaxAddTag(data){
+						var e;
+						hideListTags(e);
+						showListTags(e);
+					}
+//Functions of Authors
+
+
+function showListAuthorsModal(e) {
+	$.post("admin?action=showListAuthorsModal", ajaxShowAuthorsModal);
+}
+;
+
+function hideListAuthorsModal(e) {
+	$('#authorsModal-body').empty();
+}
+;
+function ajaxShowAuthorsModal(data){
+	var arrayOfAuthorsModal = data.split(' ');
+	var i;
+	var newElem = '<table id="headTableAuthorsModal" class="table table-bordered"><thead><tr><th>Id</th><th>Author</th><th>Edit</th><th>Delete</th></tr></thead></table>';
+	$('#authorsModal-body').append(newElem);
+	newElem = '<tbody id="tableAuthorsModal"></tbody>';
+	$('#headTableAuthorsModal').append(newElem);
+	for (i = 0; i < arrayOfAuthorsModal.length; i++) {
+		newElem = '<tr><td>'
+				+ (i + 1)
+				+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="'
+				+ arrayOfAuthorsModal[i]
+				+ '">'
+				+ arrayOfAuthorsModal[i].split('_')[0]+' '+arrayOfAuthorsModal[i].split('_')[1]
+				+ '</td><td><button id="'
+				+ arrayOfAuthorsModal[i]
+				+ '"name="editButton" class="btn btn-info">Edit</button></td><td><button id="'
+				+ arrayOfAuthorsModal[i]
+				+ '"name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
+		$('#tableAuthorsModal').append(newElem);
+	}
+	$("button[name*='editButton']")
+			.bind("click", editAuthorsModal);
+	$("button[name*='deleteButton']").bind("click",
+			deleteAuthorsModal);
+	newElem = '<tr><td>'
+			+ (i + 1)
+			+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newAuthorsModal"><input id="newAuthorsModal" type="text" placeholder="New Author"><button id="newAuthorsModal" name="newAuthorsModal" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
+	$('#tableAuthorsModal').append(newElem);
+	$("button[name*='newAuthorsModal']").bind("click",
+			addAuthorsModal);
+};
+
+function editAuthorsModal(e){
+	$("button[name*='editButton']").attr('disabled', true);
+	$("button[name*='deleteButton']")
+			.attr('disabled', true);
+	var data = $('td#' + e.currentTarget.id).html();
+	$('td#' + e.currentTarget.id).empty();
+	var newElem = '<input id="'
+			+ e.currentTarget.id
+			+ '" type="text" placeholder="'
+			+ e.currentTarget.id.split("_")[0] + " " + e.currentTarget.id.split("_")[1]
+			+ '"><button id="'
+			+ e.currentTarget.id
+			+ '" name="cancelChangeAuthorsModalButton" class="btn btn-danger pull-right">Back</button><button id="'
+			+ e.currentTarget.id
+			+ '" name="changeAuthorsModalButton" class="btn btn-success pull-right" style="margin-right:2px">OK</button>';
+	$('td#' + e.currentTarget.id).append(newElem);
+	$("button[name*='cancelChangeAuthorsModalButton']").bind(
+			"click", data, cancelEditAuthorsModal);
+	$("button[name*='changeAuthorsModalButton']").bind("click",
+			editAuthorsModalEvent);
+};
+
+function cancelEditAuthorsModal(e) {
+	$('td#' + e.currentTarget.id).empty();
+	$('td#' + e.currentTarget.id).append(e.data);
+	$("button[name*='editButton']").removeAttr('disabled');
+	$("button[name*='deleteButton']")
+			.removeAttr('disabled');
+}
+;
+
+function editAuthorsModalEvent(e) {
+	var val = $('input#' + e.currentTarget.id).val();
+	if (val.split(" ").length != 2) {
+		alert("Error of input");
+		return;
+	}
+	var names =val.split(" ");
+	$.post("admin?action=editAuthorsModal&oldname="
+			+ e.currentTarget.id + "&newname=" + names[0]+'_'+names[1],
+			ajaxEditAuthorsModal);
+}
+;
+
+function ajaxEditAuthorsModal(data) {
+	var e;
+	hideListAuthorsModal(e);
+	showListAuthorsModal(e);
+};
+
+function deleteAuthorsModal(e){
+	$.post("admin?action=deleteAuthorsModal&name="
+			+ e.currentTarget.id, ajaxDeleteAuthorsModal);
+};
+
+function ajaxDeleteAuthorsModal(data){
+	var e;
+	hideListAuthorsModal(e);
+	showListAuthorsModal(e);
+};
+
+function addAuthorsModal(e){
+	var val = $('input#newAuthorsModal').val();
+	if (val.split(" ").length != 2) {
+		alert("Error of input");
+		return;
+	}
+	$.post("admin?action=addAuthorsModal&name="+val,ajaxAddAuthorsModal);
+}
+
+function ajaxAddAuthorsModal(data){
+	var e;
+	hideListAuthorsModal(e);
+	showListAuthorsModal(e);
+};
+
 });

@@ -27,7 +27,6 @@ html,body {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	background-color: #9d261d;
 	background-image: url("images/background3.jpg");
 }
 
@@ -51,7 +50,7 @@ html,body {
 						<a class="btn btn-navbar" data-toggle="collapse"
 							data-target=".nav-collapse"> <span class="icon-bar"></span> <span
 							class="icon-bar"></span> <span class="icon-bar"></span>
-						</a> <a class="brand">Home</a>
+						</a> <a class="brand" href="index">Home</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
 								<li><a href="/Library/books/">Books</a></li>
