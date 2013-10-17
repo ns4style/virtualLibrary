@@ -25,7 +25,11 @@ public class LibraryServlet extends HttpServlet {
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+<<<<<<< HEAD
 		
+		
+=======
+>>>>>>> c39018e67afe202e7f630e2b2b72330df2c3a9f9
 		/*
 		 * RoutingMap по умолчанию инициализируется при помощи метода
 		 * Helper.mapFill routeToReqPage вызывает обработчик для запрашиваемой

@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -12,5 +13,5 @@ import javax.servlet.http.HttpServletResponse;
  */
 
 public interface UrlHandler {
-	void get_handler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, NullPointerException;
+	void get_handler(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, NullPointerException, SQLException;
 }

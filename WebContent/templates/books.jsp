@@ -227,8 +227,7 @@ html,body {
 		
 		$(document).on("click", ".img-polaroid", function () {
 		     var id_book = $(this).data('id');
-		     $.post(window.location + "?id_book=" + id_book);
-		     $(".modal-body #bookId").val(bookId);
+		     $(".modal-body #bookId").val(id_book);
 		});
 		
 		

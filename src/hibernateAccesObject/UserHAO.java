@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
+import org.hibernate.criterion.Projections;
 
 public class UserHAO {
 	
@@ -118,5 +119,22 @@ public class UserHAO {
 				session.close();
 			}
 		}
+	}
+	
+	public Long countUsers(){
+		Session session = null;
+		Long count = new Long(-1);
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			count = (Long) session.createCriteria(User.class).setProjection(Projections.rowCount()).uniqueResult();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return count;
 	}
 }

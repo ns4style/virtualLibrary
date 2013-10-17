@@ -1,2 +1,4 @@
-/hibernateAccesObject
 /servlet
+/hibernateAccesObject
+/hibernateMappingClass
+/hibernateUtil

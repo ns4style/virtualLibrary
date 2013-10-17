@@ -1,7 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+<<<<<<< HEAD
+=======
 
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+>>>>>>> c39018e67afe202e7f630e2b2b72330df2c3a9f9
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -22,6 +25,30 @@ html,body {
 	margin: 0px;
 	padding: 0px;
 }
+<<<<<<< HEAD
+
+.page {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	background-color: #9d261d;
+}
+
+.wrap {
+	padding-top: 120px;
+	padding-bottom: 120px;
+}
+
+.footer {
+	height: 100px;
+	margin-top: -100px;
+	background-color: #c8c8c8;
+}
+;
+</style>
+	<div class="page">
+		<div class="wrap">
+=======
 
 .page {
 	min-height: 100%;
@@ -45,6 +72,7 @@ html,body {
 </style>
 	<div class="page">
 		<div class="wrap" id="wrap">
+>>>>>>> c39018e67afe202e7f630e2b2b72330df2c3a9f9
 			<div class="navbar navbar-inverse navbar-fixed-top">
 				<div class="navbar-inner">
 					<div class="container">
@@ -54,10 +82,24 @@ html,body {
 						</a> <a class="brand">Home</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
+<<<<<<< HEAD
+								<li><a href="/Library/books">Books</a></li>
+								<li><a href="">Authors</a></li>
+								<li><a href="">About</a></li>
+							</ul>
+							<%
+								if (request.getAttribute("regSuccesfull").equals("yes")) {
+							%>
+							<p class="navbar-text pull-right">Logged in as ${username}</p>
+							<%
+								} else {
+							%>
+=======
 								<li><a href="/Library/books/">Books</a></li>
 								<li><a data-target="#authors" data-toggle="modal" href="">Authors</a></li>
 								<li><a data-target="#about" data-toggle="modal" href="">About</a></li>
 							</ul>
+>>>>>>> c39018e67afe202e7f630e2b2b72330df2c3a9f9
 							<form class="navbar-form pull-right">
 								<input class="span2" type="text" placeholder="Email"> <input
 									class="span2" type="password" placeholder="Password">
@@ -65,6 +107,12 @@ html,body {
 								<button data-target="#register" data-toggle="modal"
 									type="submit" class="btn">Register</button>
 							</form>
+<<<<<<< HEAD
+							<%
+								}
+							%>
+=======
+>>>>>>> c39018e67afe202e7f630e2b2b72330df2c3a9f9
 						</div>
 					</div>
 				</div>
@@ -115,6 +163,29 @@ html,body {
 				</div>
 			</div>
 
+<<<<<<< HEAD
+			<div id="regComplete" class="modal hide fade">
+				<div class="modal-header">
+					<h2>Status</h2>
+				</div>
+				<div class="modal-body">Registration Complete.</div>
+			</div>
+
+			<div id="regFailed" class="modal hide fade">
+				<div class="modal-header">
+					<h2>Status</h2>
+				</div>
+				<div class="modal-body">Registration Failed.</div>
+			</div>
+
+			<div class="text-center">
+				<h1>News:</h1>
+			</div>
+		</div>
+
+	</div>
+
+=======
 			<div id="about" class="modal hide fade text-center">
 				<div class="modal-header">
 					<h2>About library:</h2>
@@ -159,6 +230,7 @@ html,body {
 
 	</div>
 
+>>>>>>> c39018e67afe202e7f630e2b2b72330df2c3a9f9
 	<div class="footer">
 		<h3 class="pull-right">Copyright(c)</h3>
 	</div>

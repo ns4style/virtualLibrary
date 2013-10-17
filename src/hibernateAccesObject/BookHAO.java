@@ -1,6 +1,7 @@
 package hibernateAccesObject;
 
 import hibernateMappingClass.Book;
+import hibernateMappingClass.User;
 import hibernateUtil.HibernateUtil;
 
 import java.sql.SQLException;
@@ -11,6 +12,7 @@ import java.util.Vector;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Projections;
 
 public class BookHAO {
 	
@@ -151,5 +153,22 @@ public class BookHAO {
 				session.close();
 			}
 		}
+	}
+	
+	public Long countBooks(){
+		Session session = null;
+		Long count = new Long(-1);
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			count = (Long) session.createCriteria(Book.class).setProjection(Projections.rowCount()).uniqueResult();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return count;
 	}
 }

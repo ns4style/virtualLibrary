@@ -1,6 +1,7 @@
 package servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Map;
 
 import javax.servlet.ServletException;
@@ -19,7 +20,7 @@ public class Helper{
 		
 		routing.put("/admin", new UrlHandler() {
 								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
-										throws IOException, ServletException, NullPointerException {
+										throws IOException, ServletException, NullPointerException, SQLException {
 									MapHandlers.admin(request, response);
 								}
 							}
@@ -27,7 +28,7 @@ public class Helper{
 		
 		routing.put("/", new UrlHandler() {
 								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
-										throws IOException, ServletException, NullPointerException {
+										throws IOException, ServletException, NullPointerException, SQLException {
 									MapHandlers.index(request, response);
 								}
 							} 
@@ -35,7 +36,7 @@ public class Helper{
 		
 		routing.put("/index", new UrlHandler() {
 								public void get_handler(HttpServletRequest request, HttpServletResponse response) 
-										throws IOException, ServletException, NullPointerException {
+										throws IOException, ServletException, NullPointerException, SQLException {
 									MapHandlers.index(request, response);
 								}
 							}
