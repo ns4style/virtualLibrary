@@ -1,5 +1,6 @@
 package hibernateAccesObject;
 
+import hibernateMappingClass.Genre;
 import hibernateMappingClass.Tag;
 import hibernateUtil.HibernateUtil;
 
@@ -10,6 +11,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
 
 public class TagHAO {
 	public void addTag(Tag tag) {
@@ -95,5 +97,25 @@ public class TagHAO {
 				session.close();
 			}
 		}
+	}
+	
+	public Tag getTagByName(String name) {
+		Session session = null;
+		List<Tag> tags = new ArrayList<Tag>();
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			tags = session.createCriteria(Tag.class).add(Expression.like("value", name)).list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		if (!tags.isEmpty())
+			return tags.get(0);
+		else
+			return null;
 	}
 }

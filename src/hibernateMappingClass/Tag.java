@@ -17,13 +17,10 @@ public class Tag {
 	@Column(name = "id")
 	private int id;
 	
-	@Column(name = "id_book")
-	private int idBook;
-	
 	@Column(name = "value")
 	private String value;
 	
-	Tag() {
+	public Tag() {
 		value = null;
 	}
 
@@ -33,14 +30,6 @@ public class Tag {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public int getIdBook() {
-		return idBook;
-	}
-
-	public void setIdBook(int idBook) {
-		this.idBook = idBook;
 	}
 
 	public String getValue() {
