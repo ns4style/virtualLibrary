@@ -112,8 +112,7 @@ public class MapHandlers {
 			if (iterator.hasNext()) {
 				Image image = (Image) iterator.next();
 				stringBuffer.append(image.getPath() + ":");
-			}
-			
+			}	
 			
 			
 		}
