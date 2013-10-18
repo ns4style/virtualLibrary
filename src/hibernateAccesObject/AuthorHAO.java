@@ -1,7 +1,6 @@
 package hibernateAccesObject;
 
 import hibernateMappingClass.Author;
-import hibernateMappingClass.Tag;
 import hibernateUtil.HibernateUtil;
 
 import java.sql.SQLException;

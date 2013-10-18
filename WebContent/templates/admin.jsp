@@ -123,6 +123,26 @@ html,body {
 				<div id="authorsModal-body" class="modal-body"></div>
 			</div>
 			</div>
+			<div>
+			<h3>Edit list of News</h3>
+			<a data-target="#news" data-toggle="modal" href="" class="btn">Edit News</a>
+			<div id="news" class="modal hide fade text-center">
+				<div class="modal-header">
+					<h2>List of News:</h2>
+				</div>
+				<div id="news-body" class="modal-body"></div>
+			</div>
+			</div>
+			<div>
+			<h3>Edit list of Books</h3>
+			<a data-target="#books" data-toggle="modal" href="" class="btn">Edit Books</a>
+			<div id="books" class="modal hide fade text-center">
+				<div class="modal-header">
+					<h2>List of Books:</h2>
+				</div>
+				<div id="books-body" class="modal-body"></div>
+			</div>
+			</div>
 			</div>
 			
 		</div>
