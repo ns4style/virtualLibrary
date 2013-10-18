@@ -1,17 +1,18 @@
 package servlet;
 
-import hibernateAccesObject.BookHAO;
 import hibernateAccesObject.Factory;
+import hibernateMappingClass.Author;
 import hibernateMappingClass.Book;
+import hibernateMappingClass.Comment;
 import hibernateMappingClass.Image;
+import hibernateMappingClass.Tag;
+import hibernateMappingClass.User;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Vector;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -154,6 +155,19 @@ public class MapHandlers {
 		int booksOnPage = 5;
 		
 		List<Book> pageBooks = null;
+
+		User user = null;
+		if (request.getUserPrincipal() != null) {
+			user = Factory.getInstance().getUserHAO().getUserByMail(request.getUserPrincipal().getName());
+		}
+		if (user != null) {
+			request.setAttribute("user_name", user.getFname() + " " + user.getLname());
+			request.setAttribute("user_privileged", user.getPrivileged());
+		}
+		else { // 0 - admin, 1 - user, 2 - blocked user, 3 - unknow;
+			request.setAttribute("user_name", "unknow");
+			request.setAttribute("user_privileged", "3");				
+		}
 		
 		//  ---------------------------------------------- Определение страницы -------------------------------------------------------------- //
 		
@@ -184,7 +198,7 @@ public class MapHandlers {
 			response.getWriter().write(stringBuffer.toString());
 			return;
 		}
-		else if (request.getParameter("book") != null) { // ------------------- получение данных о конкретной книге ---------------- //
+		else if (request.getParameter("id_book") != null) { // ------------------- получение данных о конкретной книге ---------------- //
 			int id = Integer.parseInt(request.getParameter("id_book"));
 			Book book = null;
 			
@@ -198,17 +212,46 @@ public class MapHandlers {
 			if (book == null)
 				return;
 			
-			StringBuffer stringBuffer = new StringBuffer(""); // name ; img_1 : ..... ; 
-			stringBuffer.append(book.getName() + ";");
+			StringBuffer stringBuffer = new StringBuffer(""); 
+			stringBuffer.append(book.getName() + ";"); // name ;
 			
-			Iterator iterator = book.getImages().iterator();
-			if (iterator.hasNext()) {
+			Iterator  iterator = book.getAuthors().iterator();
+			while (iterator.hasNext()) {
+				Author author = (Author) iterator.next();
+				stringBuffer.append(author.getFirstName() + " " + author.getLastName() + ",");
+			}
+			stringBuffer.append(";"); // name ; author_1, ..... ;
+			
+			iterator = book.getImages().iterator();
+			while (iterator.hasNext()) {
 				Image image = (Image) iterator.next();
-				stringBuffer.append(image.getPath() + ":");
+				stringBuffer.append(image.getPath() + ",");
+			}
+			stringBuffer.append(";"); // name ; author_1, ..... ; img_1, ....... ,; -- лишняя ,
+			
+			iterator = book.getTags().iterator();
+			while (iterator.hasNext()) {
+				Tag tag = (Tag) iterator.next();
+				stringBuffer.append(tag.getValue() + ",");
+			}
+			stringBuffer.append(";"); // name ; author_1, ..... ; img_1, ..... ; tag_1, ..... ,;
+			
+			List<Comment> comments = null;
+			try {
+				comments = Factory.getInstance().getCommentHAO().getCommentsByBookId(book.getId());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			
+			for (int i=0; i<comments.size(); i++) {
+				stringBuffer.append(comments.get(i).getUser().getFname() + " " + comments.get(i).getUser().getLname() +
+						":" + comments.get(i).getValue() + ",");
+			}
+			stringBuffer.append(";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; fullUserName : comment, .......... ,;
 			
-			
+			response.getWriter().write(stringBuffer.toString());
+			return;
 		}
 		else { // ---------------------------------------------- Первая загрузка ------------------------------- //
 			List<Book> books = null;

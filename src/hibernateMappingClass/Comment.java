@@ -4,8 +4,12 @@ import java.sql.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
@@ -16,7 +20,7 @@ public class Comment {
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
-	@Column(name = "id")
+	@Column(name = "id_comment")
 	private int id;
 	
 	@Column(name = "id_book")
@@ -27,9 +31,10 @@ public class Comment {
 
 	@Column(name = "time_stamp")
 	private Date timeStamp;
-
-	@Column(name = "id_user")
-	private int idUser;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="id_user")
+	private User user;
 
 	public Comment() {
 		 timeStamp = null;
@@ -52,10 +57,6 @@ public class Comment {
 		return timeStamp;
 	}
 	
-	public int getIdUser() {
-		return idUser;
-	}
-	
 	public void setId(int id) {
 		this.id = id;
 	}
@@ -71,8 +72,12 @@ public class Comment {
 	public void setTimeStamp(Date timeStamp) {
 		this.timeStamp = timeStamp;
 	}
-	
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 }

@@ -8,7 +8,7 @@ function createBootstrapCarousel(array) {
 	carousel.innerHTML = ' \
                             <div class="carousel-inner"> \
                                     <div class="active item"> \
-											<a data-target="#book_modal" data-toggle="modal"> \
+											<a data-toggle="modal"> \
                                             <img src="' + array[3] + '" width="110" height="70" class="img-polaroid" data-id="' + array[0] + '"> \
                                             </a> \
                                             \
@@ -18,7 +18,7 @@ function createBootstrapCarousel(array) {
                                     </div> \
                                     \
                                     <div class="item"> \
-                                            <a data-target="#book_modal" data-toggle="modal"> \
+                                            <a data-toggle="modal"> \
                                             <img src="' + array[4] + '" width="110" height="70" class="img-polaroid" data-id="' + array[0] + '"> \
                                             </a> \
                                             \
@@ -28,7 +28,7 @@ function createBootstrapCarousel(array) {
                                     </div> \
                                     \
                                     <div class="item"> \
-                                            <a data-target="#book_modal" data-toggle="modal"> \
+                                            <a data-toggle="modal"> \
                                             <img src="' + array[5] + '" width="110" height="70" class="img-polaroid" data-id="' + array[0] + '"> \
                                             </a> \
                                             \

@@ -136,7 +136,7 @@ html,body {
 
 			<div class="scrollMore" id="scrollMore">
 				<script type="text/javascript">
-					addPageButtonCollection("#scrollMore", ${pageCount});
+					addPageButtonCollection("#scrollMore", "${pageCount}");
 				</script>
 
 				<img src="../images/table.png" width="1000"></img>
@@ -147,23 +147,15 @@ html,body {
 				</div>
 			</div>
 		</div>
-
-		<div id="book_modal" class="modal hide fade">
-			<div class="modal-header">
+		
+		<div id="book_modal" class="modal hide fade" style="width:555px;">
+			<div class="modal-header" id="book-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">&times;</button>
-				<h3>Modal header</h3>
 			</div>
-			<div class="modal-body">
-				<p>some content</p>
-				<input type="text" name="bookId" id="bookId" value="" />
-			</div>
-			<div class="modal-footer">
-				<a href="#" class="btn">Close</a> <a href="#"
-					class="btn btn-primary">Save changes</a>
+			<div class="modal-body" id="book-body">
 			</div>
 		</div>
-
 		<script type="text/javascript">
 		
 		var alreadyDownloadPages = new Array();
@@ -187,11 +179,11 @@ html,body {
 		});
 
 		var button = new Array();
-		for (var i=1; i<=${pageCount}; i++) {
+		for (var i=1; i<="${pageCount}"; i++) {
 			button.push(".scrollMore ." + i);
 		}
 
-		addPageLiCollection("#scrollMoreUl", ${pageCount});
+		addPageLiCollection("#scrollMoreUl", "${pageCount}");
 		$(".scrollMore .jCarouselLite").jCarouselLite(
 				{
 					btnNext : ".scrollMore .next",
@@ -214,24 +206,63 @@ html,body {
 			
 			for (var i = 1; i < a.length-1; i++) {
 				var temp = a[i].split(':');
-				document.getElementById('li'+ a[0]).innerHTML += '<a data-target="#book_modal" data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';				
+				document.getElementById('li'+ a[0]).innerHTML += '<a data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';				
 			}
 			
 			alreadyDownloadPages.push(a[0]);
-		}
+		};
 		
 		$(document).on("click", ".jcarousel_img", function () {
-		     var myBookId = $(this).data('id');
-		     $(".modal-body #bookId").val(myBookId);
+		    var id_book = $(this).data('id');
+		    $.post(window.location + "?id_book=" + id_book, ajaxModalBook);
 		});
 		
 		$(document).on("click", ".img-polaroid", function () {
-		     var id_book = $(this).data('id');
-		     $(".modal-body #bookId").val(id_book);
+		    var id_book = $(this).data('id');
+		    $.post(window.location + "?id_book=" + id_book, ajaxModalBook);
 		});
 		
+		function ajaxModalBook(data) {
+			if (data=="") {
+				return;
+			}
+			var a = data.split(';'); // name ; img_1, .., .. ; tag_1, ..... ,; fullUserName : comment, .......... ,;
+			$(".modal-header").append("<h2 style=\"margin-top: 5px; margin-bottom: 5px;margin-top: 5px; margin-bottom: 5px;\">" + a[0] + "</h2>");
+			var authors = a[1].split(',');
+			for (var i=0; i<authors.length-1; i++) {
+				$(".modal-header").append(authors[i] + " ");
+			}
+			
+			$(".modal-body").append("<img src=\"" + a[2].split(',')[0] + "\" width=\"168\" height=\"263\">");
+			$(".modal-body").append("<img src=\"" + a[2].split(',')[1] + "\" width=\"168\" height=\"263\">");
+			$(".modal-body").append("<img src=\"" + a[2].split(',')[2] + "\" width=\"168\" height=\"263\">");
+			
+			$(".modal-body").append("<h4>Tags</h4>");
+			var tags = a[3].split(',');
+			for (var i=0; i<tags.length-1; i++) {
+				$(".modal-body").append("<spawn style=\"color:blue\">#" + tags[i] + " </spawn>");
+			}
+			
+			$(".modal-body").append("<h5>Comments</h5>");
+			var comments = a[4].split(',');
+			for (var i=0; i<comments.length-1; i++) {
+				$(".modal-body").append("<hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>" + comments[i].split(':')[0] + "</b><br>" + comments[i].split(':')[1]);
+			}
+			$(".modal-body").append("<hr style=\"margin-top: 5px; margin-bottom: 5px;\" id=\"comment_bottom\"><h5>Add comments</h5>");
+			
+			$("<div><hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>${user_name}</b><br>fsdfsfs</div>").insertBefore("#comment_bottom");
+			//alert(document.getElementById("book_modal").innerHTML);
+			$("#book_modal").modal('show');
+		};
+		
+		$("#book_modal").on('hidden', function () {
+			$('#book-header').empty();
+			$('#book-body').empty();
+		});
 		
 		</script>
+
+
 </body>
 </html>
 

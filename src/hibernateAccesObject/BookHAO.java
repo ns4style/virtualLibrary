@@ -1,21 +1,20 @@
 package hibernateAccesObject;
 
 import hibernateMappingClass.Book;
-import hibernateMappingClass.User;
 import hibernateUtil.HibernateUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import javax.swing.JOptionPane;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 
 public class BookHAO {
-	
+
 	public void addBook(Book book) {
 		Session session = null;
 		try {
@@ -56,6 +55,7 @@ public class BookHAO {
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			book = (Book) session.load(Book.class, id);
+			Hibernate.initialize(book.getName());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -126,7 +126,8 @@ public class BookHAO {
 		Long val = (long) 0;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			val = (Long)(session.createQuery("select count(*) from Book").iterate().next());
+			val = (Long) (session.createQuery("select count(*) from Book")
+					.iterate().next());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -154,13 +155,14 @@ public class BookHAO {
 			}
 		}
 	}
-	
-	public Long countBooks(){
+
+	public Long countBooks() {
 		Session session = null;
 		Long count = new Long(-1);
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			count = (Long) session.createCriteria(Book.class).setProjection(Projections.rowCount()).uniqueResult();
+			count = (Long) session.createCriteria(Book.class)
+					.setProjection(Projections.rowCount()).uniqueResult();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

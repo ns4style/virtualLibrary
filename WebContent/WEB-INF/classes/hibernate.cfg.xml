@@ -17,7 +17,6 @@
         <mapping class="hibernateMappingClass.Image" />
         <mapping class="hibernateMappingClass.Genre" />
         <mapping class="hibernateMappingClass.GenreBook" />
-        <mapping class="hibernateMappingClass.Library" />
         <mapping class="hibernateMappingClass.User" />
         <mapping class="hibernateMappingClass.Mark" />
         <mapping class="hibernateMappingClass.Tag" />

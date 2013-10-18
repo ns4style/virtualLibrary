@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -32,10 +34,24 @@ public class Book {
 	@OneToMany(fetch = FetchType.EAGER)
 	@JoinColumn(name="id_book")
 	private Set<Image> images;
+	
+	@OneToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="books_tags",
+	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
+    inverseJoinColumns={@JoinColumn(name="id_tag", referencedColumnName="id")}) 
+	private Set<Tag> tags;
+	
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="library",
+	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
+	inverseJoinColumns={@JoinColumn(name="id_author", referencedColumnName="id")})
+	private Set<Author> authors;
 
 	public Book() {
 		name = null;
 		images = new HashSet<Image>(0);
+		tags = new HashSet<Tag>(0);
+		authors = new HashSet<Author>(0);
 	}
 
 	public int getId() {
@@ -68,5 +84,21 @@ public class Book {
 	
 	public void setImages(Set<Image> authors) {
 		this.images.addAll(images);
+	}
+
+	public Set<Tag> getTags() {
+		return tags;
+	}
+
+	public void setTags(Set<Tag> tags) {
+		this.tags.addAll(tags);
+	}
+
+	public Set<Author> getAuthors() {
+		return authors;
+	}
+
+	public void setAuthors(Set<Author> authors) {
+		this.authors.addAll(authors);
 	}
 }

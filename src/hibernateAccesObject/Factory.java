@@ -6,7 +6,6 @@ public class Factory {
 	private static BookHAO bookHAO = null;
 	private static CommentHAO commentHAO = null;
 	private static ImageHAO imageHAO = null;
-	private static LibraryHAO libraryHAO = null;
 	private static UserHAO userHAO = null;
 	private static GenreHAO genreHAO = null;
 	private static GenreBookHAO genreBookHAO = null;
@@ -49,13 +48,6 @@ public class Factory {
 			imageHAO = new ImageHAO();
 		}
 		return imageHAO;
-	}
-	
-	public LibraryHAO getLibraryHAO() {
-		if (libraryHAO == null) {
-			libraryHAO = new LibraryHAO();
-		}
-		return libraryHAO;
 	}
 	
 	public UserHAO getUserHAO() {

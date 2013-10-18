@@ -19,7 +19,7 @@ public class LibraryServlet extends HttpServlet {
 	
 	public void init(ServletConfig config) throws ServletException {
 		System.setProperty("java.security.auth.login.config", 
-							"C:/Users/Artem/workspace/Library/jaas.config");
+							"C:/Users/Admin/workspace/virtualLibrary/jaas.config");
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)

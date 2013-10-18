@@ -10,6 +10,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Expression;
 
 public class CommentHAO {
 	public void addComment(Comment comment) {
@@ -65,10 +66,10 @@ public class CommentHAO {
 
 	public List<Comment> getAllComments() throws SQLException {
 		Session session = null;
-		List<Comment> books = new ArrayList<Comment>();
+		List<Comment> comments = new ArrayList<Comment>();
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			books = session.createCriteria(Comment.class).list();
+			comments = session.createCriteria(Comment.class).list();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -77,7 +78,24 @@ public class CommentHAO {
 				session.close();
 			}
 		}
-		return books;
+		return comments;
+	}
+	
+	public List<Comment> getCommentsByBookId(int idBook) throws SQLException {
+		Session session = null;
+		List<Comment> comments = new ArrayList<Comment>();
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			comments = session.createQuery("from Comment where idBook=" + String.valueOf(idBook)).list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return comments;
 	}
 
 	public void deleteComment(Comment comment) throws SQLException {
