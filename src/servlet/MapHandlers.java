@@ -111,6 +111,43 @@ public class MapHandlers {
 				return;
 			}
 		}
+		//NEWS
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showListNews")) {
+				AdminClass.showListNews(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("addNews")) {
+				AdminClass.addNews(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("deleteNews")) {
+				AdminClass.deleteNews(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("editNews")) {
+				AdminClass.editListNews(request, response);
+				return;
+			}
+		}
+		
+		//BOOOKS
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showListBooks")) {
+				AdminClass.showListBooks(request, response);
+				return;
+			}
+		}
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/admin.jsp");
 		rd.forward(request, response);

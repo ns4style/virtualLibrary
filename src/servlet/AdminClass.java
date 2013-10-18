@@ -3,7 +3,9 @@ package servlet;
 
 import hibernateAccesObject.Factory;
 import hibernateMappingClass.Author;
+import hibernateMappingClass.Book;
 import hibernateMappingClass.Genre;
+import hibernateMappingClass.News;
 import hibernateMappingClass.Tag;
 
 import java.io.IOException;
@@ -118,6 +120,58 @@ public class AdminClass {
 		modify.setFirstName(names[0]);
 		modify.setLastName(names[1]);
 		Factory.getInstance().getAuthorHAO().updateAuthor(modify);
+		return;
+	}
+	
+	public static void showListNews(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		Writer wr=response.getWriter();
+		String str="";
+		News temp;
+		List<News> news = Factory.getInstance().getNewsHAO().getAllNews();
+		for (ListIterator<News> i=news.listIterator(); i.hasNext();){
+			temp=i.next();
+			str+=temp.getId()+"_-_";
+			str+=temp.getNews()+"_-_";
+		}
+		str=str.substring(0, str.length()-3);
+		wr.write(str);
+		wr.close();
+		return;
+	}
+	
+	public static void addNews(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		News news = new News();
+		news.setNews(request.getParameter("name"));
+		Factory.getInstance().getNewsHAO().addNews(news);
+		return;
+	}
+	
+	public static void deleteNews(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		News delete=Factory.getInstance().getNewsHAO().getNewsByName(request.getParameter("name"));
+		Factory.getInstance().getNewsHAO().deleteNews(delete);
+		return;
+	}
+	
+	public static void editListNews(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		News modify=Factory.getInstance().getNewsHAO().getNewsByName(request.getParameter("oldname"));	
+		modify.setNews(request.getParameter("newname"));
+		Factory.getInstance().getNewsHAO().updateNews(modify);
+		return;
+	}
+	
+	public static void showListBooks(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		Writer wr=response.getWriter();
+		String str="";
+		Book temp;
+		List<Book> books = Factory.getInstance().getBookHAO().getAllBooks();
+		for (ListIterator<Book> i=books.listIterator(); i.hasNext();){
+			temp=i.next();
+			str+=temp.getId()+"_-_";
+			str+=temp.getName()+"_-_";
+		}
+		str=str.substring(0, str.length()-3);
+		wr.write(str);
+		wr.close();
 		return;
 	}
 }

@@ -7,8 +7,11 @@ $(document)
 					$('#tags').on('hidden', hideListTags);
 					$('#authorsModal').on('show', showListAuthorsModal);
 					$('#authorsModal').on('hidden', hideListAuthorsModal);
-					
-//Functions of Genres
+					$('#news').on('show', showListNews);
+					$('#news').on('hidden', hideListNews);
+					$('#books').on('show', showListBooks);
+					$('#books').on('hidden', hideListBooks);
+					// Functions of Genres
 					function showListGenres(e) {
 						$.post("admin?action=showListGenres", ajaxShowGenres);
 					}
@@ -48,25 +51,27 @@ $(document)
 								+ (i + 1)
 								+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newGenre"><input id="newGenre" type="text" placeholder="New Genre"><button id="newGenre" name="newGenre" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
 						$('#tableGenre').append(newElem);
-						$("button[name*='newGenre']").bind("click",
-								addGenre);
+						$("button[name*='newGenre']").bind("click", addGenre);
 					}
 					;
-					
-					function addGenre(e){
+
+					function addGenre(e) {
 						var val = $('input#newGenre').val();
 						if (val == "") {
 							alert("Error of input");
 							return;
 						}
-						$.post("admin?action=addGenre&name="+val,ajaxAddGenre);
-					};
-					
-					function ajaxAddGenre(data){
+						$.post("admin?action=addGenre&name=" + val,
+								ajaxAddGenre);
+					}
+					;
+
+					function ajaxAddGenre(data) {
 						var e;
 						hideListGenres(e);
 						showListGenres(e);
-					};
+					}
+					;
 
 					function deleteGenre(e) {
 						$.post("admin?action=deleteGenre&name="
@@ -128,8 +133,9 @@ $(document)
 						var e;
 						hideListGenres(e);
 						showListGenres(e);
-					};
-//Functions of Tags
+					}
+					;
+					// Functions of Tags
 					function showListTags(e) {
 						$.post("admin?action=showListTags", ajaxShowTags);
 					}
@@ -139,7 +145,7 @@ $(document)
 						$('#tags-body').empty();
 					}
 					;
-					function ajaxShowTags(data){
+					function ajaxShowTags(data) {
 						var arrayOfTags = data.split(' ');
 						var i;
 						var newElem = '<table id="headTableTags" class="table table-bordered"><thead><tr><th>Id</th><th>Tag</th><th>Edit</th><th>Delete</th></tr></thead></table>';
@@ -160,19 +166,18 @@ $(document)
 									+ '" name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
 							$('#tableTag').append(newElem);
 						}
-						$("button[name*='editButton']")
-								.bind("click", editTag);
+						$("button[name*='editButton']").bind("click", editTag);
 						$("button[name*='deleteButton']").bind("click",
 								deleteTag);
 						newElem = '<tr><td>'
 								+ (i + 1)
 								+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newTag"><input id="newTag" type="text" placeholder="New Tag"><button id="newTag" name="newTag" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
 						$('#tableTag').append(newElem);
-						$("button[name*='newTag']").bind("click",
-								addTag);
-					};
-					
-					function editTag(e){
+						$("button[name*='newTag']").bind("click", addTag);
+					}
+					;
+
+					function editTag(e) {
 						$("button[name*='editButton']").attr('disabled', true);
 						$("button[name*='deleteButton']")
 								.attr('disabled', true);
@@ -192,8 +197,9 @@ $(document)
 								"click", data, cancelEditTag);
 						$("button[name*='changeTagButton']").bind("click",
 								editTagEvent);
-					};
-					
+					}
+					;
+
 					function cancelEditTag(e) {
 						$('td#' + e.currentTarget.id).empty();
 						$('td#' + e.currentTarget.id).append(e.data);
@@ -219,152 +225,347 @@ $(document)
 						var e;
 						hideListTags(e);
 						showListTags(e);
-					};
-					
-					function deleteTag(e){
+					}
+					;
+
+					function deleteTag(e) {
 						$.post("admin?action=deleteTag&name="
 								+ e.currentTarget.id, ajaxDeleteTag);
-					};
-					
-					function ajaxDeleteTag(data){
+					}
+					;
+
+					function ajaxDeleteTag(data) {
 						var e;
 						hideListTags(e);
 						showListTags(e);
-					};
-					
-					function addTag(e){
+					}
+					;
+
+					function addTag(e) {
 						var val = $('input#newTag').val();
 						if (val == "") {
 							alert("Error of input");
 							return;
 						}
-						$.post("admin?action=addTag&name="+val,ajaxAddTag);
+						$.post("admin?action=addTag&name=" + val, ajaxAddTag);
 					}
-					
-					function ajaxAddTag(data){
+
+					function ajaxAddTag(data) {
 						var e;
 						hideListTags(e);
 						showListTags(e);
 					}
-//Functions of Authors
+					// Functions of Authors
 
+					function showListAuthorsModal(e) {
+						$.post("admin?action=showListAuthorsModal",
+								ajaxShowAuthorsModal);
+					}
+					;
 
-function showListAuthorsModal(e) {
-	$.post("admin?action=showListAuthorsModal", ajaxShowAuthorsModal);
-}
-;
+					function hideListAuthorsModal(e) {
+						$('#authorsModal-body').empty();
+					}
+					;
+					function ajaxShowAuthorsModal(data) {
+						var arrayOfAuthorsModal = data.split(' ');
+						var i;
+						var newElem = '<table id="headTableAuthorsModal" class="table table-bordered"><thead><tr><th>Id</th><th>Author</th><th>Edit</th><th>Delete</th></tr></thead></table>';
+						$('#authorsModal-body').append(newElem);
+						newElem = '<tbody id="tableAuthorsModal"></tbody>';
+						$('#headTableAuthorsModal').append(newElem);
+						for (i = 0; i < arrayOfAuthorsModal.length; i++) {
+							newElem = '<tr><td>'
+									+ (i + 1)
+									+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="'
+									+ arrayOfAuthorsModal[i]
+									+ '">'
+									+ arrayOfAuthorsModal[i].split('_')[0]
+									+ ' '
+									+ arrayOfAuthorsModal[i].split('_')[1]
+									+ '</td><td><button id="'
+									+ arrayOfAuthorsModal[i]
+									+ '"name="editButton" class="btn btn-info">Edit</button></td><td><button id="'
+									+ arrayOfAuthorsModal[i]
+									+ '"name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
+							$('#tableAuthorsModal').append(newElem);
+						}
+						$("button[name*='editButton']").bind("click",
+								editAuthorsModal);
+						$("button[name*='deleteButton']").bind("click",
+								deleteAuthorsModal);
+						newElem = '<tr><td>'
+								+ (i + 1)
+								+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newAuthorsModal"><input id="newAuthorsModal" type="text" placeholder="New Author"><button id="newAuthorsModal" name="newAuthorsModal" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
+						$('#tableAuthorsModal').append(newElem);
+						$("button[name*='newAuthorsModal']").bind("click",
+								addAuthorsModal);
+					}
+					;
 
-function hideListAuthorsModal(e) {
-	$('#authorsModal-body').empty();
-}
-;
-function ajaxShowAuthorsModal(data){
-	var arrayOfAuthorsModal = data.split(' ');
-	var i;
-	var newElem = '<table id="headTableAuthorsModal" class="table table-bordered"><thead><tr><th>Id</th><th>Author</th><th>Edit</th><th>Delete</th></tr></thead></table>';
-	$('#authorsModal-body').append(newElem);
-	newElem = '<tbody id="tableAuthorsModal"></tbody>';
-	$('#headTableAuthorsModal').append(newElem);
-	for (i = 0; i < arrayOfAuthorsModal.length; i++) {
-		newElem = '<tr><td>'
-				+ (i + 1)
-				+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="'
-				+ arrayOfAuthorsModal[i]
-				+ '">'
-				+ arrayOfAuthorsModal[i].split('_')[0]+' '+arrayOfAuthorsModal[i].split('_')[1]
-				+ '</td><td><button id="'
-				+ arrayOfAuthorsModal[i]
-				+ '"name="editButton" class="btn btn-info">Edit</button></td><td><button id="'
-				+ arrayOfAuthorsModal[i]
-				+ '"name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
-		$('#tableAuthorsModal').append(newElem);
-	}
-	$("button[name*='editButton']")
-			.bind("click", editAuthorsModal);
-	$("button[name*='deleteButton']").bind("click",
-			deleteAuthorsModal);
-	newElem = '<tr><td>'
-			+ (i + 1)
-			+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newAuthorsModal"><input id="newAuthorsModal" type="text" placeholder="New Author"><button id="newAuthorsModal" name="newAuthorsModal" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
-	$('#tableAuthorsModal').append(newElem);
-	$("button[name*='newAuthorsModal']").bind("click",
-			addAuthorsModal);
-};
+					function editAuthorsModal(e) {
+						$("button[name*='editButton']").attr('disabled', true);
+						$("button[name*='deleteButton']")
+								.attr('disabled', true);
+						var data = $('td#' + e.currentTarget.id).html();
+						$('td#' + e.currentTarget.id).empty();
+						var newElem = '<input id="'
+								+ e.currentTarget.id
+								+ '" type="text" placeholder="'
+								+ e.currentTarget.id.split("_")[0]
+								+ " "
+								+ e.currentTarget.id.split("_")[1]
+								+ '"><button id="'
+								+ e.currentTarget.id
+								+ '" name="cancelChangeAuthorsModalButton" class="btn btn-danger pull-right">Back</button><button id="'
+								+ e.currentTarget.id
+								+ '" name="changeAuthorsModalButton" class="btn btn-success pull-right" style="margin-right:2px">OK</button>';
+						$('td#' + e.currentTarget.id).append(newElem);
+						$("button[name*='cancelChangeAuthorsModalButton']")
+								.bind("click", data, cancelEditAuthorsModal);
+						$("button[name*='changeAuthorsModalButton']").bind(
+								"click", editAuthorsModalEvent);
+					}
+					;
 
-function editAuthorsModal(e){
-	$("button[name*='editButton']").attr('disabled', true);
-	$("button[name*='deleteButton']")
-			.attr('disabled', true);
-	var data = $('td#' + e.currentTarget.id).html();
-	$('td#' + e.currentTarget.id).empty();
-	var newElem = '<input id="'
-			+ e.currentTarget.id
-			+ '" type="text" placeholder="'
-			+ e.currentTarget.id.split("_")[0] + " " + e.currentTarget.id.split("_")[1]
-			+ '"><button id="'
-			+ e.currentTarget.id
-			+ '" name="cancelChangeAuthorsModalButton" class="btn btn-danger pull-right">Back</button><button id="'
-			+ e.currentTarget.id
-			+ '" name="changeAuthorsModalButton" class="btn btn-success pull-right" style="margin-right:2px">OK</button>';
-	$('td#' + e.currentTarget.id).append(newElem);
-	$("button[name*='cancelChangeAuthorsModalButton']").bind(
-			"click", data, cancelEditAuthorsModal);
-	$("button[name*='changeAuthorsModalButton']").bind("click",
-			editAuthorsModalEvent);
-};
+					function cancelEditAuthorsModal(e) {
+						$('td#' + e.currentTarget.id).empty();
+						$('td#' + e.currentTarget.id).append(e.data);
+						$("button[name*='editButton']").removeAttr('disabled');
+						$("button[name*='deleteButton']")
+								.removeAttr('disabled');
+					}
+					;
 
-function cancelEditAuthorsModal(e) {
-	$('td#' + e.currentTarget.id).empty();
-	$('td#' + e.currentTarget.id).append(e.data);
-	$("button[name*='editButton']").removeAttr('disabled');
-	$("button[name*='deleteButton']")
-			.removeAttr('disabled');
-}
-;
+					function editAuthorsModalEvent(e) {
+						var val = $('input#' + e.currentTarget.id).val();
+						if (val.split(" ").length != 2) {
+							alert("Error of input");
+							return;
+						}
+						var names = val.split(" ");
+						$.post("admin?action=editAuthorsModal&oldname="
+								+ e.currentTarget.id + "&newname=" + names[0]
+								+ '_' + names[1], ajaxEditAuthorsModal);
+					}
+					;
 
-function editAuthorsModalEvent(e) {
-	var val = $('input#' + e.currentTarget.id).val();
-	if (val.split(" ").length != 2) {
-		alert("Error of input");
-		return;
-	}
-	var names =val.split(" ");
-	$.post("admin?action=editAuthorsModal&oldname="
-			+ e.currentTarget.id + "&newname=" + names[0]+'_'+names[1],
-			ajaxEditAuthorsModal);
-}
-;
+					function ajaxEditAuthorsModal(data) {
+						var e;
+						hideListAuthorsModal(e);
+						showListAuthorsModal(e);
+					}
+					;
 
-function ajaxEditAuthorsModal(data) {
-	var e;
-	hideListAuthorsModal(e);
-	showListAuthorsModal(e);
-};
+					function deleteAuthorsModal(e) {
+						$.post("admin?action=deleteAuthorsModal&name="
+								+ e.currentTarget.id, ajaxDeleteAuthorsModal);
+					}
+					;
 
-function deleteAuthorsModal(e){
-	$.post("admin?action=deleteAuthorsModal&name="
-			+ e.currentTarget.id, ajaxDeleteAuthorsModal);
-};
+					function ajaxDeleteAuthorsModal(data) {
+						var e;
+						hideListAuthorsModal(e);
+						showListAuthorsModal(e);
+					}
+					;
 
-function ajaxDeleteAuthorsModal(data){
-	var e;
-	hideListAuthorsModal(e);
-	showListAuthorsModal(e);
-};
+					function addAuthorsModal(e) {
+						var val = $('input#newAuthorsModal').val();
+						if (val.split(" ").length != 2) {
+							alert("Error of input");
+							return;
+						}
+						$.post("admin?action=addAuthorsModal&name=" + val,
+								ajaxAddAuthorsModal);
+					}
 
-function addAuthorsModal(e){
-	var val = $('input#newAuthorsModal').val();
-	if (val.split(" ").length != 2) {
-		alert("Error of input");
-		return;
-	}
-	$.post("admin?action=addAuthorsModal&name="+val,ajaxAddAuthorsModal);
-}
+					function ajaxAddAuthorsModal(data) {
+						var e;
+						hideListAuthorsModal(e);
+						showListAuthorsModal(e);
+					}
+					;
 
-function ajaxAddAuthorsModal(data){
-	var e;
-	hideListAuthorsModal(e);
-	showListAuthorsModal(e);
-};
+					// NEWS
 
-});
+					function showListNews(e) {
+						$.post("admin?action=showListNews", ajaxShowNews);
+					}
+					;
+
+					function hideListNews(e) {
+						$('#news-body').empty();
+					}
+					;
+					function ajaxShowNews(data) {
+						var arrayOfNews = data.split('_-_');
+						var i, k = 0;
+						var newElem = '<table id="headTableNews" class="table table-bordered"><thead><tr><th>Id</th><th>News</th><th>Edit</th><th>Delete</th></tr></thead></table>';
+						$('#news-body').append(newElem);
+						newElem = '<tbody id="tableNews"></tbody>';
+						$('#headTableNews').append(newElem);
+						for (i = 0; i < arrayOfNews.length; i += 2, k++) {
+							newElem = '<tr><td>'
+									+ (k + 1)
+									+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="'
+									+ arrayOfNews[i]
+									+ '">'
+									+ arrayOfNews[i + 1]
+									+ '</td><td><button id="'
+									+ arrayOfNews[i]
+									+ '"name="editButton" class="btn btn-info">Edit</button></td><td><button id="'
+									+ arrayOfNews[i]
+									+ '" name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
+							$('#tableNews').append(newElem);
+						}
+						$("button[name*='editButton']").bind("click",
+								arrayOfNews, editNews);
+						$("button[name*='deleteButton']").bind("click",
+								arrayOfNews, deleteNews);
+						newElem = '<tr><td>'
+								+ (k + 1)
+								+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="newNews"><input id="newNews" type="text" placeholder="New News"><button id="newNews" name="newNews" class="btn btn-success pull-right">Add</button></td><td></td><td></td></tr>';
+						$('#tableNews').append(newElem);
+						$("button[name*='newNews']").bind("click", addNews);
+					}
+					;
+
+					function editNews(e) {
+						var i;
+						$("button[name*='editButton']").attr('disabled', true);
+						$("button[name*='deleteButton']")
+								.attr('disabled', true);
+						var data = $('td#' + e.currentTarget.id).html();
+						$('td#' + e.currentTarget.id).empty();
+						for (i = 0; i < e.data.length; i++)
+							if (e.data[i] == e.currentTarget.id)
+								break;
+						var newElem = '<input id="correctNews" type="text" placeholder="'
+								+ e.data[++i]
+								+ '"><button id="'
+								+ e.currentTarget.id
+								+ '" name="cancelChangeNewsButton" class="btn btn-danger pull-right">Back</button><button id="'
+								+ e.currentTarget.id
+								+ '" name="changeNewsButton" class="btn btn-success pull-right" style="margin-right:2px">OK</button>';
+						$('td#' + e.currentTarget.id).append(newElem);
+						$("button[name*='cancelChangeNewsButton']").bind(
+								"click", data, cancelEditNews);
+						$("button[name*='changeNewsButton']").bind("click",
+								e.data, editNewsEvent);
+					}
+					;
+
+					function cancelEditNews(e) {
+						$('td#' + e.currentTarget.id).empty();
+						$('td#' + e.currentTarget.id).append(e.data);
+						$("button[name*='editButton']").removeAttr('disabled');
+						$("button[name*='deleteButton']")
+								.removeAttr('disabled');
+					}
+					;
+
+					function editNewsEvent(e) {
+						var val = $('input#correctNews').val();
+						if (val == "") {
+							alert("Error of input");
+							return;
+						}
+						for (i = 0; i < e.data.length; i++)
+							if (e.data[i] == e.currentTarget.id)
+								break;
+						$.post("admin?action=editNews&oldname=" + e.data[++i]
+								+ "&newname=" + val, ajaxEditNews);
+					}
+					;
+
+					function ajaxEditNews(data) {
+						var e;
+						hideListNews(e);
+						showListNews(e);
+					}
+					;
+
+					function deleteNews(e) {
+						for (i = 0; i < e.data.length; i++)
+							if (e.data[i] == e.currentTarget.id)
+								break;
+						$.post("admin?action=deleteNews&name=" + e.data[++i],
+								ajaxDeleteNews);
+					}
+					;
+
+					function ajaxDeleteNews(data) {
+						var e;
+						hideListNews(e);
+						showListNews(e);
+					}
+					;
+
+					function addNews(e) {
+						var val = $('input#newNews').val();
+						if (val == "") {
+							alert("Error of input");
+							return;
+						}
+						$.post("admin?action=addNews&name=" + val, ajaxAddNews);
+					}
+
+					function ajaxAddNews(data) {
+						var e;
+						hideListNews(e);
+						showListNews(e);
+					}
+
+					// BOOOOOOOOOOOKS
+
+					function showListBooks(e) {
+						$.post("admin?action=showListBooks", ajaxShowBooks);
+					}
+					;
+
+					function hideListBooks(e) {
+						$('#books-body').empty();
+					}
+					;
+
+					function ajaxShowBooks(data){
+						var arrayOfTemp = data.split('_-_');
+						var arrayOfId = new Array(),arrayOfNames = new Array();
+						for (i=0;i<arrayOfTemp.length;i+=2){
+							arrayOfId[i/2]=arrayOfTemp[i];
+							arrayOfNames[i/2]=arrayOfTemp[i+1];
+						}
+						var i;
+						var newElem = '<table id="headTableBooks" class="table table-bordered"><thead><tr><th>Id</th><th>Book</th><th>Edit</th><th>Delete</th></tr></thead></table>';
+						$('#books-body').append(newElem);
+						newElem = '<tbody id="tableBooks"></tbody>';
+						$('#headTableBooks').append(newElem);
+						for (i = 0; i < arrayOfNames.length; i++) {
+							newElem = '<tr><td>'
+									+ (i + 1)
+									+ '</td><td style="width:90%; padding-bottom:0px; padding-top:5px" id="'
+									+ arrayOfId[i]
+									+ '">'
+									+ arrayOfNames[i]
+									+ '</td><td><button id="'
+									+ arrayOfId[i]
+									+ '"name="editButton" class="btn btn-info">Edit</button></td><td><button id="'
+									+ arrayOfId[i]
+									+ '" name="deleteButton" class="btn btn-danger">Delete</button></td></tr>';
+							$('#tableBooks').append(newElem);
+						}
+						$("button[name*='editButton']").bind("click",
+								arrayOfTemp, editBooks);
+						$("button[name*='deleteButton']").bind("click",
+								arrayOfTemp, deleteBooks);
+					};
+					
+					function editBooks(e){
+						
+					}
+					
+					function deleteBooks(e){
+						
+					}
+				});
