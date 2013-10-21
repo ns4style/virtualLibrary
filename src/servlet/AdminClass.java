@@ -11,8 +11,12 @@ import hibernateMappingClass.Tag;
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -177,6 +181,60 @@ public class AdminClass {
 	
 	public static void listAttrsofBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
 		Book book =Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("id")));
+		Set<Genre> genres=book.getGenres();
+		Set <Tag> tags=book.getTags();
+		Set <Author> authors=book.getAuthors();
+		String s = "";
+		for (Iterator<Genre> i=genres.iterator(); i.hasNext();){
+			s+=i.next().getValue();
+			s+=("_-_");
+		}
+		s=s.substring(0, s.length()-3);
+		s+="!#!";
+		for (Iterator<Tag> i=tags.iterator(); i.hasNext();){
+			s+=i.next().getValue();
+			s+=("_-_");
+		}
+		s=s.substring(0, s.length()-3);
+		s+="!#!";
+		for (Iterator<Author> i=authors.iterator(); i.hasNext();){
+			s+=i.next().getFullName();
+			s+=("_-_");
+		}
+		s=s.substring(0, s.length()-3);
+		Writer wr=response.getWriter();
+		wr.write(s);
+		return;
+	}
+	
+	public static void editDetailBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		String[] genres=request.getParameter("genres").split(" ");
+		String[] tags=request.getParameter("tags").split(" ");
+		String[] authors=request.getParameter("authors").split(" ");
+		Set<Genre> setGenre = new HashSet();
+		Set<Tag> setTag = new HashSet();
+		Set<Author> setAuthor = new HashSet();
+		int i;
+		Genre tempGenre;
+		Tag tempTag;
+		Author tempAuthor;
+		for (i=0;i<genres.length;i++){
+			tempGenre=Factory.getInstance().getGenreHAO().getGenreByName(genres[i]);
+			setGenre.add(tempGenre);
+		}
+		for (i=0;i<tags.length;i++){
+			tempTag=Factory.getInstance().getTagHAO().getTagByName(tags[i]);
+			setTag.add(tempTag);
+		}
+		for (i=0;i<authors.length;i++){
+			tempAuthor=Factory.getInstance().getAuthorHAO().getAuthorByName(authors[i]);
+			setAuthor.add(tempAuthor);
+		}
+		Book modBook=Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("bookId")));
+		modBook.setAuthors(setAuthor);
+		modBook.setGenres(setGenre);
+		modBook.setTags(setTag);
+		Factory.getInstance().getBookHAO().updateBook(modBook);
 		return;
 	}
 }

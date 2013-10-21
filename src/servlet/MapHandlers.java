@@ -157,6 +157,13 @@ public class MapHandlers {
 			}
 		}
 		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("editDetailBook")) {
+				AdminClass.editDetailBook(request, response);
+				return;
+			}
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/admin.jsp");
 		rd.forward(request, response);
 	}

@@ -12,10 +12,6 @@ $(document)
 					$('#books').on('show', showListBooks);
 					$('#books').on('hidden', hideListBooks);
 					$('#bookEditDetail').on('hidden', hideListDetailBooks);
-					/*$("#bookEditDetail").css({
-					     "width" : 1500,
-					     "height" : 1500
-					});*/
 					// Functions of Genres
 					function showListGenres(e) {
 						$.post("admin?action=showListGenres", ajaxShowGenres);
@@ -604,7 +600,7 @@ $(document)
 					}
 					
 					function clickGenreElement(e){
-						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn btn-success">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteGenreButton">x</button></div>';
+						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteGenreButton">x</button></div>';
 						$('#selectedGenres').prepend(newElem);
 						$("button[name*='DeleteGenreButton']").bind("click",clickDeleteGenreButton);
 					}
@@ -623,7 +619,7 @@ $(document)
 					}
 					
 					function clickTagElement(e){
-						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn btn-success">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteTagButton">x</button></div>';
+						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteTagButton">x</button></div>';
 						$('#selectedTags').prepend(newElem);
 						$("button[name*='DeleteTagButton']").bind("click",clickDeleteTagButton);
 					}
@@ -642,7 +638,7 @@ $(document)
 					}
 					
 					function clickAuthorElement(e){
-						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn btn-success">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteAuthorButton">x</button></div>';
+						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteAuthorButton">x</button></div>';
 						$('#selectedAuthors').prepend(newElem);
 						$("button[name*='DeleteAuthorButton']").bind("click",clickDeleteAuthorButton);
 					}
@@ -656,7 +652,11 @@ $(document)
 						$("button[name*='deleteButton']")
 								.attr('disabled', true);
 						createFormBook();
-						var newElem = '<h2>Add Book</h2>';
+						var newElem = '<br/><br/><br/><button class="btn btn-success" name="addBookDetailButton">Add</button><button class="btn btn-danger" name="cancelEditBookDetailButton">Back</button>';
+						$('#bookEditDetail-body').append(newElem);
+						$("button[name*='addBookDetailButton']").bind("click",addBookDetailButtonEvent);
+						$("button[name*='cancelEditBookDetailButton']").bind("click",cancelEditBookDetailButton);
+						newElem = '<h2>Add Book</h2>';
 						$('#bookEditDetail-header').append(newElem);
 						$('#bookEditDetail').modal('show');
 					}
@@ -667,18 +667,77 @@ $(document)
 						$("button[name*='deleteButton']")
 								.attr('disabled', true);
 						createFormBook();
+						var newElem = '<br/><br/><br/><button class="btn btn-success" name="editBookDetailButton">Edit</button><button class="btn btn-danger" name="cancelEditBookDetailButton">Back</button>';
+						$('#bookEditDetail-body').append(newElem);
+						$("button[name*='editBookDetailButton']").bind("click",editBookDetailButtonEvent);
+						$("button[name*='cancelEditBookDetailButton']").bind("click",cancelEditBookDetailButton);
 						for (i = 0; i < e.data.length; i++)
 							if (e.data[i] == e.currentTarget.id)
 								break;
 						$.post("admin?action=listAttrofBook&id="+e.currentTarget.id, ajaxLoadAttrs);
-						var newElem = '<h2>Edit "'+ e.data[++i]+'"</h2>';
+						newElem = '<div id="'+e.data[i]+'"><h2>Edit "'+ e.data[++i]+'"</h2><div>';
 						$('#bookEditDetail-header').append(newElem);
 						$('#bookName').val(e.data[i]);
 						$('#bookEditDetail').modal('show');
 					}
 					
 					function ajaxLoadAttrs(data){
+						var newElem;
+						var temp=data.split("!#!");
+						var arrayOfGenres=temp[0].split("_-_");
+						var arrayOfTags=temp[1].split("_-_");
+						var arrayOfAuthors=temp[2].split("_-_");
+						for (i=0;i<arrayOfGenres.length;i++){
+							newElem='<div id="'+arrayOfGenres[i]+'" class="btn-group pull-left"><button class="btn">'+arrayOfGenres[i]+'</button><button class="btn" id="'+arrayOfGenres[i]+'" name="DeleteGenreButton">x</button></div>';
+							$('#selectedGenres').prepend(newElem);
+						}
+						$("button[name*='DeleteGenreButton']").bind("click",clickDeleteGenreButton);
 						
+						for (i=0;i<arrayOfTags.length;i++){
+							newElem='<div id="'+arrayOfTags[i]+'" class="btn-group pull-left"><button class="btn">'+arrayOfTags[i]+'</button><button class="btn" id="'+arrayOfTags[i]+'" name="DeleteTagButton">x</button></div>';
+							$('#selectedTags').prepend(newElem);
+						}
+						$("button[name*='DeleteTagButton']").bind("click",clickDeleteTagButton);
+						
+						for (i=0;i<arrayOfAuthors.length;i++){
+							newElem='<div id="'+arrayOfAuthors[i]+'" class="btn-group pull-left"><button class="btn">'+arrayOfAuthors[i]+'</button><button class="btn" id="'+arrayOfAuthors[i]+'" name="DeleteAuthorButton">x</button></div>';
+							$('#selectedAuthors').prepend(newElem);
+						}
+						$("button[name*='DeleteAuthorButton']").bind("click",clickDeleteAuthorButton);
+					}
+					
+					function editBookDetailButtonEvent(e){
+						var genres = $('#selectedGenres').children();
+						var genresString="";
+						genres.length--;
+						for (i=0;i<genres.length;i++){
+							genresString+=genres[i].id+" ";
+						}
+						genresString.length--;
+						var tags = $('#selectedTags').children();
+						var tagsString="";
+						tags.length--;
+						for (i=0;i<tags.length;i++){
+							tagsString+=tags[i].id+" ";
+						}
+						tagsString.length--;
+						var authors = $('#selectedAuthors').children();
+						var authorsString="";
+						authors.length--;
+						for (i=0;i<authors.length;i++){
+							authorsString+=authors[i].id+" ";
+						}
+						authorsString.length--;
+						var idbook=$('#bookEditDetail-header').children();
+						$.post("admin?action=editDetailBook&bookId="+idbook[0].id+"&genres="+genresString+"&tags="+tagsString+"&authors="+authorsString, cancelEditBookDetailButton);
+					}
+					
+					function addBookDetailButtonEvent(e){
+						alert(12);
+					}
+					
+					function cancelEditBookDetailButton(e){
+						$('#bookEditDetail').modal('hide')
 					}
 
 					function deleteBooks(e) {
