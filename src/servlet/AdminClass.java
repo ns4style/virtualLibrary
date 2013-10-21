@@ -174,4 +174,9 @@ public class AdminClass {
 		wr.close();
 		return;
 	}
+	
+	public static void listAttrsofBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		Book book =Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("id")));
+		return;
+	}
 }

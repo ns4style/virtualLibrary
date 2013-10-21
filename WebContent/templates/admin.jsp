@@ -37,6 +37,10 @@ html,body {
 	padding-top:30px;
 }
 
+.dropdown-menu li:hover {
+	background: #66CCCC;
+}
+
 .footer {
 	height: 100px;
 	margin-top: -100px;
@@ -141,6 +145,14 @@ html,body {
 					<h2>List of Books:</h2>
 				</div>
 				<div id="books-body" class="modal-body"></div>
+			</div>
+			</div>
+			<div>
+			<div id="bookEditDetail" class="modal hide fade text-center">
+				<div class="modal-header" id="bookEditDetail-header">
+				</div>
+				<div id="bookEditDetail-body" class="modal-body pull-left text-left span5">
+				</div>
 			</div>
 			</div>
 			</div>
