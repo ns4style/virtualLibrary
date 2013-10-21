@@ -180,143 +180,222 @@ html,body {
 				<img src="../images/table.png"
 					style="width: 100%; position: relative; top: -243px;"></img>
 			</div>
+			
+			
 		</div>
+	</div>
 
-		<div id="book_modal" class="modal hide fade" style="width: 555px;">
-			<div class="modal-header" id="book-header"></div>
-			<div class="modal-body" id="book-body"></div>
-		</div>
-		<script type="text/javascript">
-			var alreadyDownloadPages = new Array();
+	<div id="book_modal" class="modal hide fade" style="width: 555px;">
+		<div class="modal-header" id="book-header"></div>
+		<div class="modal-body" id="book-body"></div>
+	</div>
+	
+	
 
-			$.post(
-					window.location + "?page=0" + "&adp="
-							+ alreadyDownloadPages, ajaxCheck);
-			var previous_page = 1;
-			$("#scrollMore .1").addClass('active');
+	<script type="text/javascript">
+		var alreadyDownloadPages = new Array();
 
-			$('.carousel').each(function() {
-				$(this).carousel({
-					interval : Math.random() * 8000 + 4000
-				});
+		$.post(window.location + "?page=0" + "&adp=" // dynamic
+				+ alreadyDownloadPages, ajaxCheck); // create
+		var previous_page = 1; // first
+		$("#scrollMore .1").addClass('active'); // page
+
+		$('.carousel').each(function() {
+			$(this).carousel({
+				interval : Math.random() * 8000 + 4000
 			});
+		});
 
-			$(function() {
-				$(".randomBooksJCarouselLite").jCarouselLite({
-					auto : 3000,
-					speed : 1000,
-					circular : true,
-					visible : 7,
-					hoverPause : true
-				});
+		$(function() {
+			$(".randomBooksJCarouselLite").jCarouselLite({
+				auto : 3000,
+				speed : 1000,
+				circular : true,
+				visible : 7,
+				hoverPause : true
 			});
+		});
 
-			var button = new Array();
-			for (var i = 1; i <= "${pageCount}"; i++) {
-				button.push(".scrollMore ." + i);
+		// -------------------------- Create page -------------------------------------- //
+		var button = new Array(); // page button
+		for (var i = 1; i <= "${pageCount}"; i++) {
+			button.push(".scrollMore ." + i);
+		}
+		addPageLiCollection("#scrollMoreUl", "${pageCount}");
+
+		$(".scrollMore .jCarouselLite").jCarouselLite(
+				{
+					btnNext : ".scrollMore .next",
+					btnPrev : ".scrollMore .prev",
+					btnGo : button,
+					circular : false,
+					scroll : 1,
+					visible : 1,
+					afterEnd : function(a, to, btnGo) {
+						if (previous_page != ($(a[0]).index() + 1)) {
+							$("#scrollMore ." + previous_page).removeClass(
+									'active');
+							$("#scrollMore ." + ($(a[0]).index() + 1))
+									.addClass('active');
+							previous_page = ($(a[0]).index() + 1);
+						}
+						$.post(window.location + "?page=" + $(a[0]).index()
+								+ "&adp=" + alreadyDownloadPages, ajaxCheck);
+					}
+				});
+
+		function ajaxCheck(data) { // dynamic create page[i]
+			if (data == "") {
+				return;
+			}
+			var a = data.split(';');
+
+			for (var i = 1; i < a.length - 1; i++) {
+				var temp = a[i].split(':');
+				document.getElementById('li' + a[0]).innerHTML += '<a data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';
 			}
 
-			addPageLiCollection("#scrollMoreUl", "${pageCount}");
-			$(".scrollMore .jCarouselLite").jCarouselLite(
-					{
-						btnNext : ".scrollMore .next",
-						btnPrev : ".scrollMore .prev",
-						btnGo : button,
-						circular : false,
-						scroll : 1,
-						visible : 1,
-						afterEnd : function(a, to, btnGo) {
-							if (previous_page != ($(a[0]).index() + 1)) {
-								$("#scrollMore ." + previous_page).removeClass('active');
-								$("#scrollMore ." + ($(a[0]).index() + 1)).addClass('active');
-								previous_page = ($(a[0]).index() + 1);
-							}
-							$.post(window.location + "?page="
-											+ $(a[0]).index() + "&adp="
-											+ alreadyDownloadPages, ajaxCheck);
-						}
-					});
+			alreadyDownloadPages.push(a[0]);
+		};
+		// -------------------------- Create page -------------------------------------- //
 
-			function ajaxCheck(data) {
-				if (data == "") {
-					return;
-				}
-				var a = data.split(';');
+		// ---------------------- handler for img ----------------------------- //
+		$(document).on("click", ".jcarousel_img", function() {
+			var id_book = $(this).data('id');
+			$.post(window.location + "?id_book=" + id_book, ajaxModalBook);
+		});
 
-				for (var i = 1; i < a.length - 1; i++) {
-					var temp = a[i].split(':');
-					document.getElementById('li' + a[0]).innerHTML += '<a data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';
-				}
+		$(document).on("click", ".img-polaroid", function() {
+			var id_book = $(this).data('id');
+			$.post(window.location + "?id_book=" + id_book, ajaxModalBook);
+		});
+		// ---------------------- handler for img ----------------------------- //
 
-				alreadyDownloadPages.push(a[0]);
-			};
-
-			$(document).on("click", ".jcarousel_img", function() {
-				var id_book = $(this).data('id');
-				$.post(window.location + "?id_book=" + id_book, ajaxModalBook);
-			});
-
-			$(document).on("click", ".img-polaroid", function() {
-				var id_book = $(this).data('id');
-				$.post(window.location + "?id_book=" + id_book, ajaxModalBook);
-			});
-
-			function ajaxModalBook(data) {
-				if (data == "") {
-					return;
-				}
-				var a = data.split(';'); // name ; img_1, .., .. ; tag_1, ..... ,; fullUserName : comment, .......... ,;
+		// ----------------------- Create modal window -------------------------------------- //
+		function ajaxModalBook(data) {
+			if (data == "") {
+				return;
+			}
+			var a = data.split(';'); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment_-_ .......... ,; id; count;
+			$(".modal-header")
+					.append(
+							"<h2 style=\"margin-top: 5px; margin-bottom: 5px;margin-top: 5px; margin-bottom: 5px;\">"
+									+ a[0] + "</h2>");
+			if ("${user_priveleged}" < 2) {
 				$(".modal-header")
+					.append("<input type=\"submit\" class=\"btn\" id=\"addCommentBtn\" value=\"Send\" style=\"margin-top:5px; margin-bottom:10px;\">");
+			}
+			var authors = a[1].split(',');
+			for (var i = 0; i < authors.length - 1; i++) {
+				$(".modal-header").append(authors[i] + " ");
+			}
+
+			$(".modal-body").append(
+					"<img src=\"" + a[2].split(',')[0]
+							+ "\" width=\"168\" height=\"263\">");
+			$(".modal-body").append(
+					"<img src=\"" + a[2].split(',')[1]
+							+ "\" width=\"168\" height=\"263\">");
+			$(".modal-body").append(
+					"<img src=\"" + a[2].split(',')[2]
+							+ "\" width=\"168\" height=\"263\">");
+
+			$(".modal-body").append("<h4>Tags</h4>");
+			var tags = a[3].split(',');
+			for (var i = 0; i < tags.length - 1; i++) {
+				$(".modal-body")
 						.append(
-								"<h2 style=\"margin-top: 5px; margin-bottom: 5px;margin-top: 5px; margin-bottom: 5px;\">"
-										+ a[0] + "</h2>");
-				var authors = a[1].split(',');
-				for (var i = 0; i < authors.length - 1; i++) {
-					$(".modal-header").append(authors[i] + " ");
-				}
+								"<spawn style=\"color:blue\">#" + tags[i]
+										+ " </spawn>");
+			}
 
-				$(".modal-body").append(
-						"<img src=\"" + a[2].split(',')[0]
-								+ "\" width=\"168\" height=\"263\">");
-				$(".modal-body").append(
-						"<img src=\"" + a[2].split(',')[1]
-								+ "\" width=\"168\" height=\"263\">");
-				$(".modal-body").append(
-						"<img src=\"" + a[2].split(',')[2]
-								+ "\" width=\"168\" height=\"263\">");
+			$(".modal-body").append("<h5>Comments</h5>");
+			var comments = a[4].split('_-_');
+			for (var i = 0; i < comments.length - 1; i++) {
+				$(".modal-body")
+						.append(
+								"<div id=\"comment"
+										+ comments[i].split(':')[0]
+										+ "\"><hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>"
+										+ comments[i].split(':')[1]
+										+ "</b><br>"
+										+ comments[i].split(':')[2] + "</div>");
 
-				$(".modal-body").append("<h4>Tags</h4>");
-				var tags = a[3].split(',');
-				for (var i = 0; i < tags.length - 1; i++) {
-					$(".modal-body").append(
-							"<spawn style=\"color:blue\">#" + tags[i]
-									+ " </spawn>");
+				if ("${user_privileged}" == 0) { // del comment for admin
+					$("#comment" + comments[i].split(':')[0]).prepend(
+							"<button type=\"button\" class=\"close\" data-id=\""
+									+ comments[i].split(':')[0]
+									+ "\">×</button>");
 				}
-
-				$(".modal-body").append("<h5>Comments</h5>");
-				var comments = a[4].split(',');
-				for (var i = 0; i < comments.length - 1; i++) {
-					$(".modal-body").append(
-							"<div id=\"comment" + comments[i].split(':')[0] 
-									+ "\"><hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>"
-									+ comments[i].split(':')[1] + "</b><br>"
-									+ comments[i].split(':')[2] + "</div>");
-				}
-				$(".modal-body").append(
+			}
+			if ("${user_privileged}" < 3) { // add comment not for all
+				$(".modal-body")
+						.append(
 								"<hr style=\"margin-top: 5px; margin-bottom: 5px;\" id=\"comment_bottom\"><h5>Add comments</h5>");
-				$(".modal-body").append("<input type=\"submit\" class=\"btn\" value=\"valami\">");
+				$(".modal-body")
+						.append(
+								"<div><input id=\"newComment\" type=\"text\" placeholder=\"New Comment\" style=\"margin:0px;\"><br><input type=\"submit\" class=\"btn\" id=\"addCommentBtn\" value=\"Send\" style=\"margin-top:5px; margin-bottom:10px;\"><br> </div>");
 
-				//$("<div><hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>${user_name}</b><br>fsdfsfs</div>")
-						//.insertBefore("#comment_bottom");
-				
-				$("#book_modal").modal('show');
-			};
+				$("#addCommentBtn").bind("click", a[5], addCommentFunc);
+			}
 
-			$("#book_modal").on('hidden', function() {
-				$('#book-header').empty();
-				$('#book-body').empty();
-			});
-		</script>
+			$("#book_modal").modal('show');
+		};
+		// ----------------------- Create modal window -------------------------------------- //
+
+		// ----------------------- Clean modal window -------------------------------------- //
+		$("#book_modal").on('hidden', function() {
+			$('#book-header').empty();
+			$('#book-body').empty();
+		});
+		// ----------------------- Clean modal window -------------------------------------- //
+
+		// ----------------------- Add comment -------------------------------------- //
+		function addCommentFunc(event) {
+			if ($("#newComment").val() == "")
+				return;
+
+			$.post(window.location + "?add_new_comment=" + event.data
+					+ "_-_${user_id}_-_" + $("#newComment").val(),
+					callbackAddCommentFunc);
+		};
+
+		function callbackAddCommentFunc(data) {
+			if (data == "")
+				return;
+
+			$("<div id=\"comment" + data + "\"><hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>${user_name}</b><br>"
+							+ $("#newComment").val() + "</div>").insertBefore(
+					"#comment_bottom");
+			
+			if ("${user_privileged}" == 0) { // del comment for admin
+				$("#comment" + data).prepend(
+						"<button type=\"button\" class=\"close\" data-id=\""
+								+ data
+								+ "\">×</button>");
+			}
+			$("#newComment").val("");
+
+		};
+		// ----------------------- Add comment -------------------------------------- //	
+
+		// ----------------------- Delete comment -------------------------------------- //
+		$(document).on(
+				"click",
+				".close",
+				function() {
+					var id_comment = $(this).data('id');
+					$.post(window.location + "?delete_comment=" + id_comment,
+							callbackDeleteCommentFunc);
+				});
+
+		function callbackDeleteCommentFunc(data) {
+			if (data == "")
+				return;
+			$("#comment" + data).remove();
+		};
+		// ----------------------- Delete comment -------------------------------------- //
+	</script>
 </body>
 </html>
 

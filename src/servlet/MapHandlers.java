@@ -277,11 +277,44 @@ public class MapHandlers {
 			
 			for (int i=0; i<comments.size(); i++) {
 				stringBuffer.append(comments.get(i).getId() + ":" + comments.get(i).getUser().getFname() + " " + comments.get(i).getUser().getLname() +
-						":" + comments.get(i).getValue() + ",");
+						":" + comments.get(i).getValue() + "_-_");
 			}
-			stringBuffer.append(";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment, .......... ,;
+			stringBuffer.append(";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment_-_ .......... ,;
+			stringBuffer.append(book.getId() + ";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment_-_ .......... ,; id;
+			stringBuffer.append(book.getCount() + ";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment_-_ .......... ,; id; count;
 			
 			response.getWriter().write(stringBuffer.toString());
+			return;
+		}
+		else if (request.getParameter("add_new_comment") != null) { // ------- добавление комментария ----------- //
+			String s = request.getParameter("add_new_comment");
+			if(s.split("_-_")[2] == "")
+				return;
+			Comment comment = new Comment();
+			comment.setIdBook(Integer.parseInt(s.split("_-_")[0]));
+			try {
+				comment.setUser(Factory.getInstance().getUserHAO().getUserById(Integer.parseInt(s.split("_-_")[1])));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			comment.setValue(s.split("_-_")[2]);
+			Factory.getInstance().getCommentHAO().addComment(comment);
+			response.getWriter().write(String.valueOf(comment.getId()));
+			return;			
+		}
+		else if (request.getParameter("delete_comment") != null) { // ----------- удаление комментария ------------ //
+			int id = Integer.parseInt(request.getParameter("delete_comment"));
+			try {
+				Factory.getInstance().getCommentHAO().deleteComment(Factory.getInstance().getCommentHAO().getCommentById(id));
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			response.getWriter().write(String.valueOf(id));
 			return;
 		}
 		else { // ---------------------------------------------- Первая загрузка ------------------------------- //
