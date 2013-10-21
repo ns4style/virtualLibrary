@@ -11,6 +11,11 @@ $(document)
 					$('#news').on('hidden', hideListNews);
 					$('#books').on('show', showListBooks);
 					$('#books').on('hidden', hideListBooks);
+					$('#bookEditDetail').on('hidden', hideListDetailBooks);
+					/*$("#bookEditDetail").css({
+					     "width" : 1500,
+					     "height" : 1500
+					});*/
 					// Functions of Genres
 					function showListGenres(e) {
 						$.post("admin?action=showListGenres", ajaxShowGenres);
@@ -529,12 +534,12 @@ $(document)
 					}
 					;
 
-					function ajaxShowBooks(data){
+					function ajaxShowBooks(data) {
 						var arrayOfTemp = data.split('_-_');
-						var arrayOfId = new Array(),arrayOfNames = new Array();
-						for (i=0;i<arrayOfTemp.length;i+=2){
-							arrayOfId[i/2]=arrayOfTemp[i];
-							arrayOfNames[i/2]=arrayOfTemp[i+1];
+						var arrayOfId = new Array(), arrayOfNames = new Array();
+						for (i = 0; i < arrayOfTemp.length; i += 2) {
+							arrayOfId[i / 2] = arrayOfTemp[i];
+							arrayOfNames[i / 2] = arrayOfTemp[i + 1];
 						}
 						var i;
 						var newElem = '<table id="headTableBooks" class="table table-bordered"><thead><tr><th>Id</th><th>Book</th><th>Edit</th><th>Delete</th></tr></thead></table>';
@@ -559,13 +564,124 @@ $(document)
 								arrayOfTemp, editBooks);
 						$("button[name*='deleteButton']").bind("click",
 								arrayOfTemp, deleteBooks);
-					};
-					
-					function editBooks(e){
-						
+						newElem = '<tr><td>'
+								+ (i + 1)
+								+ '</td><td style="width:90%; padding-bottom:15px; padding-top:5px"><button id="newBook" name="newBook" class="btn btn-success">Add</button></td><td></td><td></td></tr>';
+						$('#tableBooks').append(newElem);
+						$("button[name*='newBook']").bind("click", addBook);
+					}
+					;
+
+					function hideListDetailBooks() {
+						$('#bookEditDetail-header').empty();
+						$('#bookEditDetail-body').empty();
+						$("button[name*='editButton']").removeAttr('disabled');
+						$("button[name*='deleteButton']")
+								.removeAttr('disabled');
+					}
+
+					function createFormBook() {
+						var newElem = '<p>Name of Book:</p></div><div><input id="bookName" type="text">';
+						$('#bookEditDetail-body').append(newElem);
+						newElem = '<p> Edit genres of book</p></div><div id="selectedGenres"><div class="btn-group pull-left"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add Genre <span class="caret"></span></a><ul class="dropdown-menu" id="ListOfGenresOfBooks"></ul></div></div>';
+						$('#bookEditDetail-body').append(newElem)
+						newElem = '<br><br><br><div><p> Edit tags of book</p></div><div id="selectedTags"><div class="btn-group pull-left"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add Tag <span class="caret"></span></a><ul class="dropdown-menu" id="ListOfTagsOfBooks"></ul></div></div>';
+						$('#bookEditDetail-body').append(newElem);
+						newElem = '<br/><br/><br/><div><p> Edit authors of book</p></div><div id="selectedAuthors"><div class="btn-group pull-left"><a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Add Author <span class="caret"></span></a><ul class="dropdown-menu" id="ListOfAuthorsOfBooks"></ul></div></div>';
+						$('#bookEditDetail-body').append(newElem);
+						$.post("admin?action=showListGenres", ajaxShowGenresInBook);
+						$.post("admin?action=showListTags", ajaxShowTagsInBook);
+						$.post("admin?action=showListAuthorsModal", ajaxShowAuthorsModalInBook);
 					}
 					
-					function deleteBooks(e){
+					function ajaxShowGenresInBook(data){
+						var arrayOfGenres = data.split(' ');
+						for (i=0;i<arrayOfGenres.length;i++){
+							newElem='<li name="genre" id="'+arrayOfGenres[i]+'">'+arrayOfGenres[i]+'</li>';
+							$('#ListOfGenresOfBooks').append(newElem);
+						}
+						$("li[name*='genre']").bind("click",clickGenreElement);
+					}
+					
+					function clickGenreElement(e){
+						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn btn-success">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteGenreButton">x</button></div>';
+						$('#selectedGenres').prepend(newElem);
+						$("button[name*='DeleteGenreButton']").bind("click",clickDeleteGenreButton);
+					}
+					
+					function clickDeleteGenreButton(e){
+						$('div#'+e.currentTarget.id).remove();
+					}
+					
+					function ajaxShowTagsInBook(data){
+						var arrayOfTags = data.split(' ');
+						for (i=0;i<arrayOfTags.length;i++){
+							newElem='<li name="tag" id="'+arrayOfTags[i]+'">'+arrayOfTags[i]+'</li>';
+							$('#ListOfTagsOfBooks').append(newElem);
+						}
+						$("li[name*='tag']").bind("click",clickTagElement);
+					}
+					
+					function clickTagElement(e){
+						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn btn-success">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteTagButton">x</button></div>';
+						$('#selectedTags').prepend(newElem);
+						$("button[name*='DeleteTagButton']").bind("click",clickDeleteTagButton);
+					}
+					
+					function clickDeleteTagButton(e){
+						$('div#'+e.currentTarget.id).remove();
+					}
+					
+					function ajaxShowAuthorsModalInBook(data){
+						var arrayOfAuthors = data.split(' ');
+						for (i=0;i<arrayOfAuthors.length;i++){
+							newElem='<li name="author" id="'+arrayOfAuthors[i]+'">'+arrayOfAuthors[i].split('_')[0]+' '+arrayOfAuthors[i].split('_')[1]+'</li>';
+							$('#ListOfAuthorsOfBooks').append(newElem);
+						}
+						$("li[name*='author']").bind("click",clickAuthorElement);
+					}
+					
+					function clickAuthorElement(e){
+						var newElem='<div id="'+e.currentTarget.id+'" class="btn-group pull-left"><button class="btn btn-success">'+e.currentTarget.id+'</button><button class="btn" id="'+e.currentTarget.id+'" name="DeleteAuthorButton">x</button></div>';
+						$('#selectedAuthors').prepend(newElem);
+						$("button[name*='DeleteAuthorButton']").bind("click",clickDeleteAuthorButton);
+					}
+					
+					function clickDeleteAuthorButton(e){
+						$('div#'+e.currentTarget.id).remove();
+					}
+
+					function addBook(e) {
+						$("button[name*='editButton']").attr('disabled', true);
+						$("button[name*='deleteButton']")
+								.attr('disabled', true);
+						createFormBook();
+						var newElem = '<h2>Add Book</h2>';
+						$('#bookEditDetail-header').append(newElem);
+						$('#bookEditDetail').modal('show');
+					}
+
+					function editBooks(e) {
+						var i;
+						$("button[name*='editButton']").attr('disabled', true);
+						$("button[name*='deleteButton']")
+								.attr('disabled', true);
+						createFormBook();
+						for (i = 0; i < e.data.length; i++)
+							if (e.data[i] == e.currentTarget.id)
+								break;
+						$.post("admin?action=listAttrofBook&id="+e.currentTarget.id, ajaxLoadAttrs);
+						var newElem = '<h2>Edit "'+ e.data[++i]+'"</h2>';
+						$('#bookEditDetail-header').append(newElem);
+						$('#bookName').val(e.data[i]);
+						$('#bookEditDetail').modal('show');
+					}
+					
+					function ajaxLoadAttrs(data){
 						
+					}
+
+					function deleteBooks(e) {
+
 					}
 				});
