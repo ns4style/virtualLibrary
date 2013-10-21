@@ -47,6 +47,12 @@ public class Book {
 	inverseJoinColumns={@JoinColumn(name="id_author", referencedColumnName="id")})
 	private Set<Author> authors;
 
+	@ManyToMany(fetch = FetchType.EAGER)
+	@JoinTable(name="genre_books",
+	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
+	inverseJoinColumns={@JoinColumn(name="id_genre", referencedColumnName="id")})
+	private Set<Genre> genres;
+	
 	public Book() {
 		name = null;
 		images = new HashSet<Image>(0);
@@ -100,5 +106,13 @@ public class Book {
 
 	public void setAuthors(Set<Author> authors) {
 		this.authors.addAll(authors);
+	}
+
+	public Set<Genre> getGenres() {
+		return genres;
+	}
+
+	public void setGenres(Set<Genre> genres) {
+		this.genres.addAll(genres);
 	}
 }

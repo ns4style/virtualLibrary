@@ -8,7 +8,6 @@ public class Factory {
 	private static ImageHAO imageHAO = null;
 	private static UserHAO userHAO = null;
 	private static GenreHAO genreHAO = null;
-	private static GenreBookHAO genreBookHAO = null;
 	private static MarkHAO markHAO = null;
 	private static TagHAO tagHAO = null;
 	private static TakedBookHAO takedBookHAO = null;
@@ -75,13 +74,6 @@ public class Factory {
 			genreHAO = new GenreHAO();
 		}
 		return genreHAO;
-	}
-	
-	public GenreBookHAO getGenreBookHAO() {
-		if (genreBookHAO == null) {
-			genreBookHAO = new GenreBookHAO();
-		}
-		return genreBookHAO;
 	}
 	
 	public MarkHAO getMarkHAO() {

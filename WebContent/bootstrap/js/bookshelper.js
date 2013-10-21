@@ -69,7 +69,7 @@ function addPageLiCollection(element, count) {
 	for(var i=0; i<count; i++) {
 		var li = document.createElement('li');
 		li.setAttribute('id', 'li' + i);
-		li.setAttribute('style', 'overflow: hidden; float: left; width: 990px; height: 263px;');
+		li.setAttribute('style', 'overflow: hidden; float: left; width: 80%; height: 263px;');
 		$(element).append(li);
 	}
 }

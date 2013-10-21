@@ -192,19 +192,6 @@ public class MapHandlers {
 		int booksOnPage = 5;
 		
 		List<Book> pageBooks = null;
-
-		User user = null;
-		if (request.getUserPrincipal() != null) {
-			user = Factory.getInstance().getUserHAO().getUserByMail(request.getUserPrincipal().getName());
-		}
-		if (user != null) {
-			request.setAttribute("user_name", user.getFname() + " " + user.getLname());
-			request.setAttribute("user_privileged", user.getPrivileged());
-		}
-		else { // 0 - admin, 1 - user, 2 - blocked user, 3 - unknow;
-			request.setAttribute("user_name", "unknow");
-			request.setAttribute("user_privileged", "3");				
-		}
 		
 		//  ---------------------------------------------- Определение страницы -------------------------------------------------------------- //
 		
@@ -282,15 +269,29 @@ public class MapHandlers {
 			}
 			
 			for (int i=0; i<comments.size(); i++) {
-				stringBuffer.append(comments.get(i).getUser().getFname() + " " + comments.get(i).getUser().getLname() +
+				stringBuffer.append(comments.get(i).getId() + ":" + comments.get(i).getUser().getFname() + " " + comments.get(i).getUser().getLname() +
 						":" + comments.get(i).getValue() + ",");
 			}
-			stringBuffer.append(";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; fullUserName : comment, .......... ,;
+			stringBuffer.append(";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment, .......... ,;
 			
 			response.getWriter().write(stringBuffer.toString());
 			return;
 		}
 		else { // ---------------------------------------------- Первая загрузка ------------------------------- //
+			User user = null;
+			if (request.getUserPrincipal() != null) {
+				user = Factory.getInstance().getUserHAO().getUserByMail(request.getUserPrincipal().getName());
+			}
+			if (user != null) {
+				request.setAttribute("user_id", user.getId());
+				request.setAttribute("user_name", user.getFname() + " " + user.getLname());
+				request.setAttribute("user_privileged", user.getPrivileged());
+			}
+			else { // 0 - admin, 1 - user, 2 - blocked user, 3 - unknow;
+				request.setAttribute("user_name", "unknown");
+				request.setAttribute("user_privileged", "3");				
+			}
+			
 			List<Book> books = null;
 			Double pageCount = 0.0;
 			try {
