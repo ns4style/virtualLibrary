@@ -89,6 +89,7 @@ public class Book {
 	}
 	
 	public void setImages(Set<Image> authors) {
+		this.images.clear();
 		this.images.addAll(images);
 	}
 
@@ -97,6 +98,7 @@ public class Book {
 	}
 
 	public void setTags(Set<Tag> tags) {
+		this.tags.clear();
 		this.tags.addAll(tags);
 	}
 
@@ -105,6 +107,7 @@ public class Book {
 	}
 
 	public void setAuthors(Set<Author> authors) {
+		this.authors.clear();
 		this.authors.addAll(authors);
 	}
 
@@ -113,6 +116,7 @@ public class Book {
 	}
 
 	public void setGenres(Set<Genre> genres) {
+		this.genres.clear();
 		this.genres.addAll(genres);
 	}
 }
