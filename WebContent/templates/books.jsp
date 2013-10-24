@@ -30,6 +30,7 @@ html,body {
 	width: 100%;
 	margin: 0px;
 	padding: 0px;
+	overflow: hidden;
 }
 
 .page {
@@ -37,7 +38,7 @@ html,body {
 	height: auto !important;
 	height: 100%;
 	background-color: #9d261d;
-	background-image: url("../images/background3.jpg");
+	background-image: url("../images/background4.jpg");
 }
 
 .wrap {
@@ -177,11 +178,42 @@ html,body {
 					<ul id="scrollMoreUl">
 					</ul>
 				</div>
-				<img src="../images/table.png"
+				<img src="../images/table.jpg"
 					style="width: 100%; position: relative; top: -243px;"></img>
 			</div>
-			
-			
+
+			<!-- Search input-->
+			<div class="search"
+				style="position: relative; top: -200px; left: 250px;">
+				<div class="searchElements">
+					<input id="searchauthor" name="searchauthor" placeholder="Author"
+						class="input-xlarge search-query" type="text"
+						style="margin-top: 5px; margin-bottom: 10px;"> 
+						
+					<input id="searchname" name="searchname" placeholder="Book Name"
+						class="input-xlarge search-query" type="text"
+						style="margin-top: 5px; margin-bottom: 10px;"> 
+						
+					<select id="selecttag" name="selecttag" class="input-xlarge"
+						style="margin-top: 5px; margin-bottom: 10px;">
+						<option> select tag </option>
+						<c:forEach var="tag" items="${tags}">
+							<option> ${tag.getValue()} </option>
+						</c:forEach>
+					</select> 
+					
+					<select id="selectgenre" name="selectgenre" class="input-xlarge"
+						style="margin-top: 5px; margin-bottom: 10px;">
+						<option> select genre  </option>
+						<c:forEach var="genre" items="${genres}">
+							<option> ${genre.getValue()} </option>
+						</c:forEach>
+					</select>
+					<input type="submit" class="btn" id="searchBtn" value="Search" style="margin-top: 5px; margin-bottom: 10px;">
+				</div>
+			</div>
+			<!-- Search input-->
+
 		</div>
 	</div>
 
@@ -189,10 +221,23 @@ html,body {
 		<div class="modal-header" id="book-header"></div>
 		<div class="modal-body" id="book-body"></div>
 	</div>
-	
-	
+
+
 
 	<script type="text/javascript">
+
+		$("#searchBtn").bind("click", searchBookFunc);
+		
+		function searchBookFunc() {
+			$.post(window.location + "?searchBook=" 
+					+ $("#searchauthor").val() + "_-_" + $("#searchname").val() + "_-_" + $("#selecttag").val() + "_-_" + $("#selectgenre").val(), 
+					callbackSearchBookFunc);
+		}
+		
+		function callbackSearchBookFunc(data) {
+			
+		}
+	
 		var alreadyDownloadPages = new Array();
 
 		$.post(window.location + "?page=0" + "&adp=" // dynamic
@@ -281,10 +326,7 @@ html,body {
 					.append(
 							"<h2 style=\"margin-top: 5px; margin-bottom: 5px;margin-top: 5px; margin-bottom: 5px;\">"
 									+ a[0] + "</h2>");
-			if ("${user_priveleged}" < 2) {
-				$(".modal-header")
-					.append("<input type=\"submit\" class=\"btn\" id=\"addCommentBtn\" value=\"Send\" style=\"margin-top:5px; margin-bottom:10px;\">");
-			}
+
 			var authors = a[1].split(',');
 			for (var i = 0; i < authors.length - 1; i++) {
 				$(".modal-header").append(authors[i] + " ");
@@ -299,6 +341,19 @@ html,body {
 			$(".modal-body").append(
 					"<img src=\"" + a[2].split(',')[2]
 							+ "\" width=\"168\" height=\"263\">");
+
+			if ("${user_privileged}" < 2) { // btn to take book
+				$(".modal-body")
+						.append(
+								"<input type=\"submit\" class=\"btn\" id=\"takeBtn\" value=\"Take\" style=\"position: absolute; top:290px; right:30px;\">");
+
+				$(".modal-body")
+						.append(
+								"<div class=\"text\" id=\"bookCount\" style=\"position: absolute; top:295px; right:100px;\"> Current count: "
+										+ a[6] + "</div>");
+
+				$("#takeBtn").bind("click", a[5], takeBookFunc);
+			}
 
 			$(".modal-body").append("<h4>Tags</h4>");
 			var tags = a[3].split(',');
@@ -364,13 +419,15 @@ html,body {
 			if (data == "")
 				return;
 
-			$("<div id=\"comment" + data + "\"><hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>${user_name}</b><br>"
+			$(
+					"<div id=\"comment" + data + "\"><hr style=\"margin-top: 5px; margin-bottom: 5px;\"><b>${user_name}</b><br>"
 							+ $("#newComment").val() + "</div>").insertBefore(
 					"#comment_bottom");
-			
+
 			if ("${user_privileged}" == 0) { // del comment for admin
-				$("#comment" + data).prepend(
-						"<button type=\"button\" class=\"close\" data-id=\""
+				$("#comment" + data)
+						.prepend(
+								"<button type=\"button\" class=\"close\" data-id=\""
 								+ data
 								+ "\">×</button>");
 			}
@@ -395,6 +452,19 @@ html,body {
 			$("#comment" + data).remove();
 		};
 		// ----------------------- Delete comment -------------------------------------- //
+
+		function takeBookFunc(event) {
+			$.post(window.location + "?take_book=" + event.data
+					+ "_-_${user_id}", callbackTakeBookFunc);
+		}
+
+		function callbackTakeBookFunc(data) {
+			if (data == "")
+				return;
+
+			document.getElementById("bookCount").innerHTML = "Current count: "
+					+ data;
+		}
 	</script>
 </body>
 </html>

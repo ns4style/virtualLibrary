@@ -1,5 +1,6 @@
 package hibernateMappingClass;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,13 +15,16 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
@@ -38,21 +42,18 @@ public class Book {
 	private Set<Image> images;
 	
 	@OneToMany(fetch = FetchType.EAGER)
-	@Cascade({CascadeType.ALL})
 	@JoinTable(name="books_tags",
 	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
     inverseJoinColumns={@JoinColumn(name="id_tag", referencedColumnName="id")}) 
 	private Set<Tag> tags;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade({CascadeType.ALL})
 	@JoinTable(name="library",
 	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
 	inverseJoinColumns={@JoinColumn(name="id_author", referencedColumnName="id")})
 	private Set<Author> authors;
 
 	@ManyToMany(fetch = FetchType.EAGER)
-	@Cascade({CascadeType.ALL})
 	@JoinTable(name="genre_books",
 	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
 	inverseJoinColumns={@JoinColumn(name="id_genre", referencedColumnName="id")})
@@ -60,6 +61,7 @@ public class Book {
 	
 	public Book() {
 		name = null;
+		count = 0;
 		images = new HashSet<Image>(0);
 		tags = new HashSet<Tag>(0);
 		authors = new HashSet<Author>(0);
@@ -99,8 +101,7 @@ public class Book {
 	}
 
 	public Set<Tag> getTags() {
-		System.out.println(this.tags.size());
-		return this.tags;
+		return tags;
 	}
 
 	public void setTags(Set<Tag> tags) {
@@ -113,7 +114,8 @@ public class Book {
 	}
 
 	public void setAuthors(Set<Author> authors) {
-		this.authors=authors;
+		this.authors.clear();
+		this.authors.addAll(authors);
 	}
 
 	public Set<Genre> getGenres() {
@@ -121,6 +123,6 @@ public class Book {
 	}
 
 	public void setGenres(Set<Genre> genres) {
-		this.genres=genres;
+		this.genres = genres;
 	}
 }

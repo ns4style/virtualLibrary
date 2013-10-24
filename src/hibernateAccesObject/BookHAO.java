@@ -1,21 +1,17 @@
 package hibernateAccesObject;
 
 import hibernateMappingClass.Book;
-import hibernateMappingClass.Mark;
 import hibernateUtil.HibernateUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.logging.Level;
 
 import javax.swing.JOptionPane;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
-import org.hibernate.metadata.ClassMetadata;
 
 public class BookHAO {
 
@@ -53,14 +49,33 @@ public class BookHAO {
 		}
 	}
 
+	public List<Book > getSearchBook(String name, String author, String tag, String genre) throws SQLException {
+		Session session = null;
+		List<Book> books = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			StringBuffer q = new StringBuffer("from Book");
+			if (name != null) {
+				 
+			}
+			books = session.createQuery("from Book where ").list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return books;
+	}
+
 	public Book getBooktById(int id) throws SQLException {
 		Session session = null;
 		Book book = null;
-		try {
-		    HibernateUtil.getSessionFactory().evictEntity("hibernateMappingClass.Book");
+		try { 
 			session = HibernateUtil.getSessionFactory().openSession();
-			
-			book = (Book) session.createQuery("from Book where id=" + id).list().get(0);
+			book = (Book) session.get(Book.class, id);
 			Hibernate.initialize(book.getName());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
@@ -72,7 +87,6 @@ public class BookHAO {
 		}
 		return book;
 	}
-	
 
 	public List<Book> getBooksSelection(int first, int count)
 			throws SQLException {

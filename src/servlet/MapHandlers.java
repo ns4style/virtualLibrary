@@ -4,8 +4,10 @@ import hibernateAccesObject.Factory;
 import hibernateMappingClass.Author;
 import hibernateMappingClass.Book;
 import hibernateMappingClass.Comment;
+import hibernateMappingClass.Genre;
 import hibernateMappingClass.Image;
 import hibernateMappingClass.Tag;
+import hibernateMappingClass.TakedBook;
 import hibernateMappingClass.User;
 
 import java.io.IOException;
@@ -202,7 +204,7 @@ public class MapHandlers {
 
 	public static void books(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		
+
 		int booksOnPage = 5;
 		
 		List<Book> pageBooks = null;
@@ -291,6 +293,7 @@ public class MapHandlers {
 			stringBuffer.append(book.getCount() + ";"); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment_-_ .......... ,; id; count;
 			
 			response.getWriter().write(stringBuffer.toString());
+			book.setCount(32);
 			return;
 		}
 		else if (request.getParameter("add_new_comment") != null) { // ------- добавление комментария ----------- //
@@ -324,6 +327,42 @@ public class MapHandlers {
 			response.getWriter().write(String.valueOf(id));
 			return;
 		}
+		else if (request.getParameter("take_book") != null) {
+			String s = request.getParameter("take_book");
+			User user = null;
+			Book book = null;
+			try {
+				user = Factory.getInstance().getUserHAO().getUserById(Integer.parseInt(s.split("_-_")[1]));
+				book = Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(s.split("_-_")[0]));
+			} catch (NumberFormatException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (user == null || book == null || user.getPrivileged() > 1 || book.getCount() < 1)
+				return;
+			
+			TakedBook tb = new TakedBook();
+			tb.setIdBook(Integer.parseInt(s.split("_-_")[0]));
+			tb.setIdUser(Integer.parseInt(s.split("_-_")[1]));
+			Factory.getInstance().getTakedBookHAO().addTakedBook(tb);
+			
+			book.setCount(book.getCount() - 1);
+			try {
+				Factory.getInstance().getBookHAO().updateBook(book);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			response.getWriter().write(String.valueOf(book.getCount()));
+			return;			
+		}
+		else if (request.getParameter("searchBook") != null) {
+			String s = request.getParameter("searchBook");
+			
+		}
 		else { // ---------------------------------------------- Первая загрузка ------------------------------- //
 			User user = null;
 			if (request.getUserPrincipal() != null) {
@@ -340,14 +379,20 @@ public class MapHandlers {
 			}
 			
 			List<Book> books = null;
+			List<Tag> tags = null;
+			List<Genre>genres = null;
 			Double pageCount = 0.0;
 			try {
+				genres = Factory.getInstance().getGenreHAO().getAllGenres();
+				tags = Factory.getInstance().getTagHAO().getAllTags();
 				books = Factory.getInstance().getBookHAO().getRandomBooks(11);
 				pageCount = Math.ceil((double) Factory.getInstance().getBookHAO().getBooksCount() / booksOnPage);
 			} catch (SQLException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			request.setAttribute("genres", genres);
+			request.setAttribute("tags", tags);
 			request.setAttribute("books", books);
 			request.setAttribute("pageCount", pageCount.intValue());
 

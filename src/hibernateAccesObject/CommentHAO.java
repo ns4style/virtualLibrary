@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 
@@ -53,6 +54,7 @@ public class CommentHAO {
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			comment = (Comment) session.createQuery("from Comment where id=" + id).list().get(0);
+			Hibernate.initialize(comment.getValue());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

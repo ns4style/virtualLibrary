@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Expression;
 import org.hibernate.criterion.Projections;
@@ -76,6 +77,7 @@ public class UserHAO {
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			user = (User) session.createQuery("from User where id=" + id).list().get(0);
+			Hibernate.initialize(user.getPrivileged());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

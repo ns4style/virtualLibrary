@@ -22,6 +22,7 @@ public class LibraryServlet extends HttpServlet {
 	public void init(ServletConfig config) throws ServletException {
 		System.setProperty("java.security.auth.login.config", 
 							"C:/Users/Artem/workspace/Library/jaas.config");
+		HibernateProfiler.initialize();
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
@@ -36,6 +37,8 @@ public class LibraryServlet extends HttpServlet {
 		 * страницы, если таковой существует (все определения обработчиков
 		 * находятся в MapHandlers)
 		 */
+			
+		
 
 		try {
 			try {
