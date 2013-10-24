@@ -9,6 +9,7 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
+import org.hibernate.FlushMode;
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
@@ -27,6 +28,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -44,6 +46,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -64,6 +67,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -82,6 +86,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -101,6 +106,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -119,6 +125,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -136,6 +143,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -154,6 +162,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -172,6 +181,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}
@@ -189,6 +199,7 @@ public class BookHAO {
 					JOptionPane.OK_OPTION);
 		} finally {
 			if (session != null && session.isOpen()) {
+				session.flush();
 				session.close();
 			}
 		}

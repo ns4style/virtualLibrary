@@ -21,25 +21,17 @@ public class LibraryServlet extends HttpServlet {
 	
 	public void init(ServletConfig config) throws ServletException {
 		System.setProperty("java.security.auth.login.config", 
-							"C:/Users/Artem/workspace/Library/jaas.config");
-		HibernateProfiler.initialize();
+							"C:/Users/Admin/workspace/virtualLibrary/jaas.config");
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		
-		
-		
-		
 		/*
 		 * RoutingMap по умолчанию инициализируется при помощи метода
 		 * Helper.mapFill routeToReqPage вызывает обработчик для запрашиваемой
 		 * страницы, если таковой существует (все определения обработчиков
 		 * находятся в MapHandlers)
 		 */
-			
-		
-
 		try {
 			try {
 				RoutingMap.routeToReqPage(request.getServletPath(), request,

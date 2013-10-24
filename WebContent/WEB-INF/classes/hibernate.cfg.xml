@@ -9,10 +9,7 @@
         <property name="hibernate.connection.url">jdbc:mysql://10.24.1.172:3306/test</property>
         <property name="hibernate.connection.username">user1</property>
         <property name="hibernate.connection.password">c$awth3b33st</property>
-    <property name="cache.query_cache_factory">
-    hibernatingrhinos.hibernate.profiler.cache.ProfilerQueryCacheFactory
-    </property>
-    <property name="generate_statistics">true</property>
+        
         <mapping class="hibernateMappingClass.Author" />
         <mapping class="hibernateMappingClass.Book" />
         <mapping class="hibernateMappingClass.Comment" />

@@ -180,6 +180,7 @@ public class AdminClass {
 	}
 	
 	public static void listAttrsofBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		System.out.print( "-------------------------" + request.getParameter("id"));
 		Book book = Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("id")));
 
 		StringBuffer s = new StringBuffer();
