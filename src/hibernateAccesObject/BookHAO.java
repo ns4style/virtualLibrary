@@ -49,12 +49,33 @@ public class BookHAO {
 		}
 	}
 
+	public List<Book > getSearchBook(String name, String author, String tag, String genre) throws SQLException {
+		Session session = null;
+		List<Book> books = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			StringBuffer q = new StringBuffer("from Book");
+			if (name != null) {
+				 
+			}
+			books = session.createQuery("from Book where ").list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return books;
+	}
+
 	public Book getBooktById(int id) throws SQLException {
 		Session session = null;
 		Book book = null;
-		try {
+		try { 
 			session = HibernateUtil.getSessionFactory().openSession();
-			book = (Book) session.load(Book.class, id);
+			book = (Book) session.get(Book.class, id);
 			Hibernate.initialize(book.getName());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",

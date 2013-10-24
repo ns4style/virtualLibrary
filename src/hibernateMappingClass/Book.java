@@ -1,5 +1,6 @@
 package hibernateMappingClass;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -18,7 +19,12 @@ import org.hibernate.annotations.GenericGenerator;
 
 @Entity
 @Table(name = "books")
-public class Book {
+public class Book implements Serializable{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(generator = "increment")
 	@GenericGenerator(name = "increment", strategy = "increment")
@@ -55,6 +61,7 @@ public class Book {
 	
 	public Book() {
 		name = null;
+		count = 0;
 		images = new HashSet<Image>(0);
 		tags = new HashSet<Tag>(0);
 		authors = new HashSet<Author>(0);
@@ -116,7 +123,6 @@ public class Book {
 	}
 
 	public void setGenres(Set<Genre> genres) {
-		this.genres.clear();
-		this.genres.addAll(genres);
+		this.genres = genres;
 	}
 }
