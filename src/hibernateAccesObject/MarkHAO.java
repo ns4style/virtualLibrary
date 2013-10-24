@@ -51,7 +51,7 @@ public class MarkHAO {
 		Mark mark = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			mark = (Mark) session.load(Mark.class, id);
+			mark = (Mark) session.createQuery("from Mark where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

@@ -51,7 +51,7 @@ public class TakedBookHAO {
 		TakedBook takedBook = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			takedBook = (TakedBook) session.load(TakedBook.class, id);
+			takedBook = (TakedBook) session.createQuery("from TakedBook where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

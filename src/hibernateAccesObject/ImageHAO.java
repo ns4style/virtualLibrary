@@ -51,7 +51,7 @@ public class ImageHAO {
 		Image image = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			image = (Image) session.load(Image.class, id);
+			image = (Image) session.createQuery("from Image where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

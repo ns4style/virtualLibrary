@@ -1,5 +1,7 @@
 package servlet;
 
+import hibernatingrhinos.hibernate.profiler.appender.HibernateProfiler;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
@@ -25,13 +27,16 @@ public class LibraryServlet extends HttpServlet {
 	public void service(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		
+		
+		
+		
 		/*
 		 * RoutingMap по умолчанию инициализируется при помощи метода
 		 * Helper.mapFill routeToReqPage вызывает обработчик для запрашиваемой
 		 * страницы, если таковой существует (все определения обработчиков
 		 * находятся в MapHandlers)
 		 */
-		
+
 		try {
 			try {
 				RoutingMap.routeToReqPage(request.getServletPath(), request,

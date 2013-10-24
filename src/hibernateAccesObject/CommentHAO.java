@@ -52,7 +52,7 @@ public class CommentHAO {
 		Comment comment = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			comment = (Comment) session.load(Comment.class, id);
+			comment = (Comment) session.createQuery("from Comment where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

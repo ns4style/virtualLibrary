@@ -14,6 +14,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cascade;
+import org.hibernate.annotations.CascadeType;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
@@ -36,18 +38,21 @@ public class Book {
 	private Set<Image> images;
 	
 	@OneToMany(fetch = FetchType.EAGER)
+	@Cascade({CascadeType.ALL})
 	@JoinTable(name="books_tags",
 	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
     inverseJoinColumns={@JoinColumn(name="id_tag", referencedColumnName="id")}) 
 	private Set<Tag> tags;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Cascade({CascadeType.ALL})
 	@JoinTable(name="library",
 	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
 	inverseJoinColumns={@JoinColumn(name="id_author", referencedColumnName="id")})
 	private Set<Author> authors;
 
 	@ManyToMany(fetch = FetchType.EAGER)
+	@Cascade({CascadeType.ALL})
 	@JoinTable(name="genre_books",
 	joinColumns={@JoinColumn(name="id_book", referencedColumnName="id")},  
 	inverseJoinColumns={@JoinColumn(name="id_genre", referencedColumnName="id")})
@@ -94,7 +99,8 @@ public class Book {
 	}
 
 	public Set<Tag> getTags() {
-		return tags;
+		System.out.println(this.tags.size());
+		return this.tags;
 	}
 
 	public void setTags(Set<Tag> tags) {
@@ -107,8 +113,7 @@ public class Book {
 	}
 
 	public void setAuthors(Set<Author> authors) {
-		this.authors.clear();
-		this.authors.addAll(authors);
+		this.authors=authors;
 	}
 
 	public Set<Genre> getGenres() {
@@ -116,7 +121,6 @@ public class Book {
 	}
 
 	public void setGenres(Set<Genre> genres) {
-		this.genres.clear();
-		this.genres.addAll(genres);
+		this.genres=genres;
 	}
 }

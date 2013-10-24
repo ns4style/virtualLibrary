@@ -75,7 +75,7 @@ public class UserHAO {
 		User user = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			user = (User) session.load(User.class, id);
+			user = (User) session.createQuery("from User where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

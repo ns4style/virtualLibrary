@@ -53,7 +53,7 @@ public class TagHAO {
 		Tag tag = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			tag = (Tag) session.load(Tag.class, id);
+			tag = (Tag) session.createQuery("from Tag where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

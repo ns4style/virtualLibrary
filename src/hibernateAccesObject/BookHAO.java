@@ -1,17 +1,21 @@
 package hibernateAccesObject;
 
 import hibernateMappingClass.Book;
+import hibernateMappingClass.Mark;
 import hibernateUtil.HibernateUtil;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Level;
 
 import javax.swing.JOptionPane;
 
 import org.hibernate.Hibernate;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
+import org.hibernate.metadata.ClassMetadata;
 
 public class BookHAO {
 
@@ -53,8 +57,10 @@ public class BookHAO {
 		Session session = null;
 		Book book = null;
 		try {
+		    HibernateUtil.getSessionFactory().evictEntity("hibernateMappingClass.Book");
 			session = HibernateUtil.getSessionFactory().openSession();
-			book = (Book) session.load(Book.class, id);
+			
+			book = (Book) session.createQuery("from Book where id=" + id).list().get(0);
 			Hibernate.initialize(book.getName());
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
@@ -66,6 +72,7 @@ public class BookHAO {
 		}
 		return book;
 	}
+	
 
 	public List<Book> getBooksSelection(int first, int count)
 			throws SQLException {

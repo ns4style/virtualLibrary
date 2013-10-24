@@ -687,19 +687,19 @@ $(document)
 						var arrayOfGenres=temp[0].split("_-_");
 						var arrayOfTags=temp[1].split("_-_");
 						var arrayOfAuthors=temp[2].split("_-_");
-						for (i=0;i<arrayOfGenres.length;i++){
+						for (i=0;i<arrayOfGenres.length-1;i++){
 							newElem='<div id="'+arrayOfGenres[i]+'" class="btn-group pull-left"><button class="btn">'+arrayOfGenres[i]+'</button><button class="btn" id="'+arrayOfGenres[i]+'" name="DeleteGenreButton">x</button></div>';
 							$('#selectedGenres').prepend(newElem);
 						}
 						$("button[name*='DeleteGenreButton']").bind("click",clickDeleteGenreButton);
 						
-						for (i=0;i<arrayOfTags.length;i++){
+						for (i=0;i<arrayOfTags.length-1;i++){
 							newElem='<div id="'+arrayOfTags[i]+'" class="btn-group pull-left"><button class="btn">'+arrayOfTags[i]+'</button><button class="btn" id="'+arrayOfTags[i]+'" name="DeleteTagButton">x</button></div>';
 							$('#selectedTags').prepend(newElem);
 						}
 						$("button[name*='DeleteTagButton']").bind("click",clickDeleteTagButton);
 						
-						for (i=0;i<arrayOfAuthors.length;i++){
+						for (i=0;i<arrayOfAuthors.length-1;i++){
 							newElem='<div id="'+arrayOfAuthors[i]+'" class="btn-group pull-left"><button class="btn">'+arrayOfAuthors[i]+'</button><button class="btn" id="'+arrayOfAuthors[i]+'" name="DeleteAuthorButton">x</button></div>';
 							$('#selectedAuthors').prepend(newElem);
 						}
@@ -713,21 +713,21 @@ $(document)
 						for (i=0;i<genres.length;i++){
 							genresString+=genres[i].id+" ";
 						}
-						genresString.length--;
+						genresString=genresString.substring(0, genresString.length-1);
 						var tags = $('#selectedTags').children();
 						var tagsString="";
 						tags.length--;
 						for (i=0;i<tags.length;i++){
 							tagsString+=tags[i].id+" ";
 						}
-						tagsString.length--;
+						tagsString=tagsString.substring(0, tagsString.length-1);
 						var authors = $('#selectedAuthors').children();
 						var authorsString="";
 						authors.length--;
 						for (i=0;i<authors.length;i++){
 							authorsString+=authors[i].id+" ";
 						}
-						authorsString.length--;
+						authorsString=authorsString.substring(0, authorsString.length-1);
 						var idbook=$('#bookEditDetail-header').children();
 						$.post("admin?action=editDetailBook&bookId="+idbook[0].id+"&genres="+genresString+"&tags="+tagsString+"&authors="+authorsString, cancelEditBookDetailButton);
 					}

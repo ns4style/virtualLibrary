@@ -53,7 +53,7 @@ public class GenreHAO {
 		Genre genre = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			genre = (Genre) session.load(Genre.class, id);
+			genre = (Genre) session.createQuery("from Genre where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

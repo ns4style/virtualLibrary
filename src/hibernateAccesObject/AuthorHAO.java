@@ -52,7 +52,7 @@ public class AuthorHAO {
 		Author author = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			author = (Author) session.load(Author.class, id);
+			author = (Author) session.createQuery("from Author where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);

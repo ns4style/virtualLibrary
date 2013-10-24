@@ -180,30 +180,32 @@ public class AdminClass {
 	}
 	
 	public static void listAttrsofBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-		Book book =Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("id")));
-		Set<Genre> genres=book.getGenres();
-		Set <Tag> tags=book.getTags();
-		Set <Author> authors=book.getAuthors();
-		String s = "";
-		for (Iterator<Genre> i=genres.iterator(); i.hasNext();){
-			s+=i.next().getValue();
-			s+=("_-_");
+		Book book = Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("id")));
+
+		StringBuffer s = new StringBuffer();
+		Iterator i = book.getGenres().iterator();
+		while (i.hasNext()) {
+			Genre g = (Genre) i.next();
+			s.append(g.getValue() + "_-_");
 		}
-		s=s.substring(0, s.length()-3);
-		s+="!#!";
-		for (Iterator<Tag> i=tags.iterator(); i.hasNext();){
-			s+=i.next().getValue();
-			s+=("_-_");
+		s.append("!#!");
+		
+		i = book.getTags().iterator();
+		while (i.hasNext()) {
+			Tag t = (Tag) i.next();
+			s.append(t.getValue() + "_-_");
 		}
-		s=s.substring(0, s.length()-3);
-		s+="!#!";
-		for (Iterator<Author> i=authors.iterator(); i.hasNext();){
-			s+=i.next().getFullName();
-			s+=("_-_");
+		s.append("!#!");
+		
+		i = book.getAuthors().iterator();
+		while (i.hasNext()) {
+			Author a = (Author) i.next();
+			s.append(a.getFullName() + "_-_");
 		}
-		s=s.substring(0, s.length()-3);
+		
 		Writer wr=response.getWriter();
-		wr.write(s);
+		wr.write(s.toString());
+		System.out.println(s);
 		return;
 	}
 	
@@ -211,9 +213,9 @@ public class AdminClass {
 		String[] genres=request.getParameter("genres").split(" ");
 		String[] tags=request.getParameter("tags").split(" ");
 		String[] authors=request.getParameter("authors").split(" ");
-		Set<Genre> setGenre = new HashSet();
-		Set<Tag> setTag = new HashSet();
-		Set<Author> setAuthor = new HashSet();
+		Set<Genre> setGenre = new HashSet<Genre>();
+		Set<Tag> setTag = new HashSet<Tag>();
+		Set<Author> setAuthor = new HashSet<Author>();
 		int i;
 		Genre tempGenre;
 		Tag tempTag;

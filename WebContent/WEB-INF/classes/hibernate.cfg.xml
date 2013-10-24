@@ -6,11 +6,9 @@
 <hibernate-configuration>
     <session-factory>
         <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-        <property name="hibernate.connection.password">9876098760</property>
         <property name="hibernate.connection.url">jdbc:mysql://10.24.1.172:3306/test</property>
         <property name="hibernate.connection.username">user1</property>
         <property name="hibernate.connection.password">c$awth3b33st</property>
-        
         <mapping class="hibernateMappingClass.Author" />
         <mapping class="hibernateMappingClass.Book" />
         <mapping class="hibernateMappingClass.Comment" />
