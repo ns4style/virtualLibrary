@@ -13,21 +13,6 @@
 		<role-name>admin</role-name>
 	</security-role>
 	
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Library</web-resource-name>
-			<url-pattern>/admin</url-pattern>
-		</web-resource-collection>
-		
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
-		
-		<user-data-constraint>
- 		<transport-guarantee>CONFIDENTIAL</transport-guarantee>
- 		</user-data-constraint>
-	</security-constraint>
-	
 	<login-config>
 		<auth-method>FORM</auth-method>
 		<realm-name>Own Realm</realm-name>
@@ -76,16 +61,6 @@
 		<servlet-name>Library</servlet-name>
 		<url-pattern>/signin</url-pattern>
 	</servlet-mapping>
-
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Library</web-resource-name>
-			<url-pattern>/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
   
 
 </web-app>
