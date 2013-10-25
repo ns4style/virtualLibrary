@@ -1,7 +1,5 @@
 package servlet;
 
-import hibernatingrhinos.hibernate.profiler.appender.HibernateProfiler;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
@@ -20,6 +18,7 @@ public class LibraryServlet extends HttpServlet {
 	}
 	
 	public void init(ServletConfig config) throws ServletException {
+		
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
