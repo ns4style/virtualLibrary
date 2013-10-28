@@ -729,18 +729,46 @@ $(document)
 						}
 						authorsString=authorsString.substring(0, authorsString.length-1);
 						var idbook=$('#bookEditDetail-header').children();
-						$.post("admin?action=editDetailBook&bookId="+idbook[0].id+"&genres="+genresString+"&tags="+tagsString+"&authors="+authorsString, cancelEditBookDetailButton);
+						$.post("admin?action=editDetailBook&bookId="+idbook[0].id+"&name="+$('#bookName').val()+"&genres="+genresString+"&tags="+tagsString+"&authors="+authorsString, cancelEditBookDetailButton);
 					}
 					
 					function addBookDetailButtonEvent(e){
-						alert(12);
+						var genres = $('#selectedGenres').children();
+						var genresString="";
+						genres.length--;
+						for (i=0;i<genres.length;i++){
+							genresString+=genres[i].id+" ";
+						}
+						genresString=genresString.substring(0, genresString.length-1);
+						var tags = $('#selectedTags').children();
+						var tagsString="";
+						tags.length--;
+						for (i=0;i<tags.length;i++){
+							tagsString+=tags[i].id+" ";
+						}
+						tagsString=tagsString.substring(0, tagsString.length-1);
+						var authors = $('#selectedAuthors').children();
+						var authorsString="";
+						authors.length--;
+						for (i=0;i<authors.length;i++){
+							authorsString+=authors[i].id+" ";
+						}
+						authorsString=authorsString.substring(0, authorsString.length-1);
+						$.post("admin?action=addDetailBook&name="+$('#bookName').val()+"&genres="+genresString+"&tags="+tagsString+"&authors="+authorsString, cancelAddBookDetailButton);
+					}
+					
+					function cancelAddBookDetailButton(e){
+						var trsh;
+						$('#bookEditDetail').modal('hide');
+						hideListBooks(trsh);
+						showListBooks(trsh);
 					}
 					
 					function cancelEditBookDetailButton(e){
-						$('#bookEditDetail').modal('hide')
+						$('#bookEditDetail').modal('hide');
 					}
 
 					function deleteBooks(e) {
-
+						$.post("admin?action=deleteBook&id="+e.currentTarget.id,cancelAddBookDetailButton);
 					}
 				});

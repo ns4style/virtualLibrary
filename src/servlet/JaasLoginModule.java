@@ -1,5 +1,8 @@
 package servlet;
 
+import hibernateAccesObject.Factory;
+import hibernateMappingClass.User;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -29,7 +32,21 @@ public class JaasLoginModule implements LoginModule {
 		
 		UserNamePrincipal usrPr	= new UserNamePrincipal(this.name);
 		subject.getPrincipals().add(usrPr);
-		UserGroupPrincipal usrGr = new UserGroupPrincipal(this.pass);
+		User user=Factory.getInstance().getUserHAO().getUserByMail(this.name);
+		String group="guest";
+		if (user != null){
+			if (user.getPrivileged()==0){
+				group="admin";
+			}
+			if (user.getPrivileged()==1){
+				group="member";
+			}
+			if (user.getPrivileged()==2){
+				group="blockMember";
+			}
+			System.out.println(group);
+		}
+		UserGroupPrincipal usrGr = new UserGroupPrincipal(group);
 		subject.getPrincipals().add(usrGr);
 		
 		return true;
@@ -48,7 +65,6 @@ public class JaasLoginModule implements LoginModule {
 		PasswordCallback passwordCallback = new PasswordCallback("Password", false);
 		
 		Callback[] callback = new Callback[] { nameCallback, passwordCallback };
-		
 		try {
 			callbackHandler.handle(callback);
 		} catch (IOException e) {
@@ -56,10 +72,20 @@ public class JaasLoginModule implements LoginModule {
 		} catch (UnsupportedCallbackException e) {
 			e.printStackTrace();
 		}
-				
-		this.name = nameCallback.getName();
-		this.pass = String.valueOf(passwordCallback.getPassword());
 		
+		User user = Factory.getInstance().getUserHAO().getUserByMail(nameCallback.getName());
+		if (user == null)
+			throw new LoginException();
+		
+		System.out.println(passwordCallback.getPassword().length);
+		System.out.println(user.getHashPass().length());
+		
+		if (2==2){
+			this.name = nameCallback.getName();
+			this.pass = String.valueOf(passwordCallback.getPassword());
+		}
+		else
+			throw new LoginException();	
 		return true;
 	}
 

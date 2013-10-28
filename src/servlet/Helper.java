@@ -67,6 +67,14 @@ public class Helper{
 							}
 					);
 		
+		routing.put("/j_security_check", new UrlHandler() {
+			public void get_handler(HttpServletRequest request, HttpServletResponse response) 
+					throws IOException, ServletException, NullPointerException {
+				MapHandlers.check(request, response);
+			}
+		}
+);
+		
 	}
 	
 }

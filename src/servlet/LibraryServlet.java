@@ -28,16 +28,13 @@ public class LibraryServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		
-		
-		
 		/*
 		 * RoutingMap по умолчанию инициализируется при помощи метода
 		 * Helper.mapFill routeToReqPage вызывает обработчик для запрашиваемой
 		 * страницы, если таковой существует (все определения обработчиков
 		 * находятся в MapHandlers)
 		 */
-
-		try {
+		try { 
 			try {
 				RoutingMap.routeToReqPage(request.getServletPath(), request,
 						response);
@@ -49,6 +46,6 @@ public class LibraryServlet extends HttpServlet {
 			}
 		} catch (NullPointerException ex) {
 				//MapHandlers.index(request, response);
-		}
+		} 
 	}
 }
