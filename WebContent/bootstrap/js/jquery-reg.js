@@ -6,6 +6,7 @@ $(document).ready(function () {
 	$("input[name*='pass']").bind("change",passCheck);
 	$("input[name*='descr']").bind("change",descrCheck);
 	$("button[name*='reg']").bind("click",register);
+	$("button[name*='loginButton']").bind("click",login);
 	$('#register').on('hidden',hideModal);
 	$('#about').on('show',showAbout);
 	$('#about').on('hidden',hideAbout);
@@ -15,6 +16,16 @@ $(document).ready(function () {
 	var flag4=false;
 	var flag5=false;
 	var flagReg=false;
+	
+	function login(){
+		$("input[name*='j_password']").val($.md5($("input[name*='j_password']").val()));
+		$.post("j_security_check",{ j_username: $("input[name*='j_username']").val(), j_password: $("input[name*='j_password']").val()},ajaxLogin);
+		return false;
+	}
+	
+	function ajaxLogin(data){
+		alert(data);
+	}
 	
 	function emailCheck(e){
 		flag1=false;

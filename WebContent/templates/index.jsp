@@ -57,11 +57,11 @@ html,body {
 								<li><a data-target="#authors" data-toggle="modal" href="">Authors</a></li>
 								<li><a data-target="#about" data-toggle="modal" href="">About</a></li>
 							</ul>
-							<form class="navbar-form pull-right">
-								<input class="span2" type="text" placeholder="Email"> <input
-									class="span2" type="password" placeholder="Password">
-								<button type="submit" class="btn">Login</button>
-								<button data-target="#register" data-toggle="modal"
+							<form class="navbar-form pull-right" action=>
+							<input class="span2" type="text" placeholder="Email" name="j_username"> 
+							<input class="span2" type="password" placeholder="Password" name="j_password">
+							<button class="btn" name="loginButton">Login</button>
+							<button data-target="#register" data-toggle="modal"
 									type="submit" class="btn">Register</button>
 							</form>
 						</div>

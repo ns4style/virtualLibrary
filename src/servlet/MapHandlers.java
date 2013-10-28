@@ -167,6 +167,20 @@ public class MapHandlers {
 			}
 		}
 		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("addDetailBook")) {
+				AdminClass.addDetailBook(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("deleteBook")) {
+				AdminClass.deleteBook(request, response);
+				return;
+			}
+		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/admin.jsp");
 		rd.forward(request, response);
 	}
@@ -199,6 +213,7 @@ public class MapHandlers {
 				return;
 			}
 		}
+		
 		RequestDispatcher rd = request.getRequestDispatcher("/templates/index.jsp");
 		rd.forward(request, response);
 	}
@@ -453,5 +468,12 @@ public class MapHandlers {
 		response.getWriter().println(
 				"User name : " + request.getParameter("usr_name")
 						+ " with password " + request.getParameter("usr_pass"));
+	}
+	
+	public static void check(HttpServletRequest request,
+			HttpServletResponse response) throws ServletException, IOException {
+		
+		System.out.println("12");
+		response.getWriter().println("123");
 	}
 }

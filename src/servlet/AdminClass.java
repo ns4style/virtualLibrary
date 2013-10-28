@@ -235,7 +235,46 @@ public class AdminClass {
 		modBook.setAuthors(setAuthor);
 		modBook.setGenres(setGenre);
 		modBook.setTags(setTag);
+		modBook.setName(request.getParameter("name"));
 		Factory.getInstance().getBookHAO().updateBook(modBook);
 		return;
+	}
+	
+	public static void addDetailBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		String[] genres=request.getParameter("genres").split(" ");
+		String[] tags=request.getParameter("tags").split(" ");
+		String[] authors=request.getParameter("authors").split(" ");
+		Set<Genre> setGenre = new HashSet<Genre>();
+		Set<Tag> setTag = new HashSet<Tag>();
+		Set<Author> setAuthor = new HashSet<Author>();
+		int i;
+		Genre tempGenre;
+		Tag tempTag;
+		Author tempAuthor;
+		for (i=0;i<genres.length;i++){
+			tempGenre=Factory.getInstance().getGenreHAO().getGenreByName(genres[i]);
+			setGenre.add(tempGenre);
+		}
+		for (i=0;i<tags.length;i++){
+			tempTag=Factory.getInstance().getTagHAO().getTagByName(tags[i]);
+			setTag.add(tempTag);
+		}
+		for (i=0;i<authors.length;i++){
+			tempAuthor=Factory.getInstance().getAuthorHAO().getAuthorByName(authors[i]);
+			setAuthor.add(tempAuthor);
+		}
+		Book newBook= new Book();
+		newBook.setAuthors(setAuthor);
+		newBook.setGenres(setGenre);
+		newBook.setTags(setTag);
+		newBook.setName(request.getParameter("name"));
+		Factory.getInstance().getBookHAO().addBook(newBook);
+		return;
+	}
+	
+	public static void deleteBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		Book book=Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("id")));
+		Factory.getInstance().getBookHAO().deleteBook(book);
+		System.out.println(book.getName());
 	}
 }

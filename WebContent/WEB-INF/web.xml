@@ -9,8 +9,16 @@
    <load-on-startup>0</load-on-startup>
 	</servlet>
 	
- <security-role>
+ 	<security-role>
 		<role-name>admin</role-name>
+	</security-role>
+	
+	 <security-role>
+		<role-name>member</role-name>
+	</security-role>
+	
+	 <security-role>
+		<role-name>blockMember</role-name>
 	</security-role>
 	
 	<security-constraint>
@@ -27,6 +35,8 @@
  		<transport-guarantee>CONFIDENTIAL</transport-guarantee>
  		</user-data-constraint>
 	</security-constraint>
+	
+	
 	
 	<login-config>
 		<auth-method>FORM</auth-method>
@@ -77,15 +87,5 @@
 		<url-pattern>/signin</url-pattern>
 	</servlet-mapping>
 
-	<security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Library</web-resource-name>
-			<url-pattern>/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-  
 
 </web-app>
