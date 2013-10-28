@@ -9,8 +9,9 @@ import java.util.List;
 
 import javax.swing.JOptionPane;
 
-import org.hibernate.FlushMode;
+import org.hibernate.CacheMode;
 import org.hibernate.Hibernate;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 
@@ -52,16 +53,30 @@ public class BookHAO {
 		}
 	}
 
-	public List<Book > getSearchBook(String name, String author, String tag, String genre) throws SQLException {
+	/**
+	 * @param search
+	 * @return
+	 * @throws SQLException
+	 */
+	public List<Book > getSearchBook(String[] search) throws SQLException {
 		Session session = null;
 		List<Book> books = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			StringBuffer q = new StringBuffer("from Book");
-			if (name != null) {
-				 
-			}
-			books = session.createQuery("from Book where ").list();
+			
+			if (search[2].equals("Select Tag"))
+				search[2] = "";
+			if (search[3].equals("Select Genre"))
+				search[3] = "";
+			
+			Query query = session.createQuery("select distinct b from Book b inner join b.authors a inner join b.tags t inner join b.genres g "
+							+ "where a.firstName like '%"+ search[0] +"%'"
+							+ "and b.name like '%"+ search[1] +"%'"
+							+ "and t.value like '%"+ search[2] +"%'"
+							+ "and g.value like '%"+ search[3] +"%' order by b.name");
+			
+			books = (List<Book>)query.list();
+			
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -79,6 +94,7 @@ public class BookHAO {
 		Book book = null;
 		try { 
 			session = HibernateUtil.getSessionFactory().openSession();
+            session.setCacheMode(CacheMode.IGNORE);
 			book = (Book) session.get(Book.class, id);
 			Hibernate.initialize(book.getName());
 		} catch (Exception e) {
@@ -99,7 +115,7 @@ public class BookHAO {
 		List<Book> books = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			books = session.createQuery("from Book").setFirstResult(first)
+			books = session.createQuery("from Book b order by b.name").setFirstResult(first)
 					.setMaxResults(count).list();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",

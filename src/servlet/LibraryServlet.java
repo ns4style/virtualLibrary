@@ -1,7 +1,5 @@
 package servlet;
 
-import hibernatingrhinos.hibernate.profiler.appender.HibernateProfiler;
-
 import java.io.IOException;
 import java.io.Writer;
 import java.sql.SQLException;
@@ -18,7 +16,6 @@ public class LibraryServlet extends HttpServlet {
 	public LibraryServlet() {
 		super();
 	}
-	
 	public void init(ServletConfig config) throws ServletException {
 		System.setProperty("java.security.auth.login.config", 
 							"C:/Users/Admin/workspace/virtualLibrary/jaas.config");
@@ -32,18 +29,20 @@ public class LibraryServlet extends HttpServlet {
 		 * страницы, если таковой существует (все определения обработчиков
 		 * находятся в MapHandlers)
 		 */
+		
+		
 		try {
 			try {
 				RoutingMap.routeToReqPage(request.getServletPath(), request,
 						response);
 			} catch (SQLException e) {
-				Writer wr=response.getWriter();
+				Writer wr = response.getWriter();
 				wr.write("Error");
 				wr.close();
 				System.out.println(e.getStackTrace());
 			}
 		} catch (NullPointerException ex) {
-				//MapHandlers.index(request, response);
+			// MapHandlers.index(request, response);
 		}
 	}
 }

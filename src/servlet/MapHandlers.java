@@ -6,6 +6,7 @@ import hibernateMappingClass.Book;
 import hibernateMappingClass.Comment;
 import hibernateMappingClass.Genre;
 import hibernateMappingClass.Image;
+import hibernateMappingClass.News;
 import hibernateMappingClass.Tag;
 import hibernateMappingClass.TakedBook;
 import hibernateMappingClass.User;
@@ -327,7 +328,7 @@ public class MapHandlers {
 			response.getWriter().write(String.valueOf(id));
 			return;
 		}
-		else if (request.getParameter("take_book") != null) {
+		else if (request.getParameter("take_book") != null) { // ---------------- попытка взять книгу --------------- //
 			String s = request.getParameter("take_book");
 			User user = null;
 			Book book = null;
@@ -359,9 +360,37 @@ public class MapHandlers {
 			response.getWriter().write(String.valueOf(book.getCount()));
 			return;			
 		}
-		else if (request.getParameter("searchBook") != null) {
-			String s = request.getParameter("searchBook");
+		else if (request.getParameter("searchBook") != null) { // -------------------- поиск книги -------------------- //
+			String[] search = request.getParameter("searchBook").split("_-_");
+			List<Book> books = null;
 			
+			try {
+				books = Factory.getInstance().getBookHAO().getSearchBook(search);
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if (books == null || books.isEmpty())
+				return;
+			
+			StringBuffer stringBuffer = new StringBuffer("");
+			Double pageCount = 0.0;
+			pageCount = Math.ceil((double) books.size() / booksOnPage);
+			stringBuffer.append(pageCount.intValue() + ";");
+			
+			for (int i=0; i<books.size(); i++) {
+				stringBuffer.append(books.get(i).getName() + ":" + books.get(i).getId() + ":");
+				
+				Iterator iterator = books.get(i).getImages().iterator();
+				if (iterator.hasNext()) {
+					Image image = (Image) iterator.next();
+					stringBuffer.append(image.getPath());
+				}
+				stringBuffer.append(";");
+			}
+			
+			response.getWriter().write(stringBuffer.toString());
+			return;
 		}
 		else { // ---------------------------------------------- Первая загрузка ------------------------------- //
 			User user = null;
@@ -395,6 +424,7 @@ public class MapHandlers {
 			request.setAttribute("tags", tags);
 			request.setAttribute("books", books);
 			request.setAttribute("pageCount", pageCount.intValue());
+			request.setAttribute("books_on_page", booksOnPage);
 
 			RequestDispatcher rd = request
 					.getRequestDispatcher("/templates/books.jsp");

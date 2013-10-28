@@ -169,9 +169,11 @@ html,body {
 
 			<div class="scrollMore" id="scrollMore"
 				style="margin-left: 10%; margin-right: 10%;">
-				<script type="text/javascript">
-					addPageButtonCollection("#scrollMore", "${pageCount}");
-				</script>
+				<div class="pageBtn" id="pageBtn">
+					<script type="text/javascript">
+						addPageButtonCollection("#scrollMore #pageBtn", "${pageCount}");
+					</script>
+				</div>
 
 				<div class="jCarouselLite" id="jCarouselLite"
 					style="position: relative; top: 85px; margin-left: 220px;">
@@ -188,28 +190,24 @@ html,body {
 				<div class="searchElements">
 					<input id="searchauthor" name="searchauthor" placeholder="Author"
 						class="input-xlarge search-query" type="text"
-						style="margin-top: 5px; margin-bottom: 10px;"> 
-						
-					<input id="searchname" name="searchname" placeholder="Book Name"
+						style="margin-top: 5px; margin-bottom: 10px;"> <input
+						id="searchname" name="searchname" placeholder="Book Name"
 						class="input-xlarge search-query" type="text"
-						style="margin-top: 5px; margin-bottom: 10px;"> 
-						
-					<select id="selecttag" name="selecttag" class="input-xlarge"
+						style="margin-top: 5px; margin-bottom: 10px;"> <select
+						id="selecttag" name="selecttag" class="input-xlarge"
 						style="margin-top: 5px; margin-bottom: 10px;">
-						<option> select tag </option>
+						<option>Select Tag</option>
 						<c:forEach var="tag" items="${tags}">
-							<option> ${tag.getValue()} </option>
+							<option>${tag.getValue()}</option>
 						</c:forEach>
-					</select> 
-					
-					<select id="selectgenre" name="selectgenre" class="input-xlarge"
+					</select> <select id="selectgenre" name="selectgenre" class="input-xlarge"
 						style="margin-top: 5px; margin-bottom: 10px;">
-						<option> select genre  </option>
+						<option>Select Genre</option>
 						<c:forEach var="genre" items="${genres}">
-							<option> ${genre.getValue()} </option>
+							<option>${genre.getValue()}</option>
 						</c:forEach>
-					</select>
-					<input type="submit" class="btn" id="searchBtn" value="Search" style="margin-top: 5px; margin-bottom: 10px;">
+					</select> <input type="submit" class="btn" id="searchBtn" value="Search"
+						style="margin-top: 5px; margin-bottom: 10px;">
 				</div>
 			</div>
 			<!-- Search input-->
@@ -225,25 +223,13 @@ html,body {
 
 
 	<script type="text/javascript">
-
-		$("#searchBtn").bind("click", searchBookFunc);
-		
-		function searchBookFunc() {
-			$.post(window.location + "?searchBook=" 
-					+ $("#searchauthor").val() + "_-_" + $("#searchname").val() + "_-_" + $("#selecttag").val() + "_-_" + $("#selectgenre").val(), 
-					callbackSearchBookFunc);
-		}
-		
-		function callbackSearchBookFunc(data) {
-			
-		}
-	
+		// --------------------------------------------- init -------------------------------------------- //
 		var alreadyDownloadPages = new Array();
 
 		$.post(window.location + "?page=0" + "&adp=" // dynamic
 				+ alreadyDownloadPages, ajaxCheck); // create
 		var previous_page = 1; // first
-		$("#scrollMore .1").addClass('active'); // page
+		$("#scrollMore #pageBtn .1").addClass('active'); // page
 
 		$('.carousel').each(function() {
 			$(this).carousel({
@@ -260,6 +246,8 @@ html,body {
 				hoverPause : true
 			});
 		});
+		// --------------------------------------------- init -------------------------------------------- //
+		
 
 		// -------------------------- Create page -------------------------------------- //
 		var button = new Array(); // page button
@@ -303,6 +291,69 @@ html,body {
 			alreadyDownloadPages.push(a[0]);
 		};
 		// -------------------------- Create page -------------------------------------- //
+
+		
+		// -------------------------------------------- rewrite page after search ------------------------------ //
+		$("#searchBtn").bind("click", searchBookFunc);
+
+		function searchBookFunc() {
+			$.post(window.location + "?searchBook=" + $("#searchauthor").val()
+					+ "_-_" + $("#searchname").val() + "_-_"
+					+ $("#selecttag").val() + "_-_" + $("#selectgenre").val(),
+					callbackSearchBookFunc);
+		}
+
+		function callbackSearchBookFunc(data) {
+			if (data == "") {
+				alert("no results");
+				return;
+			}
+
+			$("#scrollMore #pageBtn").empty();
+			$("#scrollMoreUl").empty();
+
+			var a = data.split(";");
+			addPageButtonCollection("#scrollMore #pageBtn", a[0]);
+			previous_page = 1;
+			$("#scrollMore #pageBtn .1").addClass('active');
+			button = new Array(); // page button
+			for (var i = 1; i <= a[0]; i++) {
+				button.push(".scrollMore ." + i);
+			}
+
+			addPageLiCollection("#scrollMoreUl", a[0]);
+			$(".scrollMore .jCarouselLite").jCarouselLite(
+					{
+						btnNext : ".scrollMore .next",
+						btnPrev : ".scrollMore .prev",
+						btnGo : button,
+						circular : false,
+						scroll : 1,
+						visible : 1,
+						afterEnd : function(a, to, btnGo) {
+							if (previous_page != ($(a[0]).index() + 1)) {
+								$("#scrollMore ." + previous_page).removeClass(
+										'active');
+								$("#scrollMore ." + ($(a[0]).index() + 1))
+										.addClass('active');
+								previous_page = ($(a[0]).index() + 1);
+							}
+						}
+					});
+
+			var j = 1;
+			for (var i = 0; i < a[0]; i++) {
+				for (var t = 0; t<5; t++) {
+					var temp = a[j].split(':');
+						document.getElementById('li' + i).innerHTML += '<a data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';
+					j++;
+					if (j == a.length - 1) {
+						break;
+					}
+				}
+			}
+		}
+		// -------------------------------------------- rewrite page after search ------------------------------ //
 
 		// ---------------------- handler for img ----------------------------- //
 		$(document).on("click", ".jcarousel_img", function() {
@@ -397,6 +448,7 @@ html,body {
 			$("#book_modal").modal('show');
 		};
 		// ----------------------- Create modal window -------------------------------------- //
+		
 
 		// ----------------------- Clean modal window -------------------------------------- //
 		$("#book_modal").on('hidden', function() {
@@ -404,6 +456,7 @@ html,body {
 			$('#book-body').empty();
 		});
 		// ----------------------- Clean modal window -------------------------------------- //
+		
 
 		// ----------------------- Add comment -------------------------------------- //
 		function addCommentFunc(event) {
