@@ -63,6 +63,7 @@ public class IndexClass {
 		newUser.setLname(request.getParameter("lname"));
 		newUser.setHashPass(request.getParameter("pass"));
 		newUser.setDescription(request.getParameter("descr"));
+		newUser.setPrivileged(1);
 		Factory.getInstance().getUserHAO().addUser(newUser);
 		
 		Writer wr=response.getWriter();

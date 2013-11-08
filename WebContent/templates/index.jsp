@@ -27,12 +27,13 @@ html,body {
 	min-height: 100%;
 	height: auto !important;
 	height: 100%;
-	background-image: url("images/background3.jpg");
+	background-image: url("images/background4.jpg");
 }
 
 .wrap {
 	padding-top: 120px;
 	padding-bottom: 120px;
+	color: #FFFFFF;
 }
 
 .footer {
@@ -40,7 +41,11 @@ html,body {
 	margin-top: -100px;
 	background-color: #c8c8c8;
 }
-
+.user_login_text {
+	padding-top: 10px;
+	color: #FFFFFF;
+}
+;
 </style>
 	<div class="page">
 		<div class="wrap" id="wrap">
@@ -53,17 +58,44 @@ html,body {
 						</a> <a class="brand" href="index">Home</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<li><a href="/Library/books/">Books</a></li>
+								<li><a href="/Library/books/">Books</a></li><c:if test="${user_name != 'unknown'}">
+									<li><a href="/Library/cabinet">Cabinet</a></li>
+								</c:if>
 								<li><a data-target="#authors" data-toggle="modal" href="">Authors</a></li>
 								<li><a data-target="#about" data-toggle="modal" href="">About</a></li>
 							</ul>
-							<form class="navbar-form pull-right" action=>
-							<input class="span2" type="text" placeholder="Email" name="j_username"> 
-							<input class="span2" type="password" placeholder="Password" name="j_password">
-							<button class="btn" name="loginButton">Login</button>
-							<button data-target="#register" data-toggle="modal"
-									type="submit" class="btn">Register</button>
-							</form>
+							<!-- login form -->
+							<c:if test="${user_name == 'unknown'}">
+								<form class="navbar-form pull-right">
+									<input class="span2" type="text" placeholder="Email"
+										id="j_username""> <input class="span2" type="password"
+										placeholder="Password" id="j_password"">
+									<button class="btn" id="loginButton"">Login</button>
+									<button data-target="#register" data-toggle="modal"
+										type="submit" class="btn"">Register</button>
+								</form>
+							</c:if>
+
+							<!-- user name -->
+							<div class="user_login_text">
+								<c:if test="${user_name != 'unknown'}">
+									<div class="pull-right">
+										<c:out value=" Hello ${user_name}! You privileged is: " />
+										<c:choose>
+											<c:when test="${user_privileged == '0'}">
+											admin
+										</c:when>
+											<c:when test="${user_privileged == '1'}">
+											user
+										</c:when>
+											<c:when test="${user_privileged == '2'}">
+											blocked user
+										</c:when>
+										</c:choose>
+									</div>
+								</c:if>
+							</div>
+							
 						</div>
 					</div>
 				</div>
@@ -99,7 +131,7 @@ html,body {
 						<div>
 							<p>Enter your password:</p>
 						</div>
-						<input name="pass" class="span2" type="password"
+						<input name="passwd" class="span2" type="password"
 							placeholder="Password">
 					</div>
 					<div id="descr">
@@ -120,16 +152,25 @@ html,body {
 				</div>
 				<div id="about-body" class="modal-body"></div>
 			</div>
-			
+
 			<div id="authors" class="modal hide fade text-center">
 				<div class="modal-header">
 					<h2>Authors:</h2>
 				</div>
 				<div id="authors-body" class="modal-body">
-				<div><h4>Artem Bryukhanov</h4></div>
-				<div><h4>Dmitrii Kravchenko</h4></div>
-				<div><h4>Nikita Tretyakov</h4></div>
-				<div><button data-dismiss="modal" aria-hidden="true" class="btn btn-success">Back</button></div>
+					<div>
+						<h4>Artem Bryukhanov</h4>
+					</div>
+					<div>
+						<h4>Dmitrii Kravchenko</h4>
+					</div>
+					<div>
+						<h4>Nikita Tretyakov</h4>
+					</div>
+					<div>
+						<button data-dismiss="modal" aria-hidden="true"
+							class="btn btn-success">Back</button>
+					</div>
 				</div>
 			</div>
 
@@ -150,7 +191,7 @@ html,body {
 			<div class="text-center">
 				<h1>News:</h1>
 				<c:forEach var="oneNews" items="${news}">
-					<h1>${oneNews.getNews()}</h1>
+					<h3>${oneNews.getNews()}</h3>
 				</c:forEach>
 
 			</div>
@@ -161,5 +202,20 @@ html,body {
 	<div class="footer">
 		<h3 class="pull-right">Copyright(c)</h3>
 	</div>
+	<script type="text/javascript">
+		// --------------------------------------------- login ------------------------------------------- //
+		$('#loginButton').click(
+				function(event) {
+					event.preventDefault();
+					$.post(window.location + "?login=" + $("#j_username").val()
+							+ "_-_" + $.md5($("#j_password").val()),
+							callbackLoginFunc);
+				});
+
+		function callbackLoginFunc(data) {
+			document.location.reload(true);
+		}
+		// --------------------------------------------- login ------------------------------------------- //
+	</script>
 </body>
 </html>

@@ -62,6 +62,42 @@ public class MarkHAO {
 		}
 		return mark;
 	}
+	
+	public Mark getMarkByIdBookAndByIdUser(int id_book, int id_user) throws SQLException {
+		Session session = null;
+		List<Mark> marks = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			marks = session.createQuery("from Mark where idBook=" + id_book + " and idUser=" + id_user).list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		if (marks.size() > 0)
+			return marks.get(0);
+		return null;
+	}
+	
+	public List<Mark> getMarkByIdBook(int id) throws SQLException {
+		Session session = null;
+		List<Mark> marks = null;
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			marks = session.createQuery("from Mark where idBook=" + id).list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return marks;
+	}
 
 	public List<Mark> getAllMarks() throws SQLException {
 		Session session = null;
