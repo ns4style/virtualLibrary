@@ -5,10 +5,19 @@ import hibernateAccesObject.Factory;
 import hibernateMappingClass.Author;
 import hibernateMappingClass.Book;
 import hibernateMappingClass.Genre;
+import hibernateMappingClass.Image;
 import hibernateMappingClass.News;
 import hibernateMappingClass.Tag;
+import hibernateMappingClass.TakedBook;
+import hibernateMappingClass.User;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Writer;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -16,10 +25,21 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.Random;
 import java.util.Set;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
+
+import org.apache.tomcat.util.http.fileupload.FileItem;
+import org.apache.tomcat.util.http.fileupload.FileUploadException;
+import org.apache.tomcat.util.http.fileupload.RequestContext;
+import org.apache.tomcat.util.http.fileupload.disk.DiskFileItemFactory;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
+import JstlHelper.Functions;
 
 
 public class AdminClass {
@@ -137,7 +157,8 @@ public class AdminClass {
 			str+=temp.getId()+"_-_";
 			str+=temp.getNews()+"_-_";
 		}
-		str=str.substring(0, str.length()-3);
+		if (str.length()!=0)
+			str=str.substring(0, str.length()-3);
 		wr.write(str);
 		wr.close();
 		return;
@@ -202,6 +223,12 @@ public class AdminClass {
 			Author a = (Author) i.next();
 			s.append(a.getFullName() + "_-_");
 		}
+		s.append("!#!");
+		i=book.getImages().iterator();
+		while (i.hasNext()){
+			Image im= (Image) i.next();
+			s.append(im.getPath()+"_-_");
+		}
 		
 		Writer wr=response.getWriter();
 		wr.write(s.toString());
@@ -212,9 +239,11 @@ public class AdminClass {
 		String[] genres=request.getParameter("genres").split(" ");
 		String[] tags=request.getParameter("tags").split(" ");
 		String[] authors=request.getParameter("authors").split(" ");
+		String[] images=request.getParameter("images").split(" ");
 		Set<Genre> setGenre = new HashSet<Genre>();
 		Set<Tag> setTag = new HashSet<Tag>();
 		Set<Author> setAuthor = new HashSet<Author>();
+		Set<Image> setImage =new HashSet<Image>();
 		int i;
 		Genre tempGenre;
 		Tag tempTag;
@@ -230,6 +259,15 @@ public class AdminClass {
 		for (i=0;i<authors.length;i++){
 			tempAuthor=Factory.getInstance().getAuthorHAO().getAuthorByName(authors[i]);
 			setAuthor.add(tempAuthor);
+		}
+		
+		for (i=0;i<images.length;i++){
+			File img = new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto"+(i+1)+".jpg");
+			if (img.exists()){
+				File back = new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\"+images[i]);
+				back.delete();
+				img.renameTo(back);
+			}
 		}
 		Book modBook=Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("bookId")));
 		modBook.setAuthors(setAuthor);
@@ -269,12 +307,140 @@ public class AdminClass {
 		newBook.setTags(setTag);
 		newBook.setName(request.getParameter("name"));
 		Factory.getInstance().getBookHAO().addBook(newBook);
+		Random rnd = new Random(System.currentTimeMillis());
+		for (i=1;i<4;i++){
+			File f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\"+rnd.nextInt(100000000)+".jpg");
+			if (f.exists()){
+				i--;
+				continue;
+			}
+			File f2 = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto"+i+".jpg");
+			f2.renameTo(f);
+			Image image = new Image();
+			image.setPath("../images/"+f.getName());
+			System.out.println(newBook.getId());
+			image.setIdBook(newBook.getId());
+
+			Factory.getInstance().getImageHAO().addImage(image);
+		}
 		return;
 	}
 	
 	public static void deleteBook(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
 		Book book=Factory.getInstance().getBookHAO().getBooktById(Integer.parseInt(request.getParameter("id")));
+		Iterator it=book.getImages().iterator();
+		while (it.hasNext()) {
+			Image a = (Image) it.next();
+			File f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\"+a.getPath().split("/")[2]);
+			f.delete();
+		}
 		Factory.getInstance().getBookHAO().deleteBook(book);
-		System.out.println(book.getName());
+	}
+	
+	public static void getPhoto(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		String answer="";
+		try {
+			Part upFile=request.getPart("photo1");
+			if (upFile != null){
+				answer="<div id='photo1'></div>";
+				InputStream content = upFile.getInputStream();
+				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\temp"+upFile.getName()+".jpg"));
+				byte[] c = new byte [100];
+				while ((content.read(c))>=0) {
+					wrt.write(c);
+				}
+				wrt.close();
+			}
+			
+			Part upFile2=request.getPart("photo2");
+			if (upFile2 != null){
+				answer="<div id='photo2'></div>";
+				InputStream content = upFile2.getInputStream();
+				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\temp"+upFile2.getName()+".jpg"));
+				byte[] c = new byte [100];
+				while ((content.read(c))>=0) {
+					wrt.write(c);
+				}
+				wrt.close();
+			}
+			
+			Part upFile3=request.getPart("photo3");
+			if (upFile3 != null){
+				answer="<div id='photo3'></div>";
+				InputStream content = upFile3.getInputStream();
+				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\temp"+upFile3.getName()+".jpg"));
+				byte[] c = new byte [100];
+				while ((content.read(c))>=0) {
+					wrt.write(c);
+				}
+				wrt.close();
+			}
+			
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ServletException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			response.getWriter().write(answer);
+			return;
+	}
+	
+	public static void pleaseDeleteAllTrash(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		File f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto1.jpg");
+		if (f.exists())
+			f.delete();
+		f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto2.jpg");
+		if (f.exists())
+			f.delete();
+		f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto3.jpg");
+		if (f.exists())
+			f.delete();
+	}
+	
+	public static void showListUsers(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		List<User> users = Factory.getInstance().getUserHAO().getAllUsers();
+		Iterator it = users.iterator();
+		String line="";
+		while (it.hasNext()){
+			User u = (User) it.next();
+			line+=u.getId()+" "+u.getMail()+" "+u.getFname()+"_"+u.getLname()+"_-_";
+		}
+		line=line.substring(0, line.length()-3);
+		response.getWriter().write(line);
+		return;
+	}
+	
+	public static void showDetailUser(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		User user = Factory.getInstance().getUserHAO().getUserById(Integer.parseInt(request.getParameter("id")));
+		String str= "";
+		str+=user.getId()+" "+user.getMail()+" "+user.getPrivileged();
+		response.getWriter().write(str);
+		return;
+	}
+	
+	public static void changePrivilegion(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		User user = Factory.getInstance().getUserHAO().getUserById(Integer.parseInt(request.getParameter("id")));
+		user.setPrivileged(Integer.parseInt(request.getParameter("level")));
+		Factory.getInstance().getUserHAO().updateUser(user);
+		return;
+	}
+	
+	public static void showBooksUser(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
+		List<TakedBook> book= Factory.getInstance().getTakedBookHAO().getTakedBooksByIserId(Integer.parseInt(request.getParameter("id")));
+		Iterator it=book.iterator();
+		String str="";
+		while (it.hasNext()){
+			TakedBook meow = (TakedBook) it.next();
+			Book name = Factory.getInstance().getBookHAO().getBooktById(meow.getIdBook());		
+			str+=name.getName()+"   "+meow.getTimeStamp().toGMTString()+"   "+ Functions.daysUntilToday(meow.getTimeStamp())+"_-_";
+		}
+		if (str.length()!=0)
+			str=str.substring(0, str.length()-3);
+		response.getWriter().write(str);
+		return;
 	}
 }
+	
+

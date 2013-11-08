@@ -34,7 +34,6 @@ public class MapHandlers {
 			HttpServletResponse response) throws ServletException, IOException, SQLException {
 		Map parameters = request.getParameterMap();
 		//GENRES
-		
 		if (parameters.containsKey("action")) {
 			if (request.getParameter("action").equals("showListGenres")) {
 				AdminClass.showListGenres(request, response);
@@ -177,6 +176,48 @@ public class MapHandlers {
 		if (parameters.containsKey("action")) {
 			if (request.getParameter("action").equals("deleteBook")) {
 				AdminClass.deleteBook(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("getPhoto")) {
+				AdminClass.getPhoto(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("pleaseDeleteAllTrash")) {
+				AdminClass.pleaseDeleteAllTrash(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showListUsers")) {
+				AdminClass.showListUsers(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showDetailUser")) {
+				AdminClass.showDetailUser(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("changePrivilegion")) {
+				AdminClass.changePrivilegion(request, response);
+				return;
+			}
+		}
+		
+		if (parameters.containsKey("action")) {
+			if (request.getParameter("action").equals("showBooksUser")) {
+				AdminClass.showBooksUser(request, response);
 				return;
 			}
 		}

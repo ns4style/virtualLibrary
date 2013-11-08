@@ -12,6 +12,10 @@ $(document)
 					$('#books').on('show', showListBooks);
 					$('#books').on('hidden', hideListBooks);
 					$('#bookEditDetail').on('hidden', hideListDetailBooks);
+					$('#userEditDetail').on('hidden', hideListDetailUsers);
+					$('#userbooksDetail').on('hidden', hideListDetailUserBooks);
+					$('#users').on('show', showListUsers);
+					$('#users').on('hidden', hideListUsers);
 					// Functions of Genres
 					function showListGenres(e) {
 						$.post("admin?action=showListGenres", ajaxShowGenres);
@@ -574,6 +578,11 @@ $(document)
 						$("button[name*='editButton']").removeAttr('disabled');
 						$("button[name*='deleteButton']")
 								.removeAttr('disabled');
+						$.post("admin?action=pleaseDeleteAllTrash", ajaxClear);
+					}
+					
+					function ajaxClear(){
+						
 					}
 
 					function createFormBook() {
@@ -588,6 +597,29 @@ $(document)
 						$.post("admin?action=showListGenres", ajaxShowGenresInBook);
 						$.post("admin?action=showListTags", ajaxShowTagsInBook);
 						$.post("admin?action=showListAuthorsModal", ajaxShowAuthorsModalInBook);
+						newElem=' <iframe id="rFrame" name="rFrame" style="display: none"></iframe>';
+						$('#bookEditDetail-body').append(newElem);
+						$('#rFrame').load(photoWasDownload);
+						newElem='<br><br><br> <form action="admin?action=getPhoto" target="rFrame" method="POST" enctype="multipart/form-data"> <input type="file" name="photo1"/> <input type="submit" value="Load"> </form>';
+						$('#bookEditDetail-body').append(newElem);
+						newElem='<br><br><br> <form action="admin?action=getPhoto" target="rFrame" method="POST" enctype="multipart/form-data"> <input type="file" name="photo2"/> <input type="submit" value="Load"> </form>';
+						$('#bookEditDetail-body').append(newElem);
+						newElem='<br><br><br> <form action="admin?action=getPhoto" target="rFrame" method="POST" enctype="multipart/form-data"> <input type="file" name="photo3"/> <input type="submit" value="Load"> </form>';
+						$('#bookEditDetail-body').append(newElem);
+					}
+					
+					function photoWasDownload(data){
+						var text = window.frames["rFrame"].document.body.innerHTML;
+						text=text.substring(9,15);
+						if(text=='photo1'){
+							$('#photo1img').attr('src','images/tempphoto1.jpg');
+						}
+						if(text=='photo2'){
+							$('#photo2img').attr('src','images/tempphoto2.jpg');
+						}
+						if(text=='photo3'){
+							$('#photo3img').attr('src','images/tempphoto3.jpg');
+						}
 					}
 					
 					function ajaxShowGenresInBook(data){
@@ -658,6 +690,12 @@ $(document)
 						$("button[name*='cancelEditBookDetailButton']").bind("click",cancelEditBookDetailButton);
 						newElem = '<h2>Add Book</h2>';
 						$('#bookEditDetail-header').append(newElem);
+						newElem="<img id='photo1img' src='' width=\"110\" height=\"70\">";
+						$("input[name*='photo1']").before(newElem);
+						newElem="<img id='photo2img' src='' width=\"110\" height=\"70\">";
+						$("input[name*='photo2']").before(newElem);
+						newElem="<img id='photo3img' src='' width=\"110\" height=\"70\">";
+						$("input[name*='photo3']").before(newElem);
 						$('#bookEditDetail').modal('show');
 					}
 
@@ -687,6 +725,8 @@ $(document)
 						var arrayOfGenres=temp[0].split("_-_");
 						var arrayOfTags=temp[1].split("_-_");
 						var arrayOfAuthors=temp[2].split("_-_");
+						var arrayOfImages=temp[3].split("_-_");
+						var i;
 						for (i=0;i<arrayOfGenres.length-1;i++){
 							newElem='<div id="'+arrayOfGenres[i]+'" class="btn-group pull-left"><button class="btn">'+arrayOfGenres[i]+'</button><button class="btn" id="'+arrayOfGenres[i]+'" name="DeleteGenreButton">x</button></div>';
 							$('#selectedGenres').prepend(newElem);
@@ -704,8 +744,20 @@ $(document)
 							$('#selectedAuthors').prepend(newElem);
 						}
 						$("button[name*='DeleteAuthorButton']").bind("click",clickDeleteAuthorButton);
+						for (i=0;i<3;i++){
+							arrayOfImages[i]=arrayOfImages[i].substring(3);
+						}
+						newElem="<img id='photo1img' src='"+arrayOfImages[0]+"' width=\"110\" height=\"70\">";
+						$("input[name*='photo1']").before(newElem);
+						newElem="<img id='photo2img' src='"+arrayOfImages[1]+"' width=\"110\" height=\"70\">";
+						$("input[name*='photo2']").before(newElem);
+						newElem="<img id='photo3img' src='"+arrayOfImages[2]+"' width=\"110\" height=\"70\">";
+						$("input[name*='photo3']").before(newElem);
+						newElem="<input type='hidden' name='listOfNamesImages' value='"+arrayOfImages[0]+" "+arrayOfImages[1]+" "+arrayOfImages[2]+"'>";
+						$('#bookEditDetail-body').append(newElem);		
 					}
 					
+
 					function editBookDetailButtonEvent(e){
 						var genres = $('#selectedGenres').children();
 						var genresString="";
@@ -729,7 +781,12 @@ $(document)
 						}
 						authorsString=authorsString.substring(0, authorsString.length-1);
 						var idbook=$('#bookEditDetail-header').children();
-						$.post("admin?action=editDetailBook&bookId="+idbook[0].id+"&name="+$('#bookName').val()+"&genres="+genresString+"&tags="+tagsString+"&authors="+authorsString, cancelEditBookDetailButton);
+						if ((genres.length==0) ||(tags.length==0) ||(authors.length==0) ||($('#bookName').val()=="")){
+							alert("Error.Missing data");
+							return;
+						}
+						var str=$("input[name*='listOfNamesImages']").val();
+						$.post("admin",{action : "editDetailBook",bookId  : idbook[0].id, name : $('#bookName').val(), genres : genresString , tags : tagsString, authors :  authorsString, images : str },cancelAddBookDetailButton);	
 					}
 					
 					function addBookDetailButtonEvent(e){
@@ -753,8 +810,25 @@ $(document)
 						for (i=0;i<authors.length;i++){
 							authorsString+=authors[i].id+" ";
 						}
+						if ((genres.length==0) ||(tags.length==0) ||(authors.length==0) ||($('#bookName').val()=="")){
+							alert("Error.Missing data");
+							return;
+						}
 						authorsString=authorsString.substring(0, authorsString.length-1);
-						$.post("admin?action=addDetailBook&name="+$('#bookName').val()+"&genres="+genresString+"&tags="+tagsString+"&authors="+authorsString, cancelAddBookDetailButton);
+						if ($('#photo1img').attr('src') ==''){
+							alert("Need 3 pictures");
+							return;
+						}
+						if ($('#photo2img').attr('src') ==''){
+							alert("Need 3 pictures");
+							return;
+						}
+						if ($('#photo3img').attr('src') ==''){
+							alert("Need 3 pictures");
+							return;
+						}
+		
+						$.post("admin",{action : "addDetailBook",name : $('#bookName').val(), genres : genresString , tags : tagsString, authors :  authorsString },cancelAddBookDetailButton);	
 					}
 					
 					function cancelAddBookDetailButton(e){
@@ -771,4 +845,143 @@ $(document)
 					function deleteBooks(e) {
 						$.post("admin?action=deleteBook&id="+e.currentTarget.id,cancelAddBookDetailButton);
 					}
+					
+		//USERSSSSSSS
+					
+					function showListUsers(e) {
+						$.post("admin?action=showListUsers", ajaxShowUsers);
+					}
+					;
+
+					function hideListUsers(e) {
+						$('#users-body').empty();
+					}
+					;
+					
+					function ajaxShowUsers(data){
+						var arrayOfUsers = data.split('_-_');
+						var i, k = 0;
+						var newElem = '<table id="headTableUsers" class="table table-bordered"><thead><tr><th>Id</th><th>Mail</th><th>Name</th><th>Privileged</th><th>Books</th></tr></thead></table>';
+						$('#users-body').append(newElem);
+						newElem = '<tbody id="tableUsers"></tbody>';
+						$('#headTableUsers').append(newElem);
+						var str;
+						for (i = 0; i < arrayOfUsers.length; i++) {
+							str = arrayOfUsers[i].split(" ")[2].split("_")[0]+" "+arrayOfUsers[i].split(" ")[2].split("_")[1];
+							newElem = '<tr><td>'
+									+ (i+1)
+									+ '</td><td style="width:35%; padding-bottom:0px; padding-top:5px" id="'
+									+ arrayOfUsers[i].split(" ")[0]
+									+ '">'
+									+ arrayOfUsers[i].split(" ")[1]
+									+ '</td><td style="width:50%; padding-bottom:0px; padding-top:5px" id="'
+									+ arrayOfUsers[i].split(" ")[0]
+									+ '">'
+									+ str
+									+ '</td><td><button id="'
+									+ arrayOfUsers[i].split(" ")[0]
+									+ '"name="editPrivButton" class="btn btn-info">Edit</button></td><td><button id="'
+									+ arrayOfUsers[i].split(" ")[0]
+									+ '" name="lookBooksButton" class="btn btn-info">Look</button></td></tr>';
+							$('#tableUsers').append(newElem);
+						}
+						$("button[name*='editPrivButton']").bind("click",editPrivilegion);
+						$("button[name*='lookBooksButton']").bind("click",lookTakedBooks);
+						
+					};
+					
+					function editPrivilegion(e){
+						$.post("admin?action=showDetailUser&id="+e.currentTarget.id, ajaxEditUser);
+					};
+					
+					function hideListDetailUsers() {
+						$('#userEditDetail-header').empty();
+						$('#userEditDetail-body').empty();
+						$("button[name*='editPrivButton']").removeAttr('disabled');
+						$("button[name*='lookBooksButton']").removeAttr('disabled');
+
+					}
+					
+					function ajaxEditUser(data){
+						var arr = data.split(" ");
+						var newElem = '<div id="'+arr[0]+'"><h2>Edit '+ arr[1]+'</h2><div>';
+						$('#userEditDetail-header').append(newElem);
+						newElem='<button class="btn btn-danger" id="'+arr[0]+'" name="BlockUser">Block';
+						$('#userEditDetail-body').append(newElem);
+						newElem='<button class="btn btn-info" id="'+arr[0]+'" name="JustUser">JustUser';
+						$('#userEditDetail-body').append(newElem);
+						newElem='<button class="btn btn-success" id="'+arr[0]+'" name="AdminUser">Admin';
+						$('#userEditDetail-body').append(newElem);
+						$("button[name*='BlockUser']").bind("click",ChangePrivilegion);
+						$("button[name*='JustUser']").bind("click",ChangePrivilegion);
+						$("button[name*='AdminUser']").bind("click",ChangePrivilegion);
+						if (arr[2]==0){
+							$("button[name*='AdminUser']").attr('disabled', true);
+						}
+						if (arr[2]==1){
+							$("button[name*='JustUser']").attr('disabled', true);
+						}
+						if (arr[2]==2){
+							$("button[name*='BlockUser']").attr('disabled', true);
+						}
+						$("button[name*='editPrivButton']").attr('disabled', true);
+						$("button[name*='lookBooksButton']").attr('disabled', true);
+						$('#userEditDetail').modal('show');
+					}
+					
+					function ChangePrivilegion(e){
+						var priv;
+						if (e.currentTarget.name=="BlockUser")
+							priv=2;
+						if (e.currentTarget.name=="JustUser")
+							priv=1;
+						if (e.currentTarget.name=="AdminUser")
+							priv=0;
+						$.post("admin?action=changePrivilegion&id="+e.currentTarget.id+"&level="+priv, ajaxCloseUserDetail);
+					}
+					
+					function ajaxCloseUserDetail(data){
+						$('#userEditDetail').modal('hide');
+					};
+					
+					function hideListDetailUserBooks() {
+						$('#userbooksDetail-header').empty();
+						$('#userbooksDetail-body').empty();
+						$("button[name*='editPrivButton']").removeAttr('disabled');
+						$("button[name*='lookBooksButton']").removeAttr('disabled');
+
+					}
+					
+					function lookTakedBooks(e){
+						$("button[name*='editPrivButton']").attr('disabled', true);
+						$("button[name*='lookBooksButton']").attr('disabled', true);
+						$.post("admin?action=showBooksUser&id="+e.currentTarget.id, ajaxEditBooksUser);
+					};
+				
+					function ajaxEditBooksUser(data){
+						var newElem = '<div><h2>Taked Books</h2><div>';
+						var arrayOfBooks = data.split('_-_');
+						var i;
+						$('#userbooksDetail-header').append(newElem);
+						newElem = '<table id="headTableBooksUser" class="table table-bordered"><thead><tr><th>Number</th><th>Date</th><th>Name</th><th>Days Ago</th></tr></thead></table>';
+						$('#userbooksDetail-body').append(newElem);
+						newElem = '<tbody id="tableBooksUser"></tbody>';
+						$('#headTableBooksUser').append(newElem);
+						for (i=0;i<arrayOfBooks.length;i++){
+							var name = arrayOfBooks[i].split("   ")[0];
+							var time = arrayOfBooks[i].split("   ")[1];
+							var days = arrayOfBooks[i].split("   ")[2];
+							newElem = '<tr><td>'
+								+ (i+1)
+								+ '</td><td style="width:35%; padding-bottom:0px; padding-top:5px">'
+								+ time
+								+ '</td><td style="width:50%; padding-bottom:0px; padding-top:5px">'
+								+ name
+								+ '</td><td style="width:50%; padding-bottom:0px; padding-top:5px">'
+								+ days
+								+'</td></tr>';
+						$('#tableBooksUser').append(newElem);
+						}
+						$('#userbooksDetail').modal('show');
+					};
 				});

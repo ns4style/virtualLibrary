@@ -155,6 +155,32 @@ html,body {
 				</div>
 			</div>
 			</div>
+				<div>
+			<h3>Edit list of Users</h3>
+			<a data-target="#users" data-toggle="modal" href="" class="btn">Edit Users</a>
+			<div id="users" class="modal hide fade text-center">
+				<div class="modal-header">
+					<h2>List of Users:</h2>
+				</div>
+				<div id="users-body" class="modal-body"></div>
+			</div>
+			</div>
+			<div>
+			<div id="userEditDetail" class="modal hide fade text-center">
+				<div class="modal-header" id="userEditDetail-header">
+				</div>
+				<div id="userEditDetail-body" class="modal-body pull-right text-left span3">
+				</div>
+			</div>
+			</div>
+			<div>
+			<div id="userbooksDetail" class="modal hide fade text-center">
+				<div class="modal-header" id="userbooksDetail-header">
+				</div>
+				<div id="userbooksDetail-body" class="modal-body text-left">
+				</div>
+			</div>
+			</div>
 			</div>
 			
 		</div>

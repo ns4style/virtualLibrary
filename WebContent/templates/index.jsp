@@ -99,7 +99,7 @@ html,body {
 						<div>
 							<p>Enter your password:</p>
 						</div>
-						<input name="pass" class="span2" type="password"
+						<input name="passwd" class="span2" type="password"
 							placeholder="Password">
 					</div>
 					<div id="descr">

@@ -6,10 +6,14 @@ import java.sql.SQLException;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+@WebServlet("/upload")
+@MultipartConfig
 public class LibraryServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
@@ -18,7 +22,7 @@ public class LibraryServlet extends HttpServlet {
 	}
 	public void init(ServletConfig config) throws ServletException {
 		System.setProperty("java.security.auth.login.config", 
-							"C:/Users/Admin/workspace/virtualLibrary/jaas.config");
+							"C:/Users/Artem/workspace/Library/jaas.config");
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response)
@@ -29,7 +33,7 @@ public class LibraryServlet extends HttpServlet {
 		 * страницы, если таковой существует (все определения обработчиков
 		 * находятся в MapHandlers)
 		 */
-		
+
 		
 		try {
 			try {

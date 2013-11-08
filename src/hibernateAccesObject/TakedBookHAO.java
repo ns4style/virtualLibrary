@@ -51,7 +51,8 @@ public class TakedBookHAO {
 		TakedBook takedBook = null;
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
-			takedBook = (TakedBook) session.createQuery("from TakedBook where id=" + id).list().get(0);
+			takedBook = (TakedBook) session
+					.createQuery("from TakedBook where id=" + id).list().get(0);
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
@@ -69,6 +70,24 @@ public class TakedBookHAO {
 		try {
 			session = HibernateUtil.getSessionFactory().openSession();
 			takedBooks = session.createCriteria(TakedBook.class).list();
+		} catch (Exception e) {
+			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
+					JOptionPane.OK_OPTION);
+		} finally {
+			if (session != null && session.isOpen()) {
+				session.close();
+			}
+		}
+		return takedBooks;
+	}
+
+	public List<TakedBook> getTakedBooksByIserId(int id) throws SQLException {
+		Session session = null;
+		List<TakedBook> takedBooks = new ArrayList<TakedBook>();
+		try {
+			session = HibernateUtil.getSessionFactory().openSession();
+			takedBooks = session.createQuery(
+					"from TakedBook tb where tb.idUser =" + id + " order by tb.timeStamp").list();
 		} catch (Exception e) {
 			JOptionPane.showMessageDialog(null, e.getMessage(), "Ошибка I/O",
 					JOptionPane.OK_OPTION);
