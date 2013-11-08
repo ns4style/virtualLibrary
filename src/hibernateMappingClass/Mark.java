@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 @Entity
-@Table(name = "marks")
+@Table(name = "user_marks")
 public class Mark {	
 	@Id
 	@GeneratedValue(generator = "increment")
@@ -20,10 +20,13 @@ public class Mark {
 	@Column(name = "id_book")
 	private int idBook;
 	
+	@Column(name = "id_user")
+	private int idUser;
+	
 	@Column(name = "value")
 	private int value;
 	
-	Mark () {}
+	public Mark () {}
 
 	public int getId() {
 		return id;
@@ -37,7 +40,7 @@ public class Mark {
 		return idBook;
 	}
 
-	public void setId_book(int idBook) {
+	public void setIdBook(int idBook) {
 		this.idBook = idBook;
 	}
 
@@ -47,6 +50,14 @@ public class Mark {
 
 	public void setValue(int value) {
 		this.value = value;
+	}
+
+	public int getIdUser() {
+		return idUser;
+	}
+
+	public void setIdUser(int idUser) {
+		this.idUser = idUser;
 	}
 	
 }

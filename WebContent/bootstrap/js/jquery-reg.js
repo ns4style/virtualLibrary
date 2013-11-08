@@ -80,7 +80,6 @@ $(document).ready(function () {
 		var newElem;
 		var reg = /^[_a-zA-Z0-9]+$/;
 		var value=$("[name*='passwd']").val();
-		alert(value);
 		if (reg.test(value)){
 			newElem=$('<p id="checkpass" class="label label-success">&#10003</p>');
 			flag4=true;
@@ -139,18 +138,20 @@ $(document).ready(function () {
 			descrCheck(e);
 			flagReg=false;
 			if ((flag1) && (flag2) && (flag3) && (flag4) && (flag5)){
-				$.post("index?action=reg&email="+$("[name*='email']").val()+"&fname="+$("[name*='fname']").val()+"&lname="+$("[name*='lname']").val()+"&pass="+$.md5($("[name*='passwd']").val())+"&descr="+$("[name*='descr']").val(),ajaxReg);
+				$.post("https://" + $(location).attr('host') + "/Library/index?action=reg&email="
+						+$("[name*='email']").val()+"&fname="+$("[name*='fname']").val()+"&lname="+$("[name*='lname']").val()+"&pass="
+						+$.md5($("[name*='passwd']").val())+"&descr="+$("[name*='descr']").val(),ajaxReg);
 			}
 		}
 		
 	};
 	
 	function ajaxReg(data){
-		$('#register').modal('hide')
+		$('#register').modal('hide');
 		if (data=="true")
-			$('#regComplete').modal('show')
+			$('#regComplete').modal('show');
 		else
-			$('#regFailed').modal('show')
+			$('#regFailed').modal('show');
 	}
 	
 	function register(e){
@@ -160,22 +161,22 @@ $(document).ready(function () {
 	};
 	
 	function showAbout(e){
-		$.post("index?action=aboutUsers",ajaxAboutUsers);
+		$.post("https://" + $(location).attr('host') + "/Library/index?action=aboutUsers", ajaxAboutUsers);
 	};
 	
 	function ajaxAboutUsers(data){
 		var newElem = "<div><h4>Total users: "+data+"</h4></div>";
 		$('#about-body').append(newElem);
-		$.post("index?action=aboutBooks",ajaxAboutBooks);
+		$.post("https://" + $(location).attr('host') + "/Library/index?action=aboutBooks",ajaxAboutBooks);
 	};
 	
 	function ajaxAboutBooks (data){
 		var newElem = "<div><h4>Total books: "+data+"</h4></div>";
 		$('#about-body').append(newElem);
 		newElem = "<div><h4>Thx for viziting our site</h4></div>";
-		$('#about-body').append(newElem)
+		$('#about-body').append(newElem);
 		newElem='<div><button data-dismiss="modal" aria-hidden="true" class="btn btn-success">Back</button></div>';
-		$('#about-body').append(newElem)
+		$('#about-body').append(newElem);
 	};
 
 	function hideAbout(e){

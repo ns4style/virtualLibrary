@@ -80,7 +80,9 @@ public class JaasLoginModule implements LoginModule {
 		System.out.println(passwordCallback.getPassword().length);
 		System.out.println(user.getHashPass().length());
 		
-		if (2==2){
+		String string = new String(passwordCallback.getPassword());
+		System.out.println(user.getHashPass() + " == " + string);
+		if (user.getHashPass().equals(string)) {
 			this.name = nameCallback.getName();
 			this.pass = String.valueOf(passwordCallback.getPassword());
 		}

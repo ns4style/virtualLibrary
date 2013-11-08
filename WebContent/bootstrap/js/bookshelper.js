@@ -1,5 +1,6 @@
 function createBootstrapCarousel(array) {
 	var li = document.createElement('li');
+	li.setAttribute('style', 'overflow: hidden; float: left; width: 120px; height: 180px;');
 
 	var carousel = document.createElement('div');
 	carousel.setAttribute('class', 'carousel slide');
@@ -9,7 +10,7 @@ function createBootstrapCarousel(array) {
                             <div class="carousel-inner"> \
                                     <div class="active item"> \
 											<a data-toggle="modal"> \
-                                            <img src="' + array[3] + '" width="110" height="70" class="img-polaroid" data-id="' + array[0] + '"> \
+                                            <img src="' + array[3] + '" width="110" height="172" class="img-polaroid" data-id="' + array[0] + '"> \
                                             </a> \
                                             \
                                             <div class="carousel-caption"> \
@@ -19,7 +20,7 @@ function createBootstrapCarousel(array) {
                                     \
                                     <div class="item"> \
                                             <a data-toggle="modal"> \
-                                            <img src="' + array[4] + '" width="110" height="70" class="img-polaroid" data-id="' + array[0] + '"> \
+                                            <img src="' + array[4] + '" width="110" height="172" class="img-polaroid" data-id="' + array[0] + '"> \
                                             </a> \
                                             \
                                             <div class="carousel-caption"> \
@@ -29,7 +30,7 @@ function createBootstrapCarousel(array) {
                                     \
                                     <div class="item"> \
                                             <a data-toggle="modal"> \
-                                            <img src="' + array[5] + '" width="110" height="70" class="img-polaroid" data-id="' + array[0] + '"> \
+                                            <img src="' + array[5] + '" width="110" height="172" class="img-polaroid" data-id="' + array[0] + '"> \
                                             </a> \
                                             \
                                             <div class="carousel-caption"> \
@@ -69,7 +70,7 @@ function addPageLiCollection(element, count) {
 	for(var i=0; i<count; i++) {
 		var li = document.createElement('li');
 		li.setAttribute('id', 'li' + i);
-		li.setAttribute('style', 'overflow: hidden; float: left; width: 80%; height: 263px;');
+		li.setAttribute('style', 'overflow: hidden; float: left; width: 950px; height: 263px;');
 		$(element).append(li);
 	}
 }

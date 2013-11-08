@@ -2,7 +2,6 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ page import="hibernateMappingClass.Book"%>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -10,15 +9,20 @@
 <title>Books</title>
 
 <script type="text/javascript" src="../bootstrap/js/jquery.js"></script>
+<script type="text/javascript" src="../bootstrap/js/md5.js"></script>
 <script type="text/javascript" src="../bootstrap/js/bootstrap.js"></script>
 <script type="text/javascript"
 	src="../bootstrap/js/jcarousellite_1.0.1.js"></script>
 <script type="text/javascript"
 	src="../bootstrap/js/jcarousellite_1.0.1.min.js"></script>
 <script type="text/javascript" src="../bootstrap/js/bookshelper.js"></script>
+<script src="../bootstrap/js/jquery-reg.js"></script>
+<script src="../bootstrap/js/jquery.rating-2.0.js"></script>
 
 <link rel="stylesheet" type="text/css"
 	href="../bootstrap/css/bootstrap.css" />
+<link rel="stylesheet" type="text/css"
+	href="../bootstrap/css/jquery.rating.css" />
 
 </head>
 
@@ -115,6 +119,11 @@ html,body {
 	box-shadow: inset 0px 0px 8px rgba(0, 0, 0, .5), 0px 1px 0px
 		rgba(255, 255, 255, .1);
 }
+
+.user_login_text {
+	padding-top: 10px;
+	color: #FFFFFF;
+}
 ;
 </style>
 
@@ -126,13 +135,49 @@ html,body {
 						<a class="btn btn-navbar" data-toggle="collapse"
 							data-target=".nav-collapse"> <span class="icon-bar"></span> <span
 							class="icon-bar"></span> <span class="icon-bar"></span>
-						</a> <a class="brand">Home</a>
+						</a> <a class="brand" href="/Library/index">Home</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<li><a href="/Library/books">Books</a></li>
-								<li><a href="">Authors</a></li>
-								<li><a href="">About</a></li>
+								<li><a href="/Library/books/">Books</a></li>
+								<c:if test="${user_name != 'unknown'}">
+									<li><a href="/Library/cabinet">Cabinet</a></li>
+								</c:if>
+								<li><a data-target="#authors" data-toggle="modal" href="">Authors</a></li>
+								<li><a data-target="#about" data-toggle="modal" href="">About</a></li>
 							</ul>
+
+							<!-- login form -->
+							<c:if test="${user_name == 'unknown'}">
+								<form class="navbar-form pull-right">
+									<input class="span2" type="text" placeholder="Email"
+										id="j_username""> <input class="span2" type="password"
+										placeholder="Password" id="j_password"">
+									<button class="btn" id="loginButton"">Login</button>
+									<button data-target="#register" data-toggle="modal"
+										type="submit" class="btn"">Register</button>
+								</form>
+							</c:if>
+
+							<!-- user name -->
+							<div class="user_login_text">
+								<c:if test="${user_name != 'unknown'}">
+									<div class="pull-right">
+										<c:out value=" Hello ${user_name}! You privileged is: " />
+										<c:choose>
+											<c:when test="${user_privileged == '0'}">
+											admin
+										</c:when>
+											<c:when test="${user_privileged == '1'}">
+											user
+										</c:when>
+											<c:when test="${user_privileged == '2'}">
+											blocked user
+										</c:when>
+										</c:choose>
+									</div>
+								</c:if>
+							</div>
+
 						</div>
 					</div>
 				</div>
@@ -171,7 +216,8 @@ html,body {
 				style="margin-left: 10%; margin-right: 10%;">
 				<div class="pageBtn" id="pageBtn">
 					<script type="text/javascript">
-						addPageButtonCollection("#scrollMore #pageBtn", "${pageCount}");
+						addPageButtonCollection("#scrollMore #pageBtn",
+								"${pageCount}");
 					</script>
 				</div>
 
@@ -215,10 +261,99 @@ html,body {
 		</div>
 	</div>
 
+	<!-- ------------------------------------------------------------------ modal --------------------------------------------------------------- -->
 	<div id="book_modal" class="modal hide fade" style="width: 555px;">
 		<div class="modal-header" id="book-header"></div>
 		<div class="modal-body" id="book-body"></div>
 	</div>
+
+	<div id="register" class="modal hide fade">
+		<div class="modal-header">
+			<h2>Registration</h2>
+		</div>
+		<div class="modal-body">
+			<div>
+				<input name="action" class="span2 hide" type="text" value="reg">
+			</div>
+			<div id="email">
+				<div>
+					<p>Enter your Email:</p>
+				</div>
+				<input name="email" class="span2" type="text" placeholder="Email">
+			</div>
+			<div id="fname">
+				<div>
+					<p>Enter your first name:</p>
+				</div>
+				<input name="fname" class="span2" type="text" placeholder="">
+			</div>
+			<div id="lname">
+				<div>
+					<p>Enter your second name:</p>
+				</div>
+				<input name="lname" class="span2" type="text" placeholder="">
+			</div>
+			<div id="pass">
+				<div>
+					<p>Enter your password:</p>
+				</div>
+				<input name="passwd" class="span2" type="password"
+					placeholder="Password">
+			</div>
+			<div id="descr">
+				<div>
+					<p>Enter something about yourself:</p>
+				</div>
+				<input name="descr" class="span2" type="text" placeholder="">
+			</div>
+			<button data-dismiss="modal" aria-hidden="true"
+				class="btn btn-warning">Back</button>
+			<button name="reg" class="btn btn-success">Register</button>
+		</div>
+	</div>
+
+	<div id="about" class="modal hide fade text-center">
+		<div class="modal-header">
+			<h2>About library:</h2>
+		</div>
+		<div id="about-body" class="modal-body"></div>
+	</div>
+
+	<div id="authors" class="modal hide fade text-center">
+		<div class="modal-header">
+			<h2>Authors:</h2>
+		</div>
+		<div id="authors-body" class="modal-body">
+			<div>
+				<h4>Artem Bryukhanov</h4>
+			</div>
+			<div>
+				<h4>Dmitrii Kravchenko</h4>
+			</div>
+			<div>
+				<h4>Nikita Tretyakov</h4>
+			</div>
+			<div>
+				<button data-dismiss="modal" aria-hidden="true"
+					class="btn btn-success">Back</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="regComplete" class="modal hide fade">
+		<div class="modal-header">
+			<h2>Status</h2>
+		</div>
+		<div class="modal-body">Registration Complete.</div>
+	</div>
+
+	<div id="regFailed" class="modal hide fade">
+		<div class="modal-header">
+			<h2>Status</h2>
+		</div>
+		<div class="modal-body">Registration Failed.</div>
+	</div>
+	<!-- ------------------------------------------------------------------ modal --------------------------------------------------------------- -->
 
 
 
@@ -246,8 +381,22 @@ html,body {
 				hoverPause : true
 			});
 		});
+
 		// --------------------------------------------- init -------------------------------------------- //
-		
+
+		// --------------------------------------------- login ------------------------------------------- //
+		$('#loginButton').click(
+				function(event) {
+					event.preventDefault();
+					$.post(window.location + "?login=" + $("#j_username").val()
+							+ "_-_" + $.md5($("#j_password").val()),
+							callbackLoginFunc);
+				});
+
+		function callbackLoginFunc(data) {
+			document.location.reload(true);
+		}
+		// --------------------------------------------- login ------------------------------------------- //
 
 		// -------------------------- Create page -------------------------------------- //
 		var button = new Array(); // page button
@@ -292,7 +441,6 @@ html,body {
 		};
 		// -------------------------- Create page -------------------------------------- //
 
-		
 		// -------------------------------------------- rewrite page after search ------------------------------ //
 		$("#searchBtn").bind("click", searchBookFunc);
 
@@ -343,9 +491,9 @@ html,body {
 
 			var j = 1;
 			for (var i = 0; i < a[0]; i++) {
-				for (var t = 0; t<5; t++) {
+				for (var t = 0; t < 5; t++) {
 					var temp = a[j].split(':');
-						document.getElementById('li' + i).innerHTML += '<a data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';
+					document.getElementById('li' + i).innerHTML += '<a data-toggle="modal"><img src="' + temp[2] + '" width="168" height="263" class="jcarousel_img" data-id="' + temp[1] + '"></a>';
 					j++;
 					if (j == a.length - 1) {
 						break;
@@ -415,7 +563,28 @@ html,body {
 										+ " </spawn>");
 			}
 
-			$(".modal-body").append("<h5>Comments</h5>");
+			var rOnly = true;
+			if ("${user_privileged}" < 3) { // marks	
+				rOnly = false;
+			}
+			
+			$(".modal-body").append(
+					'<div id="rating"> \
+					<input name="val" value="' + a[7] + '" type="hidden"> \
+					<input name="votes" value="' + a[8] + '" type="hidden"> \
+					<input name="book_id" value="' + a[5] + '" type="hidden"> \
+					<input name="user_id" value="${user_id}" type="hidden"> \
+					</div>');
+			
+			$('#rating').rating({
+				fx: 'full',
+				image: '../images/stars.png',
+				loader: '../images/ajax-loader.gif',
+				width: 8,
+				url: window.location + '?marks=',
+				readOnly: rOnly
+			});
+
 			var comments = a[4].split('_-_');
 			for (var i = 0; i < comments.length - 1; i++) {
 				$(".modal-body")
@@ -448,7 +617,6 @@ html,body {
 			$("#book_modal").modal('show');
 		};
 		// ----------------------- Create modal window -------------------------------------- //
-		
 
 		// ----------------------- Clean modal window -------------------------------------- //
 		$("#book_modal").on('hidden', function() {
@@ -456,7 +624,6 @@ html,body {
 			$('#book-body').empty();
 		});
 		// ----------------------- Clean modal window -------------------------------------- //
-		
 
 		// ----------------------- Add comment -------------------------------------- //
 		function addCommentFunc(event) {
