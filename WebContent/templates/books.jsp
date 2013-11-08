@@ -174,6 +174,7 @@ html,body {
 											blocked user
 										</c:when>
 										</c:choose>
+										<button class="btn" id="logoutButton" style="margin-left: 15px; margin-top: -5px;">Logout</button>
 									</div>
 								</c:if>
 							</div>
@@ -331,9 +332,6 @@ html,body {
 				<h4>Dmitrii Kravchenko</h4>
 			</div>
 			<div>
-				<h4>Nikita Tretyakov</h4>
-			</div>
-			<div>
 				<button data-dismiss="modal" aria-hidden="true"
 					class="btn btn-success">Back</button>
 			</div>
@@ -359,6 +357,15 @@ html,body {
 
 	<script type="text/javascript">
 		// --------------------------------------------- init -------------------------------------------- //
+		$("#logoutButton").bind("click", logoutBtnFunc);
+		function logoutBtnFunc() {
+			$.post("https://" + $(location).attr('host') + "/Library/index?delete_cookie=", callBackLogoutFunc);
+		}
+		
+		function callBackLogoutFunc(data) {
+			document.location.reload(true);
+		}
+		
 		var alreadyDownloadPages = new Array();
 
 		$.post(window.location + "?page=0" + "&adp=" // dynamic
@@ -521,32 +528,32 @@ html,body {
 				return;
 			}
 			var a = data.split(';'); // name ; author_1, ..... ; img_1, .., .. ; tag_1, ..... ,; id:fullUserName:comment_-_ .......... ,; id; count;
-			$(".modal-header")
+			$("#book_modal .modal-header")
 					.append(
 							"<h2 style=\"margin-top: 5px; margin-bottom: 5px;margin-top: 5px; margin-bottom: 5px;\">"
 									+ a[0] + "</h2>");
 
 			var authors = a[1].split(',');
 			for (var i = 0; i < authors.length - 1; i++) {
-				$(".modal-header").append(authors[i] + " ");
+				$("#book_modal .modal-header").append(authors[i] + " ");
 			}
 
-			$(".modal-body").append(
+			$("#book_modal .modal-body").append(
 					"<img src=\"" + a[2].split(',')[0]
 							+ "\" width=\"168\" height=\"263\">");
-			$(".modal-body").append(
+			$("#book_modal .modal-body").append(
 					"<img src=\"" + a[2].split(',')[1]
 							+ "\" width=\"168\" height=\"263\">");
-			$(".modal-body").append(
+			$("#book_modal .modal-body").append(
 					"<img src=\"" + a[2].split(',')[2]
 							+ "\" width=\"168\" height=\"263\">");
 
 			if ("${user_privileged}" < 2) { // btn to take book
-				$(".modal-body")
+				$("#book_modal .modal-body")
 						.append(
 								"<input type=\"submit\" class=\"btn\" id=\"takeBtn\" value=\"Take\" style=\"position: absolute; top:290px; right:30px;\">");
 
-				$(".modal-body")
+				$("#book_modal .modal-body")
 						.append(
 								"<div class=\"text\" id=\"bookCount\" style=\"position: absolute; top:295px; right:100px;\"> Current count: "
 										+ a[6] + "</div>");
@@ -554,10 +561,10 @@ html,body {
 				$("#takeBtn").bind("click", a[5], takeBookFunc);
 			}
 
-			$(".modal-body").append("<h4>Tags</h4>");
+			$("#book_modal .modal-body").append("<h4>Tags</h4>");
 			var tags = a[3].split(',');
 			for (var i = 0; i < tags.length - 1; i++) {
-				$(".modal-body")
+				$("#book_modal .modal-body")
 						.append(
 								"<spawn style=\"color:blue\">#" + tags[i]
 										+ " </spawn>");
@@ -568,7 +575,7 @@ html,body {
 				rOnly = false;
 			}
 			
-			$(".modal-body").append(
+			$("#book_modal .modal-body").append(
 					'<div id="rating"> \
 					<input name="val" value="' + a[7] + '" type="hidden"> \
 					<input name="votes" value="' + a[8] + '" type="hidden"> \
@@ -587,7 +594,7 @@ html,body {
 
 			var comments = a[4].split('_-_');
 			for (var i = 0; i < comments.length - 1; i++) {
-				$(".modal-body")
+				$("#book_modal .modal-body")
 						.append(
 								"<div id=\"comment"
 										+ comments[i].split(':')[0]
@@ -604,10 +611,10 @@ html,body {
 				}
 			}
 			if ("${user_privileged}" < 3) { // add comment not for all
-				$(".modal-body")
+				$("#book_modal .modal-body")
 						.append(
 								"<hr style=\"margin-top: 5px; margin-bottom: 5px;\" id=\"comment_bottom\"><h5>Add comments</h5>");
-				$(".modal-body")
+				$("#book_modal .modal-body")
 						.append(
 								"<div><input id=\"newComment\" type=\"text\" placeholder=\"New Comment\" style=\"margin:0px;\"><br><input type=\"submit\" class=\"btn\" id=\"addCommentBtn\" value=\"Send\" style=\"margin-top:5px; margin-bottom:10px;\"><br> </div>");
 

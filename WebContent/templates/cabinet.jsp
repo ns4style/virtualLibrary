@@ -114,6 +114,7 @@ h1,h3 {
 											blocked user
 										</c:when>
 										</c:choose>
+										<button class="btn" id="logoutButton" style="margin-left: 15px; margin-top: -5px;">Logout</button>
 									</div>
 								</c:if>
 							</div>
@@ -195,13 +196,22 @@ h1,h3 {
 						<h4>Dmitrii Kravchenko</h4>
 					</div>
 					<div>
-						<h4>Nikita Tretyakov</h4>
-					</div>
-					<div>
 						<button data-dismiss="modal" aria-hidden="true"
 							class="btn btn-success">Back</button>
 					</div>
 				</div>
 			</div>
+			
+		<script type="text/javascript">
+		// --------------------------------------------- init -------------------------------------------- //
+		$("#logoutButton").bind("click", logoutBtnFunc);
+		function logoutBtnFunc() {
+			$.post("https://" + $(location).attr('host') + "/Library/index?delete_cookie=", callBackLogoutFunc);
+		}
+		
+		function callBackLogoutFunc(data) {
+			document.location.reload(true);
+		}
+		</script>
 </body>
 </html>

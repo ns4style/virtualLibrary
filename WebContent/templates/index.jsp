@@ -41,6 +41,7 @@ html,body {
 	margin-top: -100px;
 	background-color: #c8c8c8;
 }
+
 .user_login_text {
 	padding-top: 10px;
 	color: #FFFFFF;
@@ -58,7 +59,8 @@ html,body {
 						</a> <a class="brand" href="index">Home</a>
 						<div class="nav-collapse collapse">
 							<ul class="nav">
-								<li><a href="/Library/books/">Books</a></li><c:if test="${user_name != 'unknown'}">
+								<li><a href="/Library/books/">Books</a></li>
+								<c:if test="${user_name != 'unknown'}">
 									<li><a href="/Library/cabinet">Cabinet</a></li>
 								</c:if>
 								<li><a data-target="#authors" data-toggle="modal" href="">Authors</a></li>
@@ -92,100 +94,15 @@ html,body {
 											blocked user
 										</c:when>
 										</c:choose>
+										<button class="btn" id="logoutButton"
+											style="margin-left: 15px; margin-top: -5px;">Logout</button>
 									</div>
 								</c:if>
 							</div>
-							
-						</div>
-					</div>
-				</div>
-			</div>
 
-			<div id="register" class="modal hide fade">
-				<div class="modal-header">
-					<h2>Registration</h2>
-				</div>
-				<div class="modal-body">
-					<div>
-						<input name="action" class="span2 hide" type="text" value="reg">
-					</div>
-					<div id="email">
-						<div>
-							<p>Enter your Email:</p>
 						</div>
-						<input name="email" class="span2" type="text" placeholder="Email">
-					</div>
-					<div id="fname">
-						<div>
-							<p>Enter your first name:</p>
-						</div>
-						<input name="fname" class="span2" type="text" placeholder="">
-					</div>
-					<div id="lname">
-						<div>
-							<p>Enter your second name:</p>
-						</div>
-						<input name="lname" class="span2" type="text" placeholder="">
-					</div>
-					<div id="pass">
-						<div>
-							<p>Enter your password:</p>
-						</div>
-						<input name="passwd" class="span2" type="password"
-							placeholder="Password">
-					</div>
-					<div id="descr">
-						<div>
-							<p>Enter something about yourself:</p>
-						</div>
-						<input name="descr" class="span2" type="text" placeholder="">
-					</div>
-					<button data-dismiss="modal" aria-hidden="true"
-						class="btn btn-warning">Back</button>
-					<button name="reg" class="btn btn-success">Register</button>
-				</div>
-			</div>
-
-			<div id="about" class="modal hide fade text-center">
-				<div class="modal-header">
-					<h2>About library:</h2>
-				</div>
-				<div id="about-body" class="modal-body"></div>
-			</div>
-
-			<div id="authors" class="modal hide fade text-center">
-				<div class="modal-header">
-					<h2>Authors:</h2>
-				</div>
-				<div id="authors-body" class="modal-body">
-					<div>
-						<h4>Artem Bryukhanov</h4>
-					</div>
-					<div>
-						<h4>Dmitrii Kravchenko</h4>
-					</div>
-					<div>
-						<h4>Nikita Tretyakov</h4>
-					</div>
-					<div>
-						<button data-dismiss="modal" aria-hidden="true"
-							class="btn btn-success">Back</button>
 					</div>
 				</div>
-			</div>
-
-			<div id="regComplete" class="modal hide fade">
-				<div class="modal-header">
-					<h2>Status</h2>
-				</div>
-				<div class="modal-body">Registration Complete.</div>
-			</div>
-
-			<div id="regFailed" class="modal hide fade">
-				<div class="modal-header">
-					<h2>Status</h2>
-				</div>
-				<div class="modal-body">Registration Failed.</div>
 			</div>
 
 			<div class="text-center">
@@ -202,7 +119,106 @@ html,body {
 	<div class="footer">
 		<h3 class="pull-right">Copyright(c)</h3>
 	</div>
+
+
+	<div id="register" class="modal hide fade">
+		<div class="modal-header">
+			<h2>Registration</h2>
+		</div>
+		<div class="modal-body">
+			<div>
+				<input name="action" class="span2 hide" type="text" value="reg">
+			</div>
+			<div id="email">
+				<div>
+					<p>Enter your Email:</p>
+				</div>
+				<input name="email" class="span2" type="text" placeholder="Email">
+			</div>
+			<div id="fname">
+				<div>
+					<p>Enter your first name:</p>
+				</div>
+				<input name="fname" class="span2" type="text" placeholder="">
+			</div>
+			<div id="lname">
+				<div>
+					<p>Enter your second name:</p>
+				</div>
+				<input name="lname" class="span2" type="text" placeholder="">
+			</div>
+			<div id="pass">
+				<div>
+					<p>Enter your password:</p>
+				</div>
+				<input name="passwd" class="span2" type="password"
+					placeholder="Password">
+			</div>
+			<div id="descr">
+				<div>
+					<p>Enter something about yourself:</p>
+				</div>
+				<input name="descr" class="span2" type="text" placeholder="">
+			</div>
+			<button data-dismiss="modal" aria-hidden="true"
+				class="btn btn-warning">Back</button>
+			<button name="reg" class="btn btn-success">Register</button>
+		</div>
+	</div>
+
+	<div id="about" class="modal hide fade text-center">
+		<div class="modal-header">
+			<h2>About library:</h2>
+		</div>
+		<div id="about-body" class="modal-body"></div>
+	</div>
+
+	<div id="authors" class="modal hide fade text-center">
+		<div class="modal-header">
+			<h2>Authors:</h2>
+		</div>
+		<div id="authors-body" class="modal-body">
+			<div>
+				<h4>Artem Bryukhanov</h4>
+			</div>
+			<div>
+				<h4>Dmitrii Kravchenko</h4>
+			</div>
+			<div>
+				<button data-dismiss="modal" aria-hidden="true"
+					class="btn btn-success">Back</button>
+			</div>
+		</div>
+	</div>
+
+	<div id="regComplete" class="modal hide fade">
+		<div class="modal-header">
+			<h2>Status</h2>
+		</div>
+		<div class="modal-body">Registration Complete.</div>
+	</div>
+
+	<div id="regFailed" class="modal hide fade">
+		<div class="modal-header">
+			<h2>Status</h2>
+		</div>
+		<div class="modal-body">Registration Failed.</div>
+	</div>
+
 	<script type="text/javascript">
+	
+		// --------------------------------------------- logout ------------------------------------------- //
+		$("#logoutButton").bind("click", logoutBtnFunc);
+		function logoutBtnFunc() {
+			$.post("https://" + $(location).attr('host')
+					+ "/Library/index?delete_cookie=", callBackLogoutFunc);
+		}
+
+		function callBackLogoutFunc(data) {
+			document.location.reload(true);
+		}
+		// --------------------------------------------- logout ------------------------------------------- //
+
 		// --------------------------------------------- login ------------------------------------------- //
 		$('#loginButton').click(
 				function(event) {

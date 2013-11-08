@@ -262,9 +262,9 @@ public class AdminClass {
 		}
 		
 		for (i=0;i<images.length;i++){
-			File img = new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto"+(i+1)+".jpg");
+			File img = new File("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\tempphoto"+(i+1)+".jpg");
 			if (img.exists()){
-				File back = new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\"+images[i]);
+				File back = new File("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\"+images[i]);
 				back.delete();
 				img.renameTo(back);
 			}
@@ -309,12 +309,12 @@ public class AdminClass {
 		Factory.getInstance().getBookHAO().addBook(newBook);
 		Random rnd = new Random(System.currentTimeMillis());
 		for (i=1;i<4;i++){
-			File f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\"+rnd.nextInt(100000000)+".jpg");
+			File f = new File ("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\"+rnd.nextInt(100000000)+".jpg");
 			if (f.exists()){
 				i--;
 				continue;
 			}
-			File f2 = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto"+i+".jpg");
+			File f2 = new File ("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\tempphoto"+i+".jpg");
 			f2.renameTo(f);
 			Image image = new Image();
 			image.setPath("../images/"+f.getName());
@@ -331,7 +331,7 @@ public class AdminClass {
 		Iterator it=book.getImages().iterator();
 		while (it.hasNext()) {
 			Image a = (Image) it.next();
-			File f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\"+a.getPath().split("/")[2]);
+			File f = new File ("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\"+a.getPath().split("/")[2]);
 			f.delete();
 		}
 		Factory.getInstance().getBookHAO().deleteBook(book);
@@ -344,7 +344,7 @@ public class AdminClass {
 			if (upFile != null){
 				answer="<div id='photo1'></div>";
 				InputStream content = upFile.getInputStream();
-				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\temp"+upFile.getName()+".jpg"));
+				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\temp"+upFile.getName()+".jpg"));
 				byte[] c = new byte [100];
 				while ((content.read(c))>=0) {
 					wrt.write(c);
@@ -356,7 +356,7 @@ public class AdminClass {
 			if (upFile2 != null){
 				answer="<div id='photo2'></div>";
 				InputStream content = upFile2.getInputStream();
-				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\temp"+upFile2.getName()+".jpg"));
+				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\temp"+upFile2.getName()+".jpg"));
 				byte[] c = new byte [100];
 				while ((content.read(c))>=0) {
 					wrt.write(c);
@@ -368,7 +368,7 @@ public class AdminClass {
 			if (upFile3 != null){
 				answer="<div id='photo3'></div>";
 				InputStream content = upFile3.getInputStream();
-				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\temp"+upFile3.getName()+".jpg"));
+				FileOutputStream wrt = new FileOutputStream(new File("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\temp"+upFile3.getName()+".jpg"));
 				byte[] c = new byte [100];
 				while ((content.read(c))>=0) {
 					wrt.write(c);
@@ -388,13 +388,13 @@ public class AdminClass {
 	}
 	
 	public static void pleaseDeleteAllTrash(HttpServletRequest request, HttpServletResponse response) throws IOException, SQLException {
-		File f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto1.jpg");
+		File f = new File ("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\tempphoto1.jpg");
 		if (f.exists())
 			f.delete();
-		f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto2.jpg");
+		f = new File ("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\tempphoto2.jpg");
 		if (f.exists())
 			f.delete();
-		f = new File ("C:\\Users\\Artem\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp6\\wtpwebapps\\Library\\images\\tempphoto3.jpg");
+		f = new File ("C:\\Users\\Admin\\workspace\\.metadata\\.plugins\\org.eclipse.wst.server.core\\tmp3\\wtpwebapps\\virtualLibrary\\images\\tempphoto3.jpg");
 		if (f.exists())
 			f.delete();
 	}
